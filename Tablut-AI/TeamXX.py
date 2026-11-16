@@ -1,18 +1,25 @@
-"""Official evaluation adapter; rename XX to your assigned team number."""
-from src.agents.attacker import choose_attacker_move
-from src.agents.defender import choose_defender_move
+"""Official adapter. Create a new Player for each game."""
+from time import perf_counter
+from src.game import parse_board
+from src.search import TimeManager, choose_move
 
 
 class Player:
-    @staticmethod
-    def _external(move):
-        # The official game checks no-move draws before asking for a move.
-        if move is None:
-            raise ValueError("No legal move: game should already be over")
-        return [list(move[0]), list(move[1])]
+    def __init__(self):
+        self.clock = TimeManager()
+
+    def _play(self, board, player):
+        start = perf_counter()
+        try:
+            move = choose_move(parse_board(board), player, self.clock.deadline())
+            if move is None:
+                raise ValueError("No legal move: game should already be over")
+            return [list(move[0]), list(move[1])]
+        finally:
+            self.clock.record_elapsed(perf_counter() - start)
 
     def play_attacker(self, board):
-        return self._external(choose_attacker_move(board))
+        return self._play(board, "A")
 
     def play_defender(self, board):
-        return self._external(choose_defender_move(board))
+        return self._play(board, "D")
