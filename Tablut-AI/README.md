@@ -49,3 +49,5 @@ python scripts/benchmark.py --opponent-file opponents/Team02.py --games 10 --out
 
 [详细迭代清单](docs/SETUP_LIST.md) · [接口约定](docs/INTERFACES.md) · [分工与后续计划](docs/DEVELOPMENT_PLAN.md)
 
+
+逐步棋谱与离线棋盘回放（独立 Demo）：[使用说明](docs/REPLAY_DEMO.md)。运行 python scripts/replay_demo.py --games 2，即可导出每步 JSON 与可翻步的离线页面。
