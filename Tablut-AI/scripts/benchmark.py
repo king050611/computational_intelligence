@@ -100,16 +100,24 @@ class ExternalBot:
 
 
 class StrategyBot:
-    def __init__(self, strategy, seed):
+    def __init__(self, strategy, seed, record_search=False):
         self.strategy, self.rng, self.clock = strategy, random.Random(seed), TimeManager()
+        self.record_search = record_search
+        self.last_search_stats = None
 
     def _play(self, board, side):
+        self.last_search_stats = None
+        stats = {} if self.record_search else None
         start = perf_counter()
         try:
-            move = choose_move(board,side,self.clock.deadline(),self.strategy,self.rng)
+            move = choose_move(board,side,self.clock.deadline(),self.strategy,self.rng,stats=stats)
             return [list(x) for x in move]
         finally:
-            self.clock.record_elapsed(perf_counter()-start)
+            elapsed = perf_counter()-start
+            self.clock.record_elapsed(elapsed)
+            if stats is not None:
+                stats["elapsed_seconds"] = elapsed
+                self.last_search_stats = stats
 
     def play_attacker(self, board):
         return self._play(board,"A")

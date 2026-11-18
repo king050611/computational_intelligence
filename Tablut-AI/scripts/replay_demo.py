@@ -80,6 +80,7 @@ class ObservedPlayer:
             raise
         finally:
             event["elapsed_seconds"] = perf_counter()-start
+            event["search"] = copy.deepcopy(getattr(self.timed.bot, "last_search_stats", None))
 
     def play_attacker(self, board):
         return self._play(board,"A")
@@ -91,8 +92,8 @@ class ObservedPlayer:
 def record_game(index, strategy, opponent, seed):
     game = Recorder()
     our_side = "A" if index%2==0 else "D"
-    ours = Player() if strategy=="adaptive" else StrategyBot(strategy,seed)
-    other = StrategyBot(opponent,seed)
+    ours = Player(record_search=True) if strategy=="adaptive" else StrategyBot(strategy,seed,record_search=True)
+    other = StrategyBot(opponent,seed,record_search=True)
     ours = ObservedPlayer(ours,game,strategy)
     other = ObservedPlayer(other,game,opponent)
     attacker, defender = (ours,other) if our_side=="A" else (other,ours)
@@ -137,9 +138,9 @@ def main():
     args=parser.parse_args()
     if args.games<1:
         parser.error("--games must be positive")
-    data=dict(schema_version="1.0",created_at=datetime.now(timezone.utc).isoformat(),
+    data=dict(schema_version="1.1",created_at=datetime.now(timezone.utc).isoformat(),
               coordinates="zero-based [row, column]",symbols={"A":"attacker","D":"defender","K":"king","X":"empty castle",".":"empty"},
-              note="Demo observation adds overhead; no search explanations or actual depth are recorded.",
+              note="Demo observation adds overhead. Nodes count alpha-beta recursion only; null means unrecorded.",
               games=[record_game(i,args.strategy,args.opponent,args.seed+i) for i in range(args.games)])
     path=write_replay(data,args.output_dir)
     for game in data["games"]:

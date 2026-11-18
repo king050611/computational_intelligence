@@ -1,0 +1,154 @@
+{
+  "matches": [
+    {
+      "experiment": "depth_demo",
+      "game": 1,
+      "our_side": "A",
+      "result": {
+        "winner": "A",
+        "reason": "king_captured"
+      },
+      "depths": {
+        "2": 20,
+        "0": 1
+      },
+      "targets": {
+        "2": 20,
+        "1": 1
+      },
+      "reasons": {
+        "normal_depth": 10,
+        "branch_limit": 10,
+        "immediate_win": 1
+      },
+      "nodes": 14162,
+      "fallbacks": 0,
+      "our_seconds": 1.0350878000135708
+    },
+    {
+      "experiment": "depth_demo",
+      "game": 2,
+      "our_side": "D",
+      "result": {
+        "winner": "D",
+        "reason": "king_escaped"
+      },
+      "depths": {
+        "2": 18,
+        "0": 1
+      },
+      "targets": {
+        "2": 18,
+        "1": 1
+      },
+      "reasons": {
+        "normal_depth": 18,
+        "immediate_win": 1
+      },
+      "nodes": 8136,
+      "fallbacks": 0,
+      "our_seconds": 0.6898877999992692
+    },
+    {
+      "experiment": "depth_greedy",
+      "game": 1,
+      "our_side": "A",
+      "result": {
+        "winner": "A",
+        "reason": "king_captured"
+      },
+      "depths": {
+        "2": 21,
+        "0": 1
+      },
+      "targets": {
+        "2": 21,
+        "1": 1
+      },
+      "reasons": {
+        "normal_depth": 20,
+        "branch_limit": 1,
+        "immediate_win": 1
+      },
+      "nodes": 7730,
+      "fallbacks": 0,
+      "our_seconds": 0.5674478999935673
+    },
+    {
+      "experiment": "depth_greedy",
+      "game": 2,
+      "our_side": "D",
+      "result": {
+        "winner": "DRAW",
+        "reason": "repetition"
+      },
+      "depths": {
+        "2": 12
+      },
+      "targets": {
+        "2": 12
+      },
+      "reasons": {
+        "normal_depth": 12
+      },
+      "nodes": 2587,
+      "fallbacks": 0,
+      "our_seconds": 0.221874700004264
+    },
+    {
+      "experiment": "depth_minimax",
+      "game": 1,
+      "our_side": "A",
+      "result": {
+        "winner": "DRAW",
+        "reason": "repetition"
+      },
+      "depths": {
+        "2": 14
+      },
+      "targets": {
+        "2": 14
+      },
+      "reasons": {
+        "normal_depth": 14
+      },
+      "nodes": 3322,
+      "fallbacks": 0,
+      "our_seconds": 0.29241370000090683
+    },
+    {
+      "experiment": "depth_minimax",
+      "game": 2,
+      "our_side": "D",
+      "result": {
+        "winner": "DRAW",
+        "reason": "repetition"
+      },
+      "depths": {
+        "2": 13
+      },
+      "targets": {
+        "2": 13
+      },
+      "reasons": {
+        "normal_depth": 13
+      },
+      "nodes": 2960,
+      "fallbacks": 0,
+      "our_seconds": 0.2569783000035386
+    }
+  ],
+  "performance": {
+    "False": {
+      "repeats": 10,
+      "median_seconds": 0.026024549999419833,
+      "mean_seconds": 0.026306659999318072
+    },
+    "True": {
+      "repeats": 10,
+      "median_seconds": 0.026148800001465133,
+      "mean_seconds": 0.02647243999999773
+    }
+  },
+  "performance_method": "Initial board attacker adaptive; infinite deadline; 10 paired runs alternating order; no replay observer. All selected moves identical."
+}

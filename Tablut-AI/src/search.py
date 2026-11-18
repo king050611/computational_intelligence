@@ -104,14 +104,25 @@ def choose_move(board, player, deadline=float("inf"), strategy="adaptive", rng=N
         raise ValueError("Unknown strategy")
     moves = get_legal_moves(board, player)
     if stats is not None:
-        stats.update(completed_depth=0, nodes=0, timed_out=False, target_depth=0)
+        stats.clear()
+        stats.update(strategy=strategy, completed_depth=0, nodes=0, timed_out=False,
+                     target_depth=0 if strategy in ("first", "random") else 1 if strategy=="greedy" else SEARCH_DEPTH,
+                     root_moves=len(moves), urgent=None, fallback_used=False,
+                     policy_reason="baseline" if strategy in ("first", "random", "greedy") else "normal_depth",
+                     finish_reason=None)
     if not moves:
+        if stats is not None:
+            stats["finish_reason"] = "no_legal_moves"
         return None
     if strategy == "first":
+        if stats is not None:
+            stats["finish_reason"] = "depth_completed"
         return moves[0]
     if strategy == "random":
         if rng is None:
             raise ValueError("random strategy requires a seeded RNG")
+        if stats is not None:
+            stats["finish_reason"] = "depth_completed"
         return rng.choice(moves)
     best, best_score, ranked = moves[0], -float("inf"), []
     next_player = "D" if player == "A" else "A"
@@ -129,19 +140,31 @@ def choose_move(board, player, deadline=float("inf"), strategy="adaptive", rng=N
                 best, best_score = move, score
             if score == WIN_SCORE:
                 if stats is not None:
-                    stats["completed_depth"] = 1
+                    # A winning candidate proves the move, but the whole layer was not scanned.
+                    stats.update(target_depth=1, policy_reason="immediate_win", finish_reason="immediate_win")
                 return move
         if stats is not None:
             stats["completed_depth"] = 1
         if strategy == "greedy":
+            if stats is not None:
+                stats["finish_reason"] = "depth_completed"
             return best
         target = SEARCH_DEPTH
-        if (strategy == "adaptive" and is_urgent(board)
-                and len(moves) <= DEEP_SEARCH_MAX_BRANCHES
-                and deadline - perf_counter() >= DEEP_SEARCH_MIN_SECONDS):
-            target = MAX_SEARCH_DEPTH
+        reason = "normal_depth"
+        # Same policy checks and short-circuit order as v2.0; no extra searches.
+        if strategy == "adaptive":
+            urgent = is_urgent(board)
+            if stats is not None:
+                stats["urgent"] = urgent
+            if urgent:
+                if len(moves) > DEEP_SEARCH_MAX_BRANCHES:
+                    reason = "branch_limit"
+                elif deadline - perf_counter() < DEEP_SEARCH_MIN_SECONDS:
+                    reason = "insufficient_budget"
+                else:
+                    target, reason = MAX_SEARCH_DEPTH, "urgent_deepening"
         if stats is not None:
-            stats["target_depth"] = target
+            stats.update(target_depth=target, policy_reason=reason)
         if ENABLE_MOVE_ORDERING:
             ranked.sort(key=lambda item: item[0], reverse=True)
         for depth in range(2, target+1):
@@ -158,8 +181,12 @@ def choose_move(board, player, deadline=float("inf"), strategy="adaptive", rng=N
             if stats is not None:
                 stats["completed_depth"] = depth
             if abs(value) == WIN_SCORE:
+                if stats is not None:
+                    stats["finish_reason"] = "proven_terminal"
                 break
+        if stats is not None and stats["finish_reason"] is None:
+            stats["finish_reason"] = "depth_completed"
     except SearchTimeout:
         if stats is not None:
-            stats["timed_out"] = True
+            stats.update(timed_out=True, fallback_used=True, finish_reason="search_deadline")
     return best

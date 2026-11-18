@@ -256,3 +256,91 @@ class BattleFailureTests(unittest.TestCase):
         self.assertIn(move,get_legal_moves(initial_board(),"A"))
         self.assertEqual(stats["completed_depth"],2)
         self.assertTrue(stats["timed_out"])
+
+
+class MonitoringTests(unittest.TestCase):
+    def test_policy_and_deadline_reasons(self):
+        from unittest.mock import patch
+        from src.search import SearchTimeout
+        board=initial_board()
+        cases=[(False,1000,10,2,"normal_depth"),(True,1000,10,3,"urgent_deepening"),
+               (True,0,10,2,"branch_limit"),(True,1000,0.1,2,"insufficient_budget")]
+        for urgent,limit,budget,target,reason in cases:
+            stats={}
+            with patch("src.search.is_urgent",return_value=urgent), patch("src.search.DEEP_SEARCH_MAX_BRANCHES",limit), patch("src.search.perf_counter",return_value=0), patch("src.search.alpha_beta",return_value=1):
+                choose_move(board,"A",deadline=budget,stats=stats)
+            self.assertEqual((stats["target_depth"],stats["completed_depth"],stats["policy_reason"]),(target,target,reason))
+            self.assertEqual(stats["finish_reason"],"depth_completed")
+            self.assertFalse(stats["fallback_used"])
+        for fail_depth,completed in [(1,1),(2,2)]:
+            def recursive(*args,**kwargs):
+                if args[3]==fail_depth: raise SearchTimeout()
+                return 1
+            stats={}
+            with patch("src.search.is_urgent",return_value=True),patch("src.search.DEEP_SEARCH_MAX_BRANCHES",1000),patch("src.search.alpha_beta",side_effect=recursive):
+                move=choose_move(board,"A",stats=stats)
+            self.assertIn(move,get_legal_moves(board,"A"))
+            self.assertEqual(stats["completed_depth"],completed)
+            self.assertTrue(stats["timed_out"] and stats["fallback_used"])
+            self.assertEqual(stats["finish_reason"],"search_deadline")
+
+    def test_baselines_and_immediate_win(self):
+        for strategy,depth in [("first",0),("random",0),("greedy",1)]:
+            stats={}
+            choose_move(initial_board(),"A",strategy=strategy,rng=random.Random(42),stats=stats)
+            self.assertEqual((stats["target_depth"],stats["completed_depth"],stats["nodes"]),(depth,depth,0))
+            self.assertEqual(stats["policy_reason"],"baseline")
+            self.assertFalse(stats["fallback_used"])
+        board=board_with({(2,2):"K",(2,1):"A",(2,6):"A"})
+        stats={}
+        choose_move(board,"D",stats=stats)
+        self.assertEqual(stats["finish_reason"],"immediate_win")
+        self.assertEqual(stats["completed_depth"],0)
+        self.assertFalse(stats["fallback_used"])
+
+    def test_monitoring_does_not_change_moves_and_resets_each_turn(self):
+        from unittest.mock import patch
+        from scripts.benchmark import StrategyBot
+        for strategy in ("first","random","greedy","minimax","adaptive"):
+            plain,observed=StrategyBot(strategy,42),StrategyBot(strategy,42,record_search=True)
+            with patch("src.search.TimeManager.deadline",return_value=float("inf")):
+                self.assertEqual(plain.play_attacker(initial_board()),observed.play_attacker(initial_board()))
+                previous=observed.last_search_stats.copy()
+                previous_ref=observed.last_search_stats
+                observed.play_defender(initial_board())
+            self.assertIsNone(plain.last_search_stats)
+            self.assertIsNot(previous_ref,observed.last_search_stats)
+            self.assertEqual(previous_ref,previous)
+        self.assertIsNone(Player().last_search_stats)
+        player=Player(record_search=True)
+        with patch("src.search.TimeManager.deadline",return_value=float("inf")):
+            self.assertEqual(Player().play_attacker(initial_board()),player.play_attacker(initial_board()))
+        self.assertEqual(player.last_search_stats["strategy"],"adaptive")
+
+    def test_replay_stats_are_copied_and_missing_is_null(self):
+        sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"scripts"))
+        from replay_demo import ObservedPlayer,Recorder
+        class Stub:
+            def __init__(self): self.last_search_stats={"nodes":1}
+            def play_attacker(self,board): return [[0,3],[0,2]]
+        bot=Stub();game=Recorder();observed=ObservedPlayer(bot,game,"first")
+        observed.play_attacker(game.board)
+        event=game.pending
+        bot.last_search_stats["nodes"]=99
+        self.assertEqual(event["search"]["nodes"],1)
+        del bot.last_search_stats
+        observed.play_attacker(game.board)
+        self.assertIsNone(game.pending["search"])
+
+    def test_new_and_old_replay_analysis_javascript(self):
+        import json,subprocess,shutil
+        if not shutil.which("node"): self.skipTest("Node needed for HTML JavaScript test")
+        page=(Path(__file__).resolve().parents[1]/"scripts/replay_template.html").read_text(encoding="utf-8-sig")
+        code=page.split("const policyNames=")[1].split("function render(){")[0]
+        script="const policyNames="+code+"\nconst assert=require('assert');\n"
+        script+="assert(searchText({player:'A'}).includes('未记录'));\n"
+        for strategy in ("random","greedy","minimax"):
+            stats={};choose_move(initial_board(),"A",strategy=strategy,rng=random.Random(42),stats=stats)
+            event=dict(player="A",search=stats)
+            script+="assert(searchText("+json.dumps(event)+").includes('"+strategy+"'));\n"
+        subprocess.run(["node","-"],input=script,text=True,encoding="utf-8",check=True)
