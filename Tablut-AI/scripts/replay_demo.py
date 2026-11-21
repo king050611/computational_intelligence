@@ -8,8 +8,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from time import perf_counter
 
-# Reuse existing demo adapters, not a second implementation of the rules.
-from benchmark import Tablut, Player, StrategyBot, Timed, STRATEGIES, ROOT
+# Import adapters first: benchmark sets up the project and reference paths.
+from benchmark import ROOT, StrategyBot, Timed
+from Tablut import Tablut
+from TeamXX import Player
+from src.search import STRATEGIES
 
 
 def snapshot(board):
@@ -70,7 +73,8 @@ class ObservedPlayer:
         self.recorder.pending = event
         start = perf_counter()
         try:
-            move = self.timed._play(board,"attacker" if side=="A" else "defender")
+            play = self.timed.play_attacker if side=="A" else self.timed.play_defender
+            move = play(board)
             event["move"] = [list(x) for x in move]
             if self.timed.invalid_returns:
                 event["invalid_return"] = self.timed.invalid_returns[-1]

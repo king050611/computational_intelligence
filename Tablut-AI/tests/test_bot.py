@@ -344,3 +344,100 @@ class MonitoringTests(unittest.TestCase):
             event=dict(player="A",search=stats)
             script+="assert(searchText("+json.dumps(event)+").includes('"+strategy+"'));\n"
         subprocess.run(["node","-"],input=script,text=True,encoding="utf-8",check=True)
+
+
+class ReplayCleanupTests(unittest.TestCase):
+    def test_observer_uses_public_side_methods_and_preserves_stats(self):
+        from unittest.mock import patch
+        sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"scripts"))
+        from replay_demo import ObservedPlayer, Recorder
+        class Stub:
+            last_search_stats = {"nodes": 7}
+        bot=Stub()
+        for side,method,move in (("A","play_attacker",[[0,3],[0,2]]),
+                                 ("D","play_defender",[[2,4],[2,3]])):
+            with self.subTest(side=side):
+                recorder=Recorder()
+                observed=ObservedPlayer(bot,recorder,"first")
+                with patch.object(observed.timed,method,return_value=move) as public_method, \
+                     patch.object(observed.timed,"_play",side_effect=AssertionError("Private dispatch used")):
+                    self.assertEqual(getattr(observed,method)(recorder.board),move)
+                public_method.assert_called_once_with(recorder.board)
+                self.assertEqual(recorder.pending["player"],side)
+                self.assertEqual(recorder.pending["search"],bot.last_search_stats)
+                self.assertIsNot(recorder.pending["search"],bot.last_search_stats)
+                self.assertEqual(recorder.pending["move"],move)
+
+    def test_full_replay_navigation_draw_and_cached_totals(self):
+        import json, shutil, subprocess
+        if not shutil.which("node"):
+            self.skipTest("Node needed for HTML JavaScript test")
+        def fixture(board,actions,winner,reason,monitoring):
+            initial=[list(row) for row in board]
+            events=[]
+            for i,(side,move) in enumerate(actions):
+                before=[list(row) for row in board]
+                board=apply_move(board,move,side)
+                event=dict(ply=i+1,player=side,piece=before[move[0][0]][move[0][1]],
+                           strategy="first",from_square=list(move[0]),to_square=list(move[1]),
+                           accepted=True,captures=[],elapsed_seconds=0.001,
+                           board_before=before,board_after=[list(row) for row in board],
+                           result_after=dict(terminal=i==len(actions)-1))
+                if monitoring:
+                    event["search"]=dict(strategy="first",completed_depth=0,nodes=0)
+                events.append(event)
+            return dict(game=1,our_side="A",initial_board=initial,moves=events,
+                        result=dict(winner=winner,reason=reason),accepted_moves=len(events),
+                        strategies=dict(A="first",D="first"))
+        win=fixture(board_with({(2,2):"K",(2,1):"A",(2,6):"A"}),
+                    [("A",((2,6),(2,3)))],"A","king_captured",True)
+        draw=fixture(initial_board(),[("A",((0,3),(0,2))),("D",((2,4),(2,3))),
+                                      ("A",((0,2),(0,3))),("D",((2,3),(2,4)))],
+                     "DRAW","repetition",False)
+        page=(Path(__file__).resolve().parents[1]/"scripts/replay_template.html").read_text(encoding="utf-8-sig")
+        code=page.split("<script>")[1].split("</script>")[0]
+        # Wrap the page's real aggregation function before its first load.
+        pos=code.rfind("load();")
+        code=code[:pos]+"const aggregate=totalsText;let calls=0;totalsText=g=>{calls++;return aggregate(g)};"+code[pos:]
+        dom=r"""
+const assert=require('assert');
+class Element {
+ constructor(){this.children=[];this.dataset={};this.classList={toggle(){}};this.value=0;this.checked=false;this.open=false;this.textContent=''}
+ setAttribute(){} append(...nodes){this.children.push(...nodes)}
+ replaceChildren(...nodes){this.children=nodes} scrollIntoView(){}
+}
+const elements={};
+global.document={getElementById:id=>elements[id]??=(new Element()),
+ createElement:()=>new Element(),createElementNS:()=>new Element(),addEventListener(){}};
+let tick=null;
+global.setInterval=fn=>{tick=fn;return 1};global.clearInterval=()=>{tick=null};
+"""
+        checks=r"""
+assert.equal(calls,1);assert($('summary').textContent.includes('进攻方获胜'));
+assert($('analysis').textContent.includes('初始局面'));
+// Observe which snapshot the actual navigation passes into the renderer.
+diagram=(board,event)=>({board,event});
+$('next').onclick();assert.equal(step,1);
+assert.deepEqual($('board').children[0].board,data.games[0].moves[0].board_after);
+assert($('analysis').textContent.includes('first'));assert.equal(calls,1);
+$('before').checked=true;$('before').onchange();
+assert.deepEqual($('board').children[0].board,data.games[0].moves[0].board_before);
+$('first').onclick();assert.equal(step,0);assert.equal(calls,1);
+$('game').value=1;$('game').onchange();assert.equal(calls,2);
+assert($('summary').textContent.includes('平局'));assert(!$('summary').textContent.includes('平局获胜'));
+assert($('summary').textContent.includes('重复局面'));
+$('before').checked=false;$('last').onclick();assert.equal(step,4);
+assert($('analysis').textContent.includes('未记录'));assert.equal(calls,2);
+$('prev').onclick();assert.equal(step,3);
+$('slider').value=2;$('slider').oninput();assert.equal(step,2);
+$('moves').children[1].onclick();assert.equal(step,1);
+$('all').open=true;$('all').ontoggle();assert.equal($('gallery').children.length,5);
+$('gallery').children[4].onclick();assert.equal(step,4);assert.equal(calls,2);
+$('play').onclick();assert.equal(step,0);assert.equal(typeof tick,'function');
+for(let i=0;i<4;i++)tick();assert.equal(step,4);assert.equal(tick,null);
+assert.equal(calls,2);
+$('game').value=0;$('game').onchange();assert.equal(calls,3);assert.equal(step,0);
+assert.equal($('gallery').children.length,2);
+"""
+        program=dom+"document.getElementById('data').textContent="+json.dumps(json.dumps(dict(games=[win,draw])))+";\n"+code+checks
+        subprocess.run(["node","-"],input=program,text=True,encoding="utf-8",check=True)

@@ -60,7 +60,7 @@ function totalsText(g){return ['A','D'].map(side=>{
 }).join('\n\n')}
 function render(){
  const g=current(),e=step?g.moves[step-1]:null,board=e?($('before').checked?e.board_before:e.board_after):g.initial_board;
- $('analysis').textContent=searchText(e);$('searchTotals').textContent=totalsText(g);
+ $('analysis').textContent=searchText(e);
  $('board').replaceChildren(diagram(board,e));$('slider').value=step;$('step').textContent=`第 ${step} / ${g.moves.length} 半步`;
  $('description').textContent=e?`${label(e)}；策略 ${e.strategy}；耗时 ${(e.elapsed_seconds*1000).toFixed(2)} ms；吃子：${e.captures.length?e.captures.map(c=>c.piece+' '+coord(c.square)).join('、'):'无'}。${e.result_after.terminal?'终局：'+(reasons[g.result.reason]||g.result.reason):''}`:'初始局面：进攻方先行。';
  $('prev').disabled=$('first').disabled=step===0;$('next').disabled=$('last').disabled=step===g.moves.length;
@@ -68,7 +68,8 @@ function render(){
 }
 function jump(n){step=Math.max(0,Math.min(current().moves.length,n));render()}
 function buildGallery(){const g=current();$('gallery').replaceChildren();[null,...g.moves].forEach((e,i)=>{const box=document.createElement('div');box.className='frame';const p=document.createElement('p');p.textContent=e?label(e):'0. 初始局面';box.append(p,diagram(e?e.board_after:g.initial_board,e));box.tabIndex=0;box.onclick=()=>{stop();jump(i);$('board').scrollIntoView({behavior:'smooth',block:'center'})};box.onkeydown=ev=>{if(ev.key==='Enter')box.click()};$('gallery').append(box)})}
-function load(){stop();step=0;const g=current();$('slider').max=g.moves.length;$('summary').textContent=`我方执${names[g.our_side]} · ${names[g.result.winner]}获胜 / ${reasons[g.result.reason]||g.result.reason} · ${g.accepted_moves} 次有效行动`;
+function load(){stop();step=0;const g=current(),outcome=g.result.winner==='DRAW'?'平局':`${names[g.result.winner]}获胜`;$('slider').max=g.moves.length;$('summary').textContent=`我方执${names[g.our_side]} · ${outcome} / ${reasons[g.result.reason]||g.result.reason} · ${g.accepted_moves} 次有效行动`;
+ $('searchTotals').textContent=totalsText(g);
  $('moves').replaceChildren();[null,...g.moves].forEach((e,i)=>{const b=document.createElement('button');b.dataset.step=i;b.textContent=e?label(e):'0. 初始局面';b.onclick=()=>{stop();jump(i)};$('moves').append(b)});if($('all').open)buildGallery();render()}
 for(const[i,g]of data.games.entries()){const o=document.createElement('option');o.value=i;o.textContent=`第 ${g.game} 局 · A ${g.strategies.A} vs D ${g.strategies.D}`;$('game').append(o)}
 $('game').onchange=()=>{index=Number($('game').value);load()};$('first').onclick=()=>{stop();jump(0)};$('last').onclick=()=>{stop();jump(current().moves.length)};$('prev').onclick=()=>{stop();jump(step-1)};$('next').onclick=()=>{stop();jump(step+1)};$('slider').oninput=()=>{stop();jump(Number($('slider').value))};$('before').onchange=render;
