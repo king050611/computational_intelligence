@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "reference")]
 from Tablut import Tablut
 from TeamXX import Player
+from src.learning import load_evaluator
 from src.search import choose_move, TimeManager, STRATEGIES
 
 
@@ -100,9 +101,10 @@ class ExternalBot:
 
 
 class StrategyBot:
-    def __init__(self, strategy, seed, record_search=False):
+    def __init__(self, strategy, seed, record_search=False, *, evaluator=None):
         self.strategy, self.rng, self.clock = strategy, random.Random(seed), TimeManager()
         self.record_search = record_search
+        self.evaluator = evaluator
         self.last_search_stats = None
 
     def _play(self, board, side):
@@ -110,7 +112,8 @@ class StrategyBot:
         stats = {} if self.record_search else None
         start = perf_counter()
         try:
-            move = choose_move(board,side,self.clock.deadline(),self.strategy,self.rng,stats=stats)
+            move = choose_move(board,side,self.clock.deadline(),self.strategy,self.rng,
+                               stats=stats,evaluator=self.evaluator)
             return [list(x) for x in move]
         finally:
             elapsed = perf_counter()-start
@@ -172,6 +175,11 @@ def main():
     opponents=parser.add_mutually_exclusive_group()
     opponents.add_argument("--opponent",choices=STRATEGIES,default="random")
     opponents.add_argument("--opponent-file",type=Path)
+    models=parser.add_mutually_exclusive_group()
+    models.add_argument("--model",type=Path,help="Use the best evaluator in a training checkpoint")
+    models.add_argument("--neural-model",type=Path,help="Use Alpha–Beta or MCTS as specified by a neural checkpoint")
+    parser.add_argument("--candidate",action="store_true",help="Use the candidate in --model")
+    parser.add_argument("--opponent-model",type=Path,help="Use a training checkpoint for the built-in opponent")
     parser.add_argument("--seed",type=int,default=42)
     parser.add_argument("--output",type=Path)
     args=parser.parse_args()
@@ -179,13 +187,38 @@ def main():
         parser.error("--games must be positive")
     if args.opponent_file and (not args.opponent_file.is_file() or args.opponent_file.suffix.lower()!=".py"):
         parser.error("--opponent-file must be an existing Python file")
+    if args.opponent_file and args.opponent_model:
+        parser.error("--opponent-model requires a built-in opponent")
+    if args.candidate and not args.model:
+        parser.error("--candidate requires --model")
+    if (args.model and args.strategy in ("first","random")) or (
+        args.opponent_model and args.opponent in ("first","random")
+    ):
+        parser.error("A checkpoint requires greedy, minimax or adaptive search")
+    try:
+        evaluator = load_evaluator(args.model,candidate=args.candidate) if args.model else None
+        opponent_evaluator = load_evaluator(args.opponent_model) if args.opponent_model else None
+        if args.neural_model:
+            from src.neural import load_network
+            from src.neural_player import NeuralPlayer
+
+            network, metadata = load_network(args.neural_model)
+            phase = metadata["phase"]
+            simulations = metadata["config"]["simulations"]
+    except (OSError, ValueError) as exc:
+        parser.error(str(exc))
     results=[]
     for i in range(args.games):
         side="A" if i%2==0 else "D"
         external=ExternalBot(args.opponent_file.resolve()) if args.opponent_file else None
         try:
-            ours=Timed(Player() if args.strategy=="adaptive" else StrategyBot(args.strategy,args.seed+i))
-            other=Timed(external or StrategyBot(args.opponent,args.seed+i))
+            if args.neural_model:
+                ours=Timed(NeuralPlayer(network,phase,simulations))
+            elif args.strategy=="adaptive":
+                ours=Timed(Player(evaluator=evaluator))
+            else:
+                ours=Timed(StrategyBot(args.strategy,args.seed+i,evaluator=evaluator))
+            other=Timed(external or StrategyBot(args.opponent,args.seed+i,evaluator=opponent_evaluator))
             a,d=(ours,other) if side=="A" else (other,ours)
             game=Tablut()
             start=perf_counter()
@@ -210,6 +243,14 @@ def main():
     table=standings(results)
     summary=dict(version="2.0",strategy=args.strategy,opponent=str(args.opponent_file.resolve()) if args.opponent_file else args.opponent,
                  seed=args.seed,games=args.games,standings=table,our_win_rate=table["overall"]["wins"]/args.games,results=results)
+    if args.model:
+        summary["model"] = str(args.model.resolve())
+        summary["model_selection"] = "candidate" if args.candidate else "best"
+    if args.neural_model:
+        summary["neural_model"] = str(args.neural_model.resolve())
+        summary["strategy"] = "minimax" if phase == "value" else "mcts"
+    if args.opponent_model:
+        summary["opponent_model"] = str(args.opponent_model.resolve())
     for label,row in table.items():
         print(f"{label:10} W {row['wins']} D {row['draws']} L {row['losses']} Points {row['points']}/{2*row['games']}")
     print("Illegal moves / timeouts / exceptions:",*[sum(x[k] for x in results) for k in ("illegal_moves","timeouts","exceptions")])

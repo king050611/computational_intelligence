@@ -6,9 +6,10 @@ from src.search import TimeManager, choose_move
 
 
 class Player:
-    def __init__(self, record_search=False):
+    def __init__(self, record_search=False, *, evaluator=None):
         self.clock = TimeManager()
         self.record_search = record_search
+        self.evaluator = evaluator
         self.last_search_stats = None
 
     def _play(self, board, player):
@@ -17,7 +18,8 @@ class Player:
         start = perf_counter()
         try:
             move = choose_move(parse_board(board), player, self.clock.deadline(),
-                               strategy="adaptive" if ENABLE_ADAPTIVE_SEARCH else "minimax", stats=stats)
+                               strategy="adaptive" if ENABLE_ADAPTIVE_SEARCH else "minimax",
+                               stats=stats, evaluator=self.evaluator)
             if move is None:
                 raise ValueError("No legal move: game should already be over")
             return [list(move[0]), list(move[1])]
