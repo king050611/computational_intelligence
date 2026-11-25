@@ -38,6 +38,8 @@ python scripts/benchmark.py --games 10
 
 默认 Adaptive 对 Random，逐局交换攻守；输出胜平负、积分和JSON统计。实验命令、不同Seed及外部Bot加载见[实验指南](docs/EXPERIMENT_GUIDE.md)。
 
+增强搜索可通过 `--strategy enhanced` 或 `--strategy enhanced_dynamic` 选择。固定深度对照、配对开局和动态计时的复现命令见[算法设计](docs/ALGORITHM_DESIGN.md)。
+
 ### 生成逐步回放
 
 ```powershell
