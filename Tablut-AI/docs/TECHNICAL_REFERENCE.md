@@ -31,12 +31,16 @@ history只含此前状态键。国王被捕、到边缘、攻击者不足两枚�
 
 ```python
 choose_move(board, player, deadline=float("inf"),
-            strategy="adaptive", rng=None, stats=None)
+            strategy="adaptive", rng=None, stats=None, *,
+            evaluator=None, history=(), position_value=None)
 alpha_beta(board, current_player, root_player, depth, alpha, beta,
-           deadline, path=(), *, prune=True, stats=None)
+           deadline, path=(), *, prune=True, stats=None,
+           evaluator=_evaluate, position_value=None)
 ```
 
 choose_move返回Move或无动作时None。支持first/random/greedy/minimax/adaptive，random需RNG。root_player视角固定，根方最大化、对手最小化；胜负分正负十亿，平局0。path为祖先状态键tuple，不含当前节点。
+
+可选训练扩展：evaluator(board, root_player)提供根方视角的线性评分；position_value(board, current_player)提供防守方视角的网络价值，由搜索统一转换根方符号。history仅含此前局面键，并加入搜索路径判重。省略新增参数时保持稳定版走法及统计；正式Player接口没有增加模型参数，模型只通过实验StrategyBot/NeuralPlayer加载。见[训练指南](TRAINING_GUIDE.md)。
 
 搜索先扫描Greedy候选并检测直接胜利，随后迭代尝试深度2。Adaptive仅在以下条件同时满足时把目标改为3：国王存在一步直达边缘的合法动作，或相邻攻击者至少两枚；根合法走法不超过40；Greedy扫描后剩余本步预算至少0.4秒。参数来自settings，目标不保证完成。根走法按Greedy得分稳定排序。完整层才提交结果；截止返回已完成层、部分Greedy或初始合法动作。
 
@@ -115,3 +119,21 @@ CLI自行交替调用make_move/check_if_game_over。初始检查从空历史开�
 run_game返回status/winner/reason/plies/ai_seconds。finished含官方game_over或AI判负；aborted对应quit/eof/interrupted；error对应referee_rejected_move，后两种winner=None。AI异常/非法/超时对应ai_exception/ai_illegal_move/ai_timeout，人类胜且退出码非零；普通结束和用户中止为0。
 
 人类不限时，CLI计时不含输入和输出。人机棋谱未实现。
+
+## 实验增强搜索与动态时间管理
+
+
+基线为 `b51abfd09192698f3fc2e2650d913448f4406aec`，本地备份分支为 `backup/main-before-aths`。新增策略在 Benchmark 中显式选择，正式 Assessment 入口仍使用原来的 Adaptive，同时沿用原版规则、评分及课程裁判。
+
+| 策略 | 搜索与时间控制 |
+| --- | --- |
+| adaptive | 原有搜索与静态预算 |
+| enhanced | 全宽 Alpha-Beta 迭代加深，默认最多四层，沿用旧预算分配方式 |
+| enhanced_dynamic | 相同搜索，按剩余时长、己方已走次数与局面风险分配预算 |
+
+搜索保持根方评分，遇到终局先按规则计分。排序优先检查国王逃生、上一层及置换表提示、潜在捕获和剪枝历史，保留全部合法分支。每次决策至多缓存 20,000 个走法提示。相同棋盘可能对应不同历史，因此置换表只提示走法，每次仍按当前历史判重。战术诊断可确认立即胜和安全应对，预算不足给出未知状态。动态计时使用原有低成本紧急判断调整预算。
+
+动态计时从适配器入口开始计量。每次预算取按预计剩余己方行动数分配的额度、剩余总预算的20%及4秒中的最小值。软截止为该额度的80%，在两层之间检查。硬截止在递归和局面计算前后检查。未完成的层不会覆盖上一个完整结果，零预算走有效的合法回退。课程裁判仍独立执行整局60秒时限。所有初始参数都是实验值。
+
+
+仅 Benchmark 注册 `enhanced` 和 `enhanced_dynamic`；CLI 与 Replay 继续使用原有策略。UCT、Hybrid、完整 ATHS 路由尚未实现，没有注册占位名称。模型参数仅适用于原有 greedy/minimax/adaptive，传给增强策略会报错，避免静默忽略模型。增强策略可通过 `--opponent-model` 与线性模型交叉评测；神经网络可通过 `--neural-model` 配合增强对手评测。正式 Player 不自动加载任何实验模型。

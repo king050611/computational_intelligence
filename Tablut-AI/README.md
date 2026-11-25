@@ -11,7 +11,7 @@ python --version
 python -m unittest discover -s tests -v
 ```
 
-程序只使用 Python 标准库。`reference/requirements.txt` 是老师的 UTF-16 环境快照，不是当前运行必须额外安装的依赖。v2.2 历史验收为46项测试通过；新的运行以终端实际结果为准。
+原版机器人和线性自博弈只使用 Python 标准库。神经网络训练、神经网络模型对战需要额外安装 `requirements-neural.txt`；未安装NumPy时相关测试会明确跳过。`reference/requirements.txt` 是课程提供的环境快照，不是默认运行的必装依赖。
 
 ## 三个入口
 
@@ -38,6 +38,8 @@ python scripts/benchmark.py --games 10
 
 默认 Adaptive 对 Random，逐局交换攻守；输出胜平负、积分和JSON统计。实验命令、不同Seed及外部Bot加载见[实验指南](docs/EXPERIMENT_GUIDE.md)。
 
+增强搜索可通过 `--strategy enhanced` 或 `--strategy enhanced_dynamic` 选择。固定深度对照、配对开局和动态计时的复现命令见[实验指南](docs/EXPERIMENT_GUIDE.md)。
+
 ### 生成逐步回放
 
 ```powershell
@@ -47,12 +49,31 @@ Start-Process 'reports/replays/latest/replay.html'
 
 这是重新进行的两局AI比赛，生成逐步JSON和离线HTML，并不会播放刚才benchmark或人机模式的比赛。两种工具输出的区别见[实验指南](docs/EXPERIMENT_GUIDE.md)。
 
+## 可选：机器学习训练
+
+正式 `Player()`、人机模式、默认自动对战和回放仍使用原有手工评估与搜索，不需要模型文件或 NumPy。线性自博弈可学习三个棋局特征的权重；神经网络扩展提供价值网络+Alpha-Beta，以及策略价值网络+MCTS。它们是按需启用的实验功能，尚不能据训练成功就认定比原版更强。
+
+先做有限轮次的线性流程验证：
+
+```powershell
+python scripts/train_selfplay.py --iterations 1 --train-games 8 --eval-pairs 1 --output-dir reports/training/merge_linear
+```
+
+仅使用神经网络功能时安装额外依赖：
+
+```powershell
+python -m pip install -r requirements-neural.txt
+```
+
+训练、续训、候选/最佳模型、两阶段神经网络、停止和单独评测命令统一见[训练指南](docs/TRAINING_GUIDE.md)。训练产物保存在被Git忽略的 `reports/training/`；当前CLI和Replay尚未接入训练后的神经网络。
+
 ## 按任务阅读
 
 | 你想做什么 | 文档 |
 | --- | --- |
 | 学会与AI下棋 | [CLI_GUIDE.md](docs/CLI_GUIDE.md) |
 | 更换Seed、对照算法、查看回放和验证结果 | [EXPERIMENT_GUIDE.md](docs/EXPERIMENT_GUIDE.md) |
+| 可选线性自博弈、神经网络训练和模型评测 | [TRAINING_GUIDE.md](docs/TRAINING_GUIDE.md) |
 | 理解规则模拟、搜索、接口和JSON字段 | [TECHNICAL_REFERENCE.md](docs/TECHNICAL_REFERENCE.md) |
 | 查看组员分工、当前进度和后续任务 | [DEVELOPMENT_PLAN.md](docs/DEVELOPMENT_PLAN.md) |
 | 找到已有实验数据、棋谱和截图 | [reports/README.md](reports/README.md) |
