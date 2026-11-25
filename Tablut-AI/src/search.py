@@ -57,8 +57,16 @@ def _evaluate(board, root):
     return (evaluate_attacker if root == "A" else evaluate_defender)(board)
 
 
+def _leaf_score(board, current_player, root_player, evaluator, position_value):
+    if position_value is None:
+        return evaluator(board, root_player)
+    value = position_value(board, current_player)
+    return value if root_player == "D" else -value
+
+
 def alpha_beta(board, current_player, root_player, depth, alpha, beta, deadline,
-               path=(), *, prune=ENABLE_ALPHA_BETA, stats=None):
+               path=(), *, prune=ENABLE_ALPHA_BETA, stats=None, evaluator=_evaluate,
+               position_value=None):
     """Fixed root perspective; path contains ancestors including their turns."""
     _check_time(deadline)
     if stats is not None:
@@ -67,7 +75,7 @@ def alpha_beta(board, current_player, root_player, depth, alpha, beta, deadline,
     if terminal is not None:
         return terminal
     if depth <= 0:
-        return _evaluate(board, root_player)
+        return _leaf_score(board, current_player, root_player, evaluator, position_value)
     maximizing = current_player == root_player
     value = -float("inf") if maximizing else float("inf")
     next_player = "D" if current_player == "A" else "A"
@@ -76,7 +84,8 @@ def alpha_beta(board, current_player, root_player, depth, alpha, beta, deadline,
         _check_time(deadline)
         child = apply_move(board, move, current_player)
         score = alpha_beta(child, next_player, root_player, depth-1, alpha, beta,
-                           deadline, ancestors, prune=prune, stats=stats)
+                           deadline, ancestors, prune=prune, stats=stats, evaluator=evaluator,
+                           position_value=position_value)
         if maximizing:
             value, alpha = max(value, score), max(alpha, score)
         else:
@@ -98,7 +107,8 @@ def is_urgent(board):
                                 for start,end in get_legal_moves(board,"D"))
 
 
-def choose_move(board, player, deadline=float("inf"), strategy="adaptive", rng=None, stats=None):
+def choose_move(board, player, deadline=float("inf"), strategy="adaptive", rng=None, stats=None,
+                *, evaluator=None, history=(), position_value=None):
     """Depth 1 greedy, then complete depth 2/3 iterations; always keep a fallback."""
     if strategy not in STRATEGIES:
         raise ValueError("Unknown strategy")
@@ -126,7 +136,8 @@ def choose_move(board, player, deadline=float("inf"), strategy="adaptive", rng=N
         return rng.choice(moves)
     best, best_score, ranked = moves[0], -float("inf"), []
     next_player = "D" if player == "A" else "A"
-    path = (get_state_key(board, player),)
+    evaluator = _evaluate if evaluator is None else evaluator
+    path = tuple(history) + (get_state_key(board, player),)
     try:
         # Complete a greedy pass first; this also detects immediate wins.
         for move in moves:
@@ -134,7 +145,7 @@ def choose_move(board, player, deadline=float("inf"), strategy="adaptive", rng=N
             child = apply_move(board, move, player)
             score = _score(child, next_player, player, path)
             if score is None:
-                score = _evaluate(child, player)
+                score = _leaf_score(child, next_player, player, evaluator, position_value)
             ranked.append((score, move, child))
             if score > best_score:
                 best, best_score = move, score
@@ -172,7 +183,8 @@ def choose_move(board, player, deadline=float("inf"), strategy="adaptive", rng=N
             for _, move, child in ranked:
                 _check_time(deadline)
                 score = alpha_beta(child, next_player, player, depth-1,
-                                   alpha, float("inf"), deadline, path, stats=stats)
+                                   alpha, float("inf"), deadline, path, stats=stats,
+                                   evaluator=evaluator, position_value=position_value)
                 if score > value:
                     iteration_best, value = move, score
                 alpha = max(alpha, score)
