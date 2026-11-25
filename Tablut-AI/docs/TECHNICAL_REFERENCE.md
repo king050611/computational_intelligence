@@ -31,12 +31,16 @@ history只含此前状态键。国王被捕、到边缘、攻击者不足两枚�
 
 ```python
 choose_move(board, player, deadline=float("inf"),
-            strategy="adaptive", rng=None, stats=None)
+            strategy="adaptive", rng=None, stats=None, *,
+            evaluator=None, history=(), position_value=None)
 alpha_beta(board, current_player, root_player, depth, alpha, beta,
-           deadline, path=(), *, prune=True, stats=None)
+           deadline, path=(), *, prune=True, stats=None,
+           evaluator=_evaluate, position_value=None)
 ```
 
 choose_move返回Move或无动作时None。支持first/random/greedy/minimax/adaptive，random需RNG。root_player视角固定，根方最大化、对手最小化；胜负分正负十亿，平局0。path为祖先状态键tuple，不含当前节点。
+
+可选训练扩展：evaluator(board, root_player)提供根方视角的线性评分；position_value(board, current_player)提供防守方视角的网络价值，由搜索统一转换根方符号。history仅含此前局面键，并加入搜索路径判重。省略新增参数时保持稳定版走法及统计；正式Player接口没有增加模型参数，模型只通过实验StrategyBot/NeuralPlayer加载。见[训练指南](TRAINING_GUIDE.md)。
 
 搜索先扫描Greedy候选并检测直接胜利，随后迭代尝试深度2。Adaptive仅在以下条件同时满足时把目标改为3：国王存在一步直达边缘的合法动作，或相邻攻击者至少两枚；根合法走法不超过40；Greedy扫描后剩余本步预算至少0.4秒。参数来自settings，目标不保证完成。根走法按Greedy得分稳定排序。完整层才提交结果；截止返回已完成层、部分Greedy或初始合法动作。
 

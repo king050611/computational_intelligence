@@ -1,15 +1,23 @@
+import json
 import tempfile
 import unittest
 from pathlib import Path
 
-import numpy as np
+try:
+    import numpy as np
+except ModuleNotFoundError as exc:
+    if exc.name != "numpy":
+        raise
+    np = None
 
 from src.game import apply_move, get_legal_moves, initial_board
-from src.neural import Network, Sample, action_id, encode_board, load_network, save_network
-from src.neural_player import NeuralPlayer, monte_carlo_search
 from src.search import alpha_beta
+if np is not None:
+    from src.neural import Network, Sample, action_id, encode_board, load_network, save_network
+    from src.neural_player import NeuralPlayer, monte_carlo_search
 
 
+@unittest.skipIf(np is None, "Optional NumPy is not installed; install requirements-neural.txt")
 class NeuralTests(unittest.TestCase):
     def setUp(self):
         self.board = initial_board()
@@ -67,3 +75,25 @@ class NeuralTests(unittest.TestCase):
         move = player.play_attacker(self.board)
         self.assertIsInstance(move, list)
         self.assertIn(tuple(map(tuple, move)), get_legal_moves(self.board, "A"))
+
+    def test_missing_and_corrupt_checkpoints_fail_explicitly(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "missing.npz"
+            with self.assertRaises(FileNotFoundError):
+                load_network(path)
+            path.write_bytes(b"not a neural checkpoint")
+            with self.assertRaises(ValueError):
+                load_network(path)
+
+    def test_invalid_metadata_and_network_weights_are_rejected(self):
+        cases = [([], {}), ({"schema_version": 1, "phase": "unknown"}, {}),
+                 ({"schema_version": 1, "phase": "value"}, {"value_bias": np.array([np.nan])}),
+                 ({"schema_version": 1, "phase": "value"}, {"value_bias": np.zeros(2)})]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "invalid.npz"
+            for metadata, changes in cases:
+                with self.subTest(metadata=metadata, changes=list(changes)):
+                    weights = dict(self.model.weights, **changes)
+                    np.savez(path, metadata=json.dumps(metadata), **weights)
+                    with self.assertRaises(ValueError):
+                        load_network(path)

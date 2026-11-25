@@ -141,6 +141,6 @@ def save_network(path, network, metadata):
 def load_network(path):
     with np.load(path, allow_pickle=False) as checkpoint:
         metadata = json.loads(str(checkpoint["metadata"].item()))
-        if metadata.get("schema_version") != 1 or metadata.get("phase") not in ("value", "policy"):
+        if not isinstance(metadata, dict) or metadata.get("schema_version") != 1 or metadata.get("phase") not in ("value", "policy"):
             raise ValueError("Unsupported neural checkpoint")
         return Network(checkpoint), metadata

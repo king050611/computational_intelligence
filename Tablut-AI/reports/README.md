@@ -1,6 +1,6 @@
 # 实验结果与棋谱索引
 
-这里保存实际运行产物；如何运行实验见[实验指南](../docs/EXPERIMENT_GUIDE.md)，字段定义见[技术参考](../docs/TECHNICAL_REFERENCE.md)。本次文档整理保留原有JSON、HTML、截图及样例代码，未重新运行比赛。
+这里保存实际运行产物；如何运行实验见[实验指南](../docs/EXPERIMENT_GUIDE.md)，字段定义见[技术参考](../docs/TECHNICAL_REFERENCE.md)。原有JSON、HTML、截图及样例代码继续保留；可选训练集成的新验收记录见下方。
 
 ## 文件在哪里
 
@@ -47,3 +47,22 @@ benchmark汇总没有完整走法，不能还原成棋谱；replay_demo会重新
 | `reports/demo_2026-11-17_two_games.md` | 本页历史结果索引；完整结果与棋谱文件继续保留 |
 
 旧版说明仍可通过Git历史查阅；不再保留第二套重复说明入口。
+
+## 2026-11-25：可选训练集成验收
+
+稳定基准为 `b51abfd`，已保存在远端 `backup/main-before-neural` 与 `v2.2-stable` 标签。正式TeamXX、游戏规则、手写评估、配置、裁判、CLI和Replay均与基准一致。NumPy仅用于明确启用的神经模块；原命令无需模型。
+
+- Python 3.13.7、NumPy 2.3.5：66项测试全部通过；独立无NumPy环境：59项通过、7项神经测试明确跳过。
+- 新增稳定搜索基准包含28组走法/完整统计、8组Alpha-Beta评分/节点/判重，以及超时回退和模型损坏检查。
+- 合并前后各10局Adaptive对Random，均10胜，逐局胜方与行动次数一致；后10局无非法动作、超时、异常，单方累计耗时最大约1.231秒。
+- 无NumPy环境实跑双边CLI及79步Replay通过。线性训练8局有7局完成、1局截断；续训8局全部完成，候选未超过上一轮时保留历史最佳。
+- 神经训练完成value及policy阶段，分别产生295和267个样本，各1局截断；STOP后恢复并再保存policy检查点成功。Windows本机硬链接检查点保存可用。
+
+| 加载对照（每组2局，对手Minimax） | 我方胜 / 平 / 负 | 错误、超时、非法动作 |
+| --- | --- | --- |
+| 线性best + Adaptive | 0 / 2 / 0 | 0 |
+| 线性candidate + Minimax | 0 / 2 / 0 | 0 |
+| 价值网络 + Alpha-Beta | 0 / 1 / 1 | 0 |
+| 策略价值网络 + MCTS | 0 / 0 / 2 | 0 |
+
+这是流程与兼容性验收，不证明模型更强；当前短训练的神经模型没有优势，默认机器人不切换模型。原始JSON在本地 `experiments/pre_merge.json`、`post_merge.json`、`linear_*_smoke.json`、`neural_*_smoke_test.json`；检查点在被忽略的 `training/merge_linear/` 和 `training/merge_neural/`，不进入源码提交。重跑步骤见[训练指南](../docs/TRAINING_GUIDE.md)。

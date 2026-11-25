@@ -8,6 +8,7 @@ import multiprocessing
 import os
 import random
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 from time import perf_counter
 ROOT = Path(__file__).resolve().parents[1]
@@ -171,7 +172,7 @@ def standings(results):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--games",type=int,default=10)
-    parser.add_argument("--strategy",choices=STRATEGIES,default="adaptive")
+    parser.add_argument("--strategy",choices=STRATEGIES,default=None)
     opponents=parser.add_mutually_exclusive_group()
     opponents.add_argument("--opponent",choices=STRATEGIES,default="random")
     opponents.add_argument("--opponent-file",type=Path)
@@ -183,6 +184,9 @@ def main():
     parser.add_argument("--seed",type=int,default=42)
     parser.add_argument("--output",type=Path)
     args=parser.parse_args()
+    if args.neural_model and args.strategy is not None:
+        parser.error("--strategy cannot be combined with --neural-model; the checkpoint selects value or MCTS search")
+    args.strategy = args.strategy or "adaptive"
     if args.games<=0:
         parser.error("--games must be positive")
     if args.opponent_file and (not args.opponent_file.is_file() or args.opponent_file.suffix.lower()!=".py"):
@@ -205,7 +209,13 @@ def main():
             network, metadata = load_network(args.neural_model)
             phase = metadata["phase"]
             simulations = metadata["config"]["simulations"]
-    except (OSError, ValueError) as exc:
+            if type(simulations) is not int or simulations < 1:
+                raise ValueError("Neural checkpoint simulations must be a positive integer")
+    except ModuleNotFoundError as exc:
+        if exc.name != "numpy":
+            raise
+        parser.error("Neural models require NumPy: python -m pip install -r requirements-neural.txt")
+    except (OSError, ValueError, KeyError, TypeError) as exc:
         parser.error(str(exc))
     results=[]
     for i in range(args.games):
@@ -214,8 +224,8 @@ def main():
         try:
             if args.neural_model:
                 ours=Timed(NeuralPlayer(network,phase,simulations))
-            elif args.strategy=="adaptive":
-                ours=Timed(Player(evaluator=evaluator))
+            elif args.strategy=="adaptive" and evaluator is None:
+                ours=Timed(Player())
             else:
                 ours=Timed(StrategyBot(args.strategy,args.seed+i,evaluator=evaluator))
             other=Timed(external or StrategyBot(args.opponent,args.seed+i,evaluator=opponent_evaluator))
@@ -254,7 +264,14 @@ def main():
     for label,row in table.items():
         print(f"{label:10} W {row['wins']} D {row['draws']} L {row['losses']} Points {row['points']}/{2*row['games']}")
     print("Illegal moves / timeouts / exceptions:",*[sum(x[k] for x in results) for k in ("illegal_moves","timeouts","exceptions")])
-    output=args.output or ROOT/"reports"/"experiments"/"latest_v2.json"
+    output=args.output
+    if output is None:
+        if args.model or args.neural_model or args.opponent_model:
+            label = "neural_" + phase if args.neural_model else "selfplay"
+            stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+            output = ROOT/"reports"/"experiments"/f"{label}_seed{args.seed}_{stamp}.json"
+        else:
+            output = ROOT/"reports"/"experiments"/"latest_v2.json"
     output.parent.mkdir(parents=True,exist_ok=True)
     output.write_text(json.dumps(summary,indent=2),encoding="utf-8")
     print("JSON:",output)

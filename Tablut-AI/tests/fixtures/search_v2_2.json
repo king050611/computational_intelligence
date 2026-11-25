@@ -1,0 +1,924 @@
+{
+  "baseline_commit": "b51abfd09192698f3fc2e2650d913448f4406aec",
+  "rng_seed": 23,
+  "boards": {
+    "initial": [
+      "...AAA...",
+      "....A....",
+      "....D....",
+      "A...D...A",
+      "AADDKDDAA",
+      "A...D...A",
+      "....D....",
+      "....A....",
+      "...AAA..."
+    ],
+    "immediate": [
+      ".........",
+      ".........",
+      ".AK...A..",
+      ".........",
+      "....X....",
+      ".........",
+      ".........",
+      ".........",
+      "........."
+    ],
+    "defense": [
+      "..A......",
+      "A.K......",
+      "..A......",
+      ".........",
+      "....X...A",
+      ".........",
+      ".........",
+      ".........",
+      "........."
+    ],
+    "blocked": [
+      "AAAAAAAAA",
+      "AAAAAAAAA",
+      "AAAAAAAAA",
+      "AAAAAAAAA",
+      "AAAAKAAAA",
+      "AAAAAAAAA",
+      "AAAAAAAAA",
+      "AAAAAAAAA",
+      "AAAAAAAAA"
+    ]
+  },
+  "choose": [
+    {
+      "board": "initial",
+      "side": "A",
+      "strategy": "first",
+      "controls": {},
+      "move": [
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "stats": {
+        "strategy": "first",
+        "completed_depth": 0,
+        "nodes": 0,
+        "timed_out": false,
+        "target_depth": 0,
+        "root_moves": 80,
+        "urgent": null,
+        "fallback_used": false,
+        "policy_reason": "baseline",
+        "finish_reason": "depth_completed"
+      }
+    },
+    {
+      "board": "initial",
+      "side": "A",
+      "strategy": "random",
+      "controls": {},
+      "move": [
+        [
+          4,
+          1
+        ],
+        [
+          6,
+          1
+        ]
+      ],
+      "stats": {
+        "strategy": "random",
+        "completed_depth": 0,
+        "nodes": 0,
+        "timed_out": false,
+        "target_depth": 0,
+        "root_moves": 80,
+        "urgent": null,
+        "fallback_used": false,
+        "policy_reason": "baseline",
+        "finish_reason": "depth_completed"
+      }
+    },
+    {
+      "board": "initial",
+      "side": "A",
+      "strategy": "greedy",
+      "controls": {},
+      "move": [
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "stats": {
+        "strategy": "greedy",
+        "completed_depth": 1,
+        "nodes": 0,
+        "timed_out": false,
+        "target_depth": 1,
+        "root_moves": 80,
+        "urgent": null,
+        "fallback_used": false,
+        "policy_reason": "baseline",
+        "finish_reason": "depth_completed"
+      }
+    },
+    {
+      "board": "initial",
+      "side": "A",
+      "strategy": "minimax",
+      "controls": {},
+      "move": [
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "stats": {
+        "strategy": "minimax",
+        "completed_depth": 2,
+        "nodes": 215,
+        "timed_out": false,
+        "target_depth": 2,
+        "root_moves": 80,
+        "urgent": null,
+        "fallback_used": false,
+        "policy_reason": "normal_depth",
+        "finish_reason": "depth_completed"
+      }
+    },
+    {
+      "board": "initial",
+      "side": "A",
+      "strategy": "adaptive",
+      "controls": {},
+      "move": [
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "stats": {
+        "strategy": "adaptive",
+        "completed_depth": 2,
+        "nodes": 215,
+        "timed_out": false,
+        "target_depth": 2,
+        "root_moves": 80,
+        "urgent": false,
+        "fallback_used": false,
+        "policy_reason": "normal_depth",
+        "finish_reason": "depth_completed"
+      }
+    },
+    {
+      "board": "immediate",
+      "side": "A",
+      "strategy": "greedy",
+      "controls": {},
+      "move": [
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "stats": {
+        "strategy": "greedy",
+        "completed_depth": 0,
+        "nodes": 0,
+        "timed_out": false,
+        "target_depth": 1,
+        "root_moves": 22,
+        "urgent": null,
+        "fallback_used": false,
+        "policy_reason": "immediate_win",
+        "finish_reason": "immediate_win"
+      }
+    },
+    {
+      "board": "immediate",
+      "side": "A",
+      "strategy": "minimax",
+      "controls": {},
+      "move": [
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "stats": {
+        "strategy": "minimax",
+        "completed_depth": 0,
+        "nodes": 0,
+        "timed_out": false,
+        "target_depth": 1,
+        "root_moves": 22,
+        "urgent": null,
+        "fallback_used": false,
+        "policy_reason": "immediate_win",
+        "finish_reason": "immediate_win"
+      }
+    },
+    {
+      "board": "immediate",
+      "side": "A",
+      "strategy": "adaptive",
+      "controls": {},
+      "move": [
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "stats": {
+        "strategy": "adaptive",
+        "completed_depth": 0,
+        "nodes": 0,
+        "timed_out": false,
+        "target_depth": 1,
+        "root_moves": 22,
+        "urgent": null,
+        "fallback_used": false,
+        "policy_reason": "immediate_win",
+        "finish_reason": "immediate_win"
+      }
+    },
+    {
+      "board": "blocked",
+      "side": "A",
+      "strategy": "adaptive",
+      "controls": {},
+      "move": null,
+      "stats": {
+        "strategy": "adaptive",
+        "completed_depth": 0,
+        "nodes": 0,
+        "timed_out": false,
+        "target_depth": 2,
+        "root_moves": 0,
+        "urgent": null,
+        "fallback_used": false,
+        "policy_reason": "normal_depth",
+        "finish_reason": "no_legal_moves"
+      }
+    },
+    {
+      "board": "initial",
+      "side": "A",
+      "strategy": "adaptive",
+      "controls": {
+        "checks": 0
+      },
+      "move": [
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "stats": {
+        "strategy": "adaptive",
+        "completed_depth": 0,
+        "nodes": 0,
+        "timed_out": true,
+        "target_depth": 2,
+        "root_moves": 80,
+        "urgent": null,
+        "fallback_used": true,
+        "policy_reason": "normal_depth",
+        "finish_reason": "search_deadline"
+      }
+    },
+    {
+      "board": "initial",
+      "side": "A",
+      "strategy": "adaptive",
+      "controls": {
+        "checks": 10
+      },
+      "move": [
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "stats": {
+        "strategy": "adaptive",
+        "completed_depth": 0,
+        "nodes": 0,
+        "timed_out": true,
+        "target_depth": 2,
+        "root_moves": 80,
+        "urgent": null,
+        "fallback_used": true,
+        "policy_reason": "normal_depth",
+        "finish_reason": "search_deadline"
+      }
+    },
+    {
+      "board": "initial",
+      "side": "A",
+      "strategy": "adaptive",
+      "controls": {
+        "interrupt_depth": 1
+      },
+      "move": [
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "stats": {
+        "strategy": "adaptive",
+        "completed_depth": 1,
+        "nodes": 0,
+        "timed_out": true,
+        "target_depth": 3,
+        "root_moves": 80,
+        "urgent": true,
+        "fallback_used": true,
+        "policy_reason": "urgent_deepening",
+        "finish_reason": "search_deadline"
+      }
+    },
+    {
+      "board": "initial",
+      "side": "A",
+      "strategy": "adaptive",
+      "controls": {
+        "interrupt_depth": 2
+      },
+      "move": [
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "stats": {
+        "strategy": "adaptive",
+        "completed_depth": 2,
+        "nodes": 0,
+        "timed_out": true,
+        "target_depth": 3,
+        "root_moves": 80,
+        "urgent": true,
+        "fallback_used": true,
+        "policy_reason": "urgent_deepening",
+        "finish_reason": "search_deadline"
+      }
+    },
+    {
+      "board": "initial",
+      "side": "D",
+      "strategy": "first",
+      "controls": {},
+      "move": [
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "stats": {
+        "strategy": "first",
+        "completed_depth": 0,
+        "nodes": 0,
+        "timed_out": false,
+        "target_depth": 0,
+        "root_moves": 56,
+        "urgent": null,
+        "fallback_used": false,
+        "policy_reason": "baseline",
+        "finish_reason": "depth_completed"
+      }
+    },
+    {
+      "board": "initial",
+      "side": "D",
+      "strategy": "random",
+      "controls": {},
+      "move": [
+        [
+          6,
+          4
+        ],
+        [
+          6,
+          2
+        ]
+      ],
+      "stats": {
+        "strategy": "random",
+        "completed_depth": 0,
+        "nodes": 0,
+        "timed_out": false,
+        "target_depth": 0,
+        "root_moves": 56,
+        "urgent": null,
+        "fallback_used": false,
+        "policy_reason": "baseline",
+        "finish_reason": "depth_completed"
+      }
+    },
+    {
+      "board": "initial",
+      "side": "D",
+      "strategy": "greedy",
+      "controls": {},
+      "move": [
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "stats": {
+        "strategy": "greedy",
+        "completed_depth": 1,
+        "nodes": 0,
+        "timed_out": false,
+        "target_depth": 1,
+        "root_moves": 56,
+        "urgent": null,
+        "fallback_used": false,
+        "policy_reason": "baseline",
+        "finish_reason": "depth_completed"
+      }
+    },
+    {
+      "board": "initial",
+      "side": "D",
+      "strategy": "minimax",
+      "controls": {},
+      "move": [
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "stats": {
+        "strategy": "minimax",
+        "completed_depth": 2,
+        "nodes": 190,
+        "timed_out": false,
+        "target_depth": 2,
+        "root_moves": 56,
+        "urgent": null,
+        "fallback_used": false,
+        "policy_reason": "normal_depth",
+        "finish_reason": "depth_completed"
+      }
+    },
+    {
+      "board": "initial",
+      "side": "D",
+      "strategy": "adaptive",
+      "controls": {},
+      "move": [
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "stats": {
+        "strategy": "adaptive",
+        "completed_depth": 2,
+        "nodes": 190,
+        "timed_out": false,
+        "target_depth": 2,
+        "root_moves": 56,
+        "urgent": false,
+        "fallback_used": false,
+        "policy_reason": "normal_depth",
+        "finish_reason": "depth_completed"
+      }
+    },
+    {
+      "board": "immediate",
+      "side": "D",
+      "strategy": "greedy",
+      "controls": {},
+      "move": [
+        [
+          2,
+          2
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "stats": {
+        "strategy": "greedy",
+        "completed_depth": 0,
+        "nodes": 0,
+        "timed_out": false,
+        "target_depth": 1,
+        "root_moves": 11,
+        "urgent": null,
+        "fallback_used": false,
+        "policy_reason": "immediate_win",
+        "finish_reason": "immediate_win"
+      }
+    },
+    {
+      "board": "immediate",
+      "side": "D",
+      "strategy": "minimax",
+      "controls": {},
+      "move": [
+        [
+          2,
+          2
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "stats": {
+        "strategy": "minimax",
+        "completed_depth": 0,
+        "nodes": 0,
+        "timed_out": false,
+        "target_depth": 1,
+        "root_moves": 11,
+        "urgent": null,
+        "fallback_used": false,
+        "policy_reason": "immediate_win",
+        "finish_reason": "immediate_win"
+      }
+    },
+    {
+      "board": "immediate",
+      "side": "D",
+      "strategy": "adaptive",
+      "controls": {},
+      "move": [
+        [
+          2,
+          2
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "stats": {
+        "strategy": "adaptive",
+        "completed_depth": 0,
+        "nodes": 0,
+        "timed_out": false,
+        "target_depth": 1,
+        "root_moves": 11,
+        "urgent": null,
+        "fallback_used": false,
+        "policy_reason": "immediate_win",
+        "finish_reason": "immediate_win"
+      }
+    },
+    {
+      "board": "blocked",
+      "side": "D",
+      "strategy": "adaptive",
+      "controls": {},
+      "move": null,
+      "stats": {
+        "strategy": "adaptive",
+        "completed_depth": 0,
+        "nodes": 0,
+        "timed_out": false,
+        "target_depth": 2,
+        "root_moves": 0,
+        "urgent": null,
+        "fallback_used": false,
+        "policy_reason": "normal_depth",
+        "finish_reason": "no_legal_moves"
+      }
+    },
+    {
+      "board": "initial",
+      "side": "D",
+      "strategy": "adaptive",
+      "controls": {
+        "checks": 0
+      },
+      "move": [
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "stats": {
+        "strategy": "adaptive",
+        "completed_depth": 0,
+        "nodes": 0,
+        "timed_out": true,
+        "target_depth": 2,
+        "root_moves": 56,
+        "urgent": null,
+        "fallback_used": true,
+        "policy_reason": "normal_depth",
+        "finish_reason": "search_deadline"
+      }
+    },
+    {
+      "board": "initial",
+      "side": "D",
+      "strategy": "adaptive",
+      "controls": {
+        "checks": 10
+      },
+      "move": [
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "stats": {
+        "strategy": "adaptive",
+        "completed_depth": 0,
+        "nodes": 0,
+        "timed_out": true,
+        "target_depth": 2,
+        "root_moves": 56,
+        "urgent": null,
+        "fallback_used": true,
+        "policy_reason": "normal_depth",
+        "finish_reason": "search_deadline"
+      }
+    },
+    {
+      "board": "initial",
+      "side": "D",
+      "strategy": "adaptive",
+      "controls": {
+        "interrupt_depth": 1
+      },
+      "move": [
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "stats": {
+        "strategy": "adaptive",
+        "completed_depth": 1,
+        "nodes": 0,
+        "timed_out": true,
+        "target_depth": 3,
+        "root_moves": 56,
+        "urgent": true,
+        "fallback_used": true,
+        "policy_reason": "urgent_deepening",
+        "finish_reason": "search_deadline"
+      }
+    },
+    {
+      "board": "initial",
+      "side": "D",
+      "strategy": "adaptive",
+      "controls": {
+        "interrupt_depth": 2
+      },
+      "move": [
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "stats": {
+        "strategy": "adaptive",
+        "completed_depth": 2,
+        "nodes": 0,
+        "timed_out": true,
+        "target_depth": 3,
+        "root_moves": 56,
+        "urgent": true,
+        "fallback_used": true,
+        "policy_reason": "urgent_deepening",
+        "finish_reason": "search_deadline"
+      }
+    },
+    {
+      "board": "defense",
+      "side": "A",
+      "strategy": "minimax",
+      "controls": {},
+      "move": [
+        [
+          4,
+          8
+        ],
+        [
+          1,
+          8
+        ]
+      ],
+      "stats": {
+        "strategy": "minimax",
+        "completed_depth": 2,
+        "nodes": 100,
+        "timed_out": false,
+        "target_depth": 2,
+        "root_moves": 46,
+        "urgent": null,
+        "fallback_used": false,
+        "policy_reason": "normal_depth",
+        "finish_reason": "depth_completed"
+      }
+    },
+    {
+      "board": "defense",
+      "side": "A",
+      "strategy": "adaptive",
+      "controls": {},
+      "move": [
+        [
+          4,
+          8
+        ],
+        [
+          1,
+          8
+        ]
+      ],
+      "stats": {
+        "strategy": "adaptive",
+        "completed_depth": 2,
+        "nodes": 100,
+        "timed_out": false,
+        "target_depth": 2,
+        "root_moves": 46,
+        "urgent": true,
+        "fallback_used": false,
+        "policy_reason": "branch_limit",
+        "finish_reason": "depth_completed"
+      }
+    }
+  ],
+  "alpha_beta": [
+    {
+      "board": "defense",
+      "side": "A",
+      "root": "A",
+      "depth": 2,
+      "repeated": false,
+      "value": -260,
+      "stats": {
+        "nodes": 244
+      }
+    },
+    {
+      "board": "defense",
+      "side": "A",
+      "root": "D",
+      "depth": 2,
+      "repeated": false,
+      "value": 260,
+      "stats": {
+        "nodes": 244
+      }
+    },
+    {
+      "board": "initial",
+      "side": "A",
+      "root": "A",
+      "depth": 2,
+      "repeated": true,
+      "value": 0.0,
+      "stats": {
+        "nodes": 1
+      }
+    },
+    {
+      "board": "initial",
+      "side": "A",
+      "root": "D",
+      "depth": 2,
+      "repeated": true,
+      "value": 0.0,
+      "stats": {
+        "nodes": 1
+      }
+    },
+    {
+      "board": "defense",
+      "side": "D",
+      "root": "A",
+      "depth": 2,
+      "repeated": false,
+      "value": -1000000000.0,
+      "stats": {
+        "nodes": 130
+      }
+    },
+    {
+      "board": "defense",
+      "side": "D",
+      "root": "D",
+      "depth": 2,
+      "repeated": false,
+      "value": 1000000000.0,
+      "stats": {
+        "nodes": 130
+      }
+    },
+    {
+      "board": "initial",
+      "side": "D",
+      "root": "A",
+      "depth": 2,
+      "repeated": true,
+      "value": 0.0,
+      "stats": {
+        "nodes": 1
+      }
+    },
+    {
+      "board": "initial",
+      "side": "D",
+      "root": "D",
+      "depth": 2,
+      "repeated": true,
+      "value": 0.0,
+      "stats": {
+        "nodes": 1
+      }
+    }
+  ]
+}
