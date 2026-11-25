@@ -1,0 +1,224 @@
+{
+  "scope": "User reduced to quick check; no full training or holdout",
+  "standings": {
+    "overall": {
+      "games": 8,
+      "wins": 1,
+      "draws": 3,
+      "losses": 4,
+      "points": 5
+    },
+    "attacker": {
+      "games": 4,
+      "wins": 1,
+      "draws": 1,
+      "losses": 2,
+      "points": 3
+    },
+    "defender": {
+      "games": 4,
+      "wins": 0,
+      "draws": 2,
+      "losses": 2,
+      "points": 2
+    }
+  },
+  "paired": {
+    "pairs": 4,
+    "point_rate": 0.3125,
+    "ci95": [
+      0.0,
+      0.625
+    ],
+    "bootstrap_seed": 42,
+    "bootstrap_samples": 10000,
+    "pair_points": {
+      "1": 0.0,
+      "2": 0.75,
+      "3": 0.5,
+      "4": 0.0
+    }
+  },
+  "issues": {
+    "illegal_moves": 0,
+    "timeouts": 0,
+    "exceptions": 0,
+    "invalid_returns": 0
+  },
+  "max_player_seconds": 24.14626070000668,
+  "candidate_search": {
+    "moves": 80,
+    "mean_completed_depth": 3.275,
+    "mean_nodes": 17699.5875,
+    "elapsed_seconds": 110.60580930000287,
+    "fallback_moves": 46,
+    "depth_counts": {
+      "3": 47,
+      "4": 28,
+      "2": 4,
+      "1": 1
+    }
+  },
+  "control_search": {
+    "moves": 83,
+    "mean_completed_depth": 3.2048192771084336,
+    "mean_nodes": 16056.012048192772,
+    "elapsed_seconds": 106.40762970000651,
+    "fallback_moves": 47,
+    "depth_counts": {
+      "3": 50,
+      "4": 27,
+      "1": 4,
+      "2": 2
+    }
+  },
+  "completed_candidates": [
+    {
+      "result": "reports\\training\\evolution_v1\\g0001_57vijy0_\\g0001_i000_match.json",
+      "model": "reports\\training\\evolution_v1\\g0001_57vijy0_\\g0001_i000_model.json",
+      "standings": {
+        "overall": {
+          "games": 16,
+          "wins": 7,
+          "draws": 1,
+          "losses": 8,
+          "points": 15
+        },
+        "attacker": {
+          "games": 8,
+          "wins": 4,
+          "draws": 0,
+          "losses": 4,
+          "points": 8
+        },
+        "defender": {
+          "games": 8,
+          "wins": 3,
+          "draws": 1,
+          "losses": 4,
+          "points": 7
+        }
+      },
+      "weights": [
+        -400.0,
+        600.0,
+        -160.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_player_seconds": 45.30684229997496
+    },
+    {
+      "result": "reports\\training\\evolution_v1\\g0001_57vijy0_\\g0001_i001_match.json",
+      "model": "reports\\training\\evolution_v1\\g0001_57vijy0_\\g0001_i001_model.json",
+      "standings": {
+        "overall": {
+          "games": 16,
+          "wins": 6,
+          "draws": 5,
+          "losses": 5,
+          "points": 17
+        },
+        "attacker": {
+          "games": 8,
+          "wins": 1,
+          "draws": 3,
+          "losses": 4,
+          "points": 5
+        },
+        "defender": {
+          "games": 8,
+          "wins": 5,
+          "draws": 2,
+          "losses": 1,
+          "points": 12
+        }
+      },
+      "weights": [
+        -411.5272263662343,
+        586.1677119734785,
+        -168.905268925413,
+        56.158698007909045,
+        -10.207062702630967,
+        -119.7882731472766
+      ],
+      "max_player_seconds": 32.734256200001255
+    },
+    {
+      "result": "reports\\training\\evolution_v1\\g0001_57vijy0_\\g0001_i002_match.json",
+      "model": "reports\\training\\evolution_v1\\g0001_57vijy0_\\g0001_i002_model.json",
+      "standings": {
+        "overall": {
+          "games": 16,
+          "wins": 5,
+          "draws": 3,
+          "losses": 8,
+          "points": 13
+        },
+        "attacker": {
+          "games": 8,
+          "wins": 2,
+          "draws": 1,
+          "losses": 5,
+          "points": 5
+        },
+        "defender": {
+          "games": 8,
+          "wins": 3,
+          "draws": 2,
+          "losses": 3,
+          "points": 8
+        }
+      },
+      "weights": [
+        -373.41453247458276,
+        578.6130017202265,
+        -177.3566947316156,
+        9.270782936068406,
+        18.58381895253767,
+        93.08469492793144
+      ],
+      "max_player_seconds": 36.57349839999006
+    },
+    {
+      "result": "reports\\training\\evolution_v1\\g0001_57vijy0_\\g0001_i003_match.json",
+      "model": "reports\\training\\evolution_v1\\g0001_57vijy0_\\g0001_i003_model.json",
+      "standings": {
+        "overall": {
+          "games": 16,
+          "wins": 5,
+          "draws": 5,
+          "losses": 6,
+          "points": 15
+        },
+        "attacker": {
+          "games": 8,
+          "wins": 3,
+          "draws": 1,
+          "losses": 4,
+          "points": 7
+        },
+        "defender": {
+          "games": 8,
+          "wins": 2,
+          "draws": 4,
+          "losses": 2,
+          "points": 8
+        }
+      },
+      "weights": [
+        -347.4690794561065,
+        608.8405741955065,
+        -219.06572818758565,
+        -81.17298939901737,
+        19.707375616896158,
+        104.88646617632385
+      ],
+      "max_player_seconds": 37.597965400003886
+    }
+  ],
+  "complete_formal_generations": 0,
+  "source_commit": "aff46417b551f1ad3b8bb57539d34520e513628f",
+  "formal_bot_changed": false
+}
