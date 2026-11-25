@@ -1,0 +1,5097 @@
+{
+  "source_commit": "00e9eccf16e1b4c985f849453699a003d39c76f5",
+  "finished_at": "2026-11-25T06:47:53.370827+00:00",
+  "rounds": [
+    {
+      "generation": 0,
+      "candidate": {
+        "overall": {
+          "games": 40,
+          "wins": 13,
+          "draws": 26,
+          "losses": 1,
+          "points": 52
+        },
+        "attacker": {
+          "games": 20,
+          "wins": 7,
+          "draws": 13,
+          "losses": 0,
+          "points": 27
+        },
+        "defender": {
+          "games": 20,
+          "wins": 6,
+          "draws": 13,
+          "losses": 1,
+          "points": 25
+        },
+        "by_opponent": {
+          "greedy": {
+            "overall": {
+              "games": 20,
+              "wins": 12,
+              "draws": 8,
+              "losses": 0,
+              "points": 32
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 6,
+              "draws": 4,
+              "losses": 0,
+              "points": 16
+            },
+            "defender": {
+              "games": 10,
+              "wins": 6,
+              "draws": 4,
+              "losses": 0,
+              "points": 16
+            }
+          },
+          "minimax": {
+            "overall": {
+              "games": 20,
+              "wins": 1,
+              "draws": 18,
+              "losses": 1,
+              "points": 20
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 1,
+              "draws": 9,
+              "losses": 0,
+              "points": 11
+            },
+            "defender": {
+              "games": 10,
+              "wins": 0,
+              "draws": 9,
+              "losses": 1,
+              "points": 9
+            }
+          }
+        },
+        "games": [
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.3562168999997084,
+            "defender_seconds": 0.04090130000076897
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.09609879999970872,
+            "defender_seconds": 0.4665937000027043
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 0.3309233000009044,
+            "defender_seconds": 0.4292957999996361
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 0.33053490000202146,
+            "defender_seconds": 0.4325217999994493
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.44043349999901693,
+            "defender_seconds": 0.016832600001180253
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.034690899999077374,
+            "defender_seconds": 0.24522049999904993
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.4941957999999431,
+            "defender_seconds": 0.10048809999989317
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.49212750000060623,
+            "defender_seconds": 0.09091330000046582
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.23503330000039568,
+            "defender_seconds": 0.008043999999244988
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.048625800000081654,
+            "defender_seconds": 0.2140795999994225
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.033423199999561,
+            "defender_seconds": 0.586903299998994
+          },
+          {
+            "our_side": "D",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.0673329999999623,
+            "defender_seconds": 0.6104077999998481
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.6414867000003142,
+            "defender_seconds": 0.08933149999938905
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.1867032999989533,
+            "defender_seconds": 0.9275388000014573
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.23188710000249557,
+            "defender_seconds": 0.19888890000038373
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.2871556000000055,
+            "defender_seconds": 0.24424120000003313
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.7479813999989346,
+            "defender_seconds": 0.0337509000000864
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.02497399999992922,
+            "defender_seconds": 0.04566160000013042
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 0.4895307999995566,
+            "defender_seconds": 0.7951344999983121
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 0.4917189000007056,
+            "defender_seconds": 0.7327735000008033
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.3370328000000882,
+            "defender_seconds": 0.018829099999493337
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.073520599998119,
+            "defender_seconds": 0.2610904000011942
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.3244092000004457,
+            "defender_seconds": 0.3007049999996525
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.33269909999580705,
+            "defender_seconds": 0.30584280000130093
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.24210949999996956,
+            "defender_seconds": 0.03505059999952209
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.04768029999922874,
+            "defender_seconds": 0.1620295000002443
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.19356890000017302,
+            "defender_seconds": 0.4127573999976448
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.2026862999982768,
+            "defender_seconds": 0.47378930000013497
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.2710164000009172,
+            "defender_seconds": 0.01955999999972846
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.14501030000246828,
+            "defender_seconds": 0.46231640000132757
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.3984637000012299,
+            "defender_seconds": 0.38957899999968504
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.40627430000040476,
+            "defender_seconds": 0.40171400000144786
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.6363658999980544,
+            "defender_seconds": 0.04438600000139559
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.07226580000224203,
+            "defender_seconds": 0.25262869999914983
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.5378123000009509,
+            "defender_seconds": 0.6404597000009744
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.5304361000016797,
+            "defender_seconds": 0.6562675000004674
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.28262569999787956,
+            "defender_seconds": 0.018846899998607114
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.03660310000032041,
+            "defender_seconds": 0.08550990000094316
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.4271941999995761,
+            "defender_seconds": 0.5121605999993335
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.4500017999980628,
+            "defender_seconds": 0.5527117999999973
+          }
+        ]
+      },
+      "best_generation": 0,
+      "best_points": 52,
+      "weights": null,
+      "training_outcomes": {},
+      "new_samples": 0,
+      "rolling_samples": 0,
+      "batch_labels": {},
+      "rolling_labels": {},
+      "rolling_fit_mse": null,
+      "sha256": "7c0075cbf8831f5fa07477ae744956fd4e92a6377a7b4029d1213a8cf4d426f4"
+    },
+    {
+      "generation": 1,
+      "candidate": {
+        "overall": {
+          "games": 40,
+          "wins": 12,
+          "draws": 26,
+          "losses": 2,
+          "points": 50
+        },
+        "attacker": {
+          "games": 20,
+          "wins": 6,
+          "draws": 13,
+          "losses": 1,
+          "points": 25
+        },
+        "defender": {
+          "games": 20,
+          "wins": 6,
+          "draws": 13,
+          "losses": 1,
+          "points": 25
+        },
+        "by_opponent": {
+          "greedy": {
+            "overall": {
+              "games": 20,
+              "wins": 11,
+              "draws": 8,
+              "losses": 1,
+              "points": 30
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 5,
+              "draws": 4,
+              "losses": 1,
+              "points": 14
+            },
+            "defender": {
+              "games": 10,
+              "wins": 6,
+              "draws": 4,
+              "losses": 0,
+              "points": 16
+            }
+          },
+          "minimax": {
+            "overall": {
+              "games": 20,
+              "wins": 1,
+              "draws": 18,
+              "losses": 1,
+              "points": 20
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 1,
+              "draws": 9,
+              "losses": 0,
+              "points": 11
+            },
+            "defender": {
+              "games": 10,
+              "wins": 0,
+              "draws": 9,
+              "losses": 1,
+              "points": 9
+            }
+          }
+        },
+        "games": [
+          {
+            "our_side": "A",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.3712151999998241,
+            "defender_seconds": 0.032650599999215046
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.11229670000102487,
+            "defender_seconds": 0.5806409000015265
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 0.4776077999968038,
+            "defender_seconds": 0.2627293000014106
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 0.3924501000001328,
+            "defender_seconds": 0.5856607000014264
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.5151481000002605,
+            "defender_seconds": 0.01686599999993632
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.030489400000078604,
+            "defender_seconds": 0.23598930000025575
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.5712110000022221,
+            "defender_seconds": 0.10878869999942253
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.5229760000001988,
+            "defender_seconds": 0.12435110000296845
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.25141979999898467,
+            "defender_seconds": 0.008040599999731057
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.032456400000228314,
+            "defender_seconds": 0.14341320000130509
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.0236665000011271,
+            "defender_seconds": 0.6268254999986311
+          },
+          {
+            "our_side": "D",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.0229679999993095,
+            "defender_seconds": 0.575883900000008
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.6852836000016396,
+            "defender_seconds": 0.0903269000000364
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.178494499999033,
+            "defender_seconds": 0.9260669999994207
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.2836145999990549,
+            "defender_seconds": 0.24779749999925116
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.24568690000069182,
+            "defender_seconds": 0.2065351000001101
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.846133999999438,
+            "defender_seconds": 0.03322079999907146
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.025141099999927974,
+            "defender_seconds": 0.04529699999966397
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 0.4811444999968444,
+            "defender_seconds": 0.8322477000010622
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 0.5311284999997952,
+            "defender_seconds": 1.6869767999996839
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.3184317999994164,
+            "defender_seconds": 0.018395599999166734
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.05651589999888529,
+            "defender_seconds": 0.2070105999991938
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.33396999999695254,
+            "defender_seconds": 0.3107313000000431
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.29231890000119165,
+            "defender_seconds": 0.2722680999986551
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.2732584000004863,
+            "defender_seconds": 0.03769719999854715
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.03754399999979796,
+            "defender_seconds": 0.1280575000009776
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.21286500000041997,
+            "defender_seconds": 0.4391817000014271
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.20115979999900446,
+            "defender_seconds": 0.4261017999979231
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.4660743000004004,
+            "defender_seconds": 0.02719699999943259
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.12248539999836794,
+            "defender_seconds": 0.390893299997515
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.44109120000302937,
+            "defender_seconds": 0.43952160000026197
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.41642790000059904,
+            "defender_seconds": 0.43058949999795004
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.49110859999836975,
+            "defender_seconds": 0.03975240000090707
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.08323630000086268,
+            "defender_seconds": 0.281022800001665
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.5604886000019178,
+            "defender_seconds": 0.38549459999921964
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.5234905999996045,
+            "defender_seconds": 0.6663341999983459
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.34112310000091384,
+            "defender_seconds": 0.024991899999804446
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.04207880000194564,
+            "defender_seconds": 0.09966919999806123
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.4542448999973203,
+            "defender_seconds": 0.5179003000039302
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.4497395999997025,
+            "defender_seconds": 0.5238603000016155
+          }
+        ]
+      },
+      "best_generation": 0,
+      "best_points": 52,
+      "weights": [
+        -0.19833861129421648,
+        1.490505789802405,
+        -0.1875497787928202,
+        0.24049306258295444
+      ],
+      "training_outcomes": {
+        "DRAW": 10,
+        "D": 14,
+        "truncated": 1,
+        "A": 7
+      },
+      "new_samples": 1775,
+      "rolling_samples": 1775,
+      "batch_labels": {
+        "0": 486,
+        "1": 812,
+        "-1": 477
+      },
+      "rolling_labels": {
+        "0": 486,
+        "1": 812,
+        "-1": 477
+      },
+      "rolling_fit_mse": 0.6774044874959315,
+      "sha256": "ad11fbd8cc9f1f1e54e494c41353434d2fcdfc3b3398bb9ac1854fb679731bc4"
+    },
+    {
+      "generation": 2,
+      "candidate": {
+        "overall": {
+          "games": 40,
+          "wins": 8,
+          "draws": 22,
+          "losses": 10,
+          "points": 38
+        },
+        "attacker": {
+          "games": 20,
+          "wins": 2,
+          "draws": 16,
+          "losses": 2,
+          "points": 20
+        },
+        "defender": {
+          "games": 20,
+          "wins": 6,
+          "draws": 6,
+          "losses": 8,
+          "points": 18
+        },
+        "by_opponent": {
+          "greedy": {
+            "overall": {
+              "games": 20,
+              "wins": 8,
+              "draws": 9,
+              "losses": 3,
+              "points": 25
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 2,
+              "draws": 6,
+              "losses": 2,
+              "points": 10
+            },
+            "defender": {
+              "games": 10,
+              "wins": 6,
+              "draws": 3,
+              "losses": 1,
+              "points": 15
+            }
+          },
+          "minimax": {
+            "overall": {
+              "games": 20,
+              "wins": 0,
+              "draws": 13,
+              "losses": 7,
+              "points": 13
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 0,
+              "draws": 10,
+              "losses": 0,
+              "points": 10
+            },
+            "defender": {
+              "games": 10,
+              "wins": 0,
+              "draws": 3,
+              "losses": 7,
+              "points": 3
+            }
+          }
+        },
+        "games": [
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 1.257391799998004,
+            "defender_seconds": 0.05409050000071147
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.027640700001029472,
+            "defender_seconds": 0.29959950000011304
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 0.20353720000002795,
+            "defender_seconds": 0.16711249999934807
+          },
+          {
+            "our_side": "D",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 1.3425732000005155,
+            "defender_seconds": 1.2587700000003679
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.8030042000009416,
+            "defender_seconds": 0.060109899998678884
+          },
+          {
+            "our_side": "D",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.12267900000006193,
+            "defender_seconds": 1.4327825000018493
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 2.2272823000012067,
+            "defender_seconds": 1.7123148000009678
+          },
+          {
+            "our_side": "D",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.6688937999961126,
+            "defender_seconds": 1.985109500001272
+          },
+          {
+            "our_side": "A",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 1.901211899998998,
+            "defender_seconds": 0.07503240000187361
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.11902610000015557,
+            "defender_seconds": 1.8986968000008346
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 0.3484728000003088,
+            "defender_seconds": 0.4101885000036418
+          },
+          {
+            "our_side": "D",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.5777134000009028,
+            "defender_seconds": 1.9014836000005744
+          },
+          {
+            "our_side": "A",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 2.080834800003686,
+            "defender_seconds": 0.1264426999987336
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.1014089000009335,
+            "defender_seconds": 0.803389600000628
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.29219410000132484,
+            "defender_seconds": 0.2520029999986946
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.2377558999987741,
+            "defender_seconds": 0.20291770000039833
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 2.144141499999023,
+            "defender_seconds": 0.07663139999931445
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.025076000001718057,
+            "defender_seconds": 0.2998132999991867
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 0.49922889999925246,
+            "defender_seconds": 0.5387079999991329
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 0.8626491999993959,
+            "defender_seconds": 0.5517222000007678
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.8301700000001802,
+            "defender_seconds": 0.056156499999815424
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.10977539999930741,
+            "defender_seconds": 1.3498153999989881
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.4360052000020005,
+            "defender_seconds": 0.36835620000056224
+          },
+          {
+            "our_side": "D",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.8745686000011119,
+            "defender_seconds": 1.4379595999980666
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.5203633000019181,
+            "defender_seconds": 0.03748209999957908
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.046887000001333945,
+            "defender_seconds": 0.7744181999996727
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.38795500000014727,
+            "defender_seconds": 0.2884522999993351
+          },
+          {
+            "our_side": "D",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.47280290000071545,
+            "defender_seconds": 0.737450000001445
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 1.5501991999990423,
+            "defender_seconds": 0.05744010000034905
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.12844780000159517,
+            "defender_seconds": 0.9635457000003953
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.4280192000014722,
+            "defender_seconds": 0.40750349999962054
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.41260760000022856,
+            "defender_seconds": 0.41848830000253656
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.36584380000113015,
+            "defender_seconds": 0.06103650000204652
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.07242570000107662,
+            "defender_seconds": 0.8123925999980202
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.41809579999790003,
+            "defender_seconds": 0.48386759999993956
+          },
+          {
+            "our_side": "D",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.3451357999992979,
+            "defender_seconds": 0.8760757000009107
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 1.1982930000003762,
+            "defender_seconds": 0.039491999999881955
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.07366520000050514,
+            "defender_seconds": 0.757571399999506
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.2185131000014735,
+            "defender_seconds": 0.23611890000120184
+          },
+          {
+            "our_side": "D",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.33801989999938087,
+            "defender_seconds": 0.9152647000000798
+          }
+        ]
+      },
+      "best_generation": 0,
+      "best_points": 52,
+      "weights": [
+        0.35592349282125957,
+        1.185274886218318,
+        -0.6990507803905501,
+        0.3169854879084659
+      ],
+      "training_outcomes": {
+        "D": 13,
+        "DRAW": 11,
+        "A": 3,
+        "truncated": 5
+      },
+      "new_samples": 1333,
+      "rolling_samples": 3108,
+      "batch_labels": {
+        "1": 802,
+        "0": 282,
+        "-1": 249
+      },
+      "rolling_labels": {
+        "0": 768,
+        "1": 1614,
+        "-1": 726
+      },
+      "rolling_fit_mse": 0.6540023622762762,
+      "sha256": "21f21917a1142e52d198f062b5bdcd4b1884437eff8b8da1c1e89df40d0added"
+    },
+    {
+      "generation": 3,
+      "candidate": {
+        "overall": {
+          "games": 40,
+          "wins": 13,
+          "draws": 26,
+          "losses": 1,
+          "points": 52
+        },
+        "attacker": {
+          "games": 20,
+          "wins": 5,
+          "draws": 14,
+          "losses": 1,
+          "points": 24
+        },
+        "defender": {
+          "games": 20,
+          "wins": 8,
+          "draws": 12,
+          "losses": 0,
+          "points": 28
+        },
+        "by_opponent": {
+          "greedy": {
+            "overall": {
+              "games": 20,
+              "wins": 11,
+              "draws": 8,
+              "losses": 1,
+              "points": 30
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 5,
+              "draws": 4,
+              "losses": 1,
+              "points": 14
+            },
+            "defender": {
+              "games": 10,
+              "wins": 6,
+              "draws": 4,
+              "losses": 0,
+              "points": 16
+            }
+          },
+          "minimax": {
+            "overall": {
+              "games": 20,
+              "wins": 2,
+              "draws": 18,
+              "losses": 0,
+              "points": 22
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 0,
+              "draws": 10,
+              "losses": 0,
+              "points": 10
+            },
+            "defender": {
+              "games": 10,
+              "wins": 2,
+              "draws": 8,
+              "losses": 0,
+              "points": 12
+            }
+          }
+        },
+        "games": [
+          {
+            "our_side": "A",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.6695557000011831,
+            "defender_seconds": 0.03492680000090331
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.02404800000022078,
+            "defender_seconds": 0.04964850000033039
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 0.453290500001458,
+            "defender_seconds": 0.25089370000205236
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 1.9043197000009968,
+            "defender_seconds": 0.2651703000010457
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.2634911999994074,
+            "defender_seconds": 0.012529399999039015
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.029345800000555755,
+            "defender_seconds": 0.15018469999995432
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.24888060000102996,
+            "defender_seconds": 0.06256049999956304
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.4378860999995595,
+            "defender_seconds": 0.14284019999922748
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.21230799999921146,
+            "defender_seconds": 0.006882900000164227
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.05644940000001952,
+            "defender_seconds": 0.2368304999999964
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.3361643000007462,
+            "defender_seconds": 0.8452123999986725
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.6987438999985898,
+            "defender_seconds": 0.5670003999975961
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.5736951999979283,
+            "defender_seconds": 0.07823099999859551
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.07916849999946862,
+            "defender_seconds": 0.3032917999980782
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.23820510000132344,
+            "defender_seconds": 0.21089409999967756
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.23161980000077165,
+            "defender_seconds": 0.20312490000105754
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.7748683000008896,
+            "defender_seconds": 0.03459790000124485
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.02494380000007368,
+            "defender_seconds": 0.05143390000012005
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 0.5879716999979792,
+            "defender_seconds": 1.0188099000024522
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 2.0548331000027247,
+            "defender_seconds": 0.3540748999994321
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.32533409999905416,
+            "defender_seconds": 0.021624599999086058
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.1024215000006734,
+            "defender_seconds": 0.3485298999994484
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.36325850000139326,
+            "defender_seconds": 0.32935120000092866
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.36732150000079855,
+            "defender_seconds": 0.3386127000012493
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.3066140999990239,
+            "defender_seconds": 0.042121999998926185
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.05836679999902117,
+            "defender_seconds": 0.3927835000022242
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.24172949999956472,
+            "defender_seconds": 0.5015059999996083
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.3179776999995738,
+            "defender_seconds": 1.525220900000022
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.5521666999993613,
+            "defender_seconds": 0.031062299998666276
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.13092779999897175,
+            "defender_seconds": 0.47813769999902433
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.4841454999987036,
+            "defender_seconds": 0.4869112000005771
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.4896893999994063,
+            "defender_seconds": 0.501000399998702
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.5426354000001083,
+            "defender_seconds": 0.040650799999639275
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.08439989999988029,
+            "defender_seconds": 0.2852200000006633
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.6464379000008194,
+            "defender_seconds": 0.4368763000029503
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.9783100999993621,
+            "defender_seconds": 0.990028500000335
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.4410769000014625,
+            "defender_seconds": 0.03226900000026944
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.07861270000012155,
+            "defender_seconds": 0.3072465999994165
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.5233830999986822,
+            "defender_seconds": 0.6141875000012078
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.43987399999969057,
+            "defender_seconds": 0.5171449999979814
+          }
+        ]
+      },
+      "best_generation": 0,
+      "best_points": 52,
+      "weights": [
+        -0.10386245482478285,
+        1.3006534838509438,
+        -0.8999650943857984,
+        0.320763751958825
+      ],
+      "training_outcomes": {
+        "D": 14,
+        "A": 11,
+        "DRAW": 6,
+        "truncated": 1
+      },
+      "new_samples": 1559,
+      "rolling_samples": 4667,
+      "batch_labels": {
+        "1": 660,
+        "-1": 683,
+        "0": 216
+      },
+      "rolling_labels": {
+        "0": 984,
+        "1": 2274,
+        "-1": 1409
+      },
+      "rolling_fit_mse": 0.7124669349917724,
+      "sha256": "df7243c6aa40218de7763b6212ef3521cad463fe03408b0df5834b23b7cbae80"
+    },
+    {
+      "generation": 4,
+      "candidate": {
+        "overall": {
+          "games": 40,
+          "wins": 15,
+          "draws": 23,
+          "losses": 2,
+          "points": 53
+        },
+        "attacker": {
+          "games": 20,
+          "wins": 8,
+          "draws": 11,
+          "losses": 1,
+          "points": 27
+        },
+        "defender": {
+          "games": 20,
+          "wins": 7,
+          "draws": 12,
+          "losses": 1,
+          "points": 26
+        },
+        "by_opponent": {
+          "greedy": {
+            "overall": {
+              "games": 20,
+              "wins": 13,
+              "draws": 6,
+              "losses": 1,
+              "points": 32
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 7,
+              "draws": 2,
+              "losses": 1,
+              "points": 16
+            },
+            "defender": {
+              "games": 10,
+              "wins": 6,
+              "draws": 4,
+              "losses": 0,
+              "points": 16
+            }
+          },
+          "minimax": {
+            "overall": {
+              "games": 20,
+              "wins": 2,
+              "draws": 17,
+              "losses": 1,
+              "points": 21
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 1,
+              "draws": 9,
+              "losses": 0,
+              "points": 11
+            },
+            "defender": {
+              "games": 10,
+              "wins": 1,
+              "draws": 8,
+              "losses": 1,
+              "points": 10
+            }
+          }
+        },
+        "games": [
+          {
+            "our_side": "A",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.26559050000196294,
+            "defender_seconds": 0.021351700000195706
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.028868299998976,
+            "defender_seconds": 0.10058490000028542
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 0.5141754999986006,
+            "defender_seconds": 0.27655720000257134
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 0.992783499997131,
+            "defender_seconds": 0.5520749999977852
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.3319239000002199,
+            "defender_seconds": 0.016666000000441272
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.035754199998336844,
+            "defender_seconds": 0.18436779999956343
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.3148908000002848,
+            "defender_seconds": 0.08239479999974719
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.5754676999995354,
+            "defender_seconds": 0.15019929999925807
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.28058820000023843,
+            "defender_seconds": 0.009199099999932514
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.045925099999294616,
+            "defender_seconds": 0.23127850000037142
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.5147907000009582,
+            "defender_seconds": 1.0651926000009553
+          },
+          {
+            "our_side": "D",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.0650930999981938,
+            "defender_seconds": 0.47052979999989475
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.29562600000099337,
+            "defender_seconds": 0.04415359999984503
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.18208750000212603,
+            "defender_seconds": 0.9464861000014935
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.3007205999992948,
+            "defender_seconds": 0.25820609999937005
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.27952019999793265,
+            "defender_seconds": 0.25029880000056437
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.7213503000002675,
+            "defender_seconds": 0.028532500001347216
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.01943440000013652,
+            "defender_seconds": 0.03691750000052707
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 1.0069264000012481,
+            "defender_seconds": 0.6260809000004883
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 1.8533857000011267,
+            "defender_seconds": 0.41541830000187474
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.3486567999998442,
+            "defender_seconds": 0.018704000000070664
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.06897140000091895,
+            "defender_seconds": 0.2567982000009579
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.29578310000124475,
+            "defender_seconds": 0.2670135000016671
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.3054756000001362,
+            "defender_seconds": 0.29208139999991545
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.047151100000519364,
+            "defender_seconds": 0.006333500000437198
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.04399340000236407,
+            "defender_seconds": 0.15678730000036012
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 1.004150099997787,
+            "defender_seconds": 0.8100108999997246
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.32742249999864725,
+            "defender_seconds": 1.3918013000002247
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.26158480000049167,
+            "defender_seconds": 0.0248712999991767
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.15121799999906216,
+            "defender_seconds": 0.4988471999995454
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.4411746000014318,
+            "defender_seconds": 0.41766759999882197
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.44547680000232504,
+            "defender_seconds": 0.4439702000008765
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.463174299997263,
+            "defender_seconds": 0.030777700002545316
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.07073760000002949,
+            "defender_seconds": 0.228863100000126
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.7041197999997166,
+            "defender_seconds": 1.1846656999978222
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.8413712000010491,
+            "defender_seconds": 1.0923253000009936
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.17468000000008033,
+            "defender_seconds": 0.028011599999445025
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.08269060000020545,
+            "defender_seconds": 0.33475490000182617
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.5577455999991798,
+            "defender_seconds": 0.6606496999993396
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.4646615000001475,
+            "defender_seconds": 0.5339440999996441
+          }
+        ]
+      },
+      "best_generation": 4,
+      "best_points": 53,
+      "weights": [
+        -0.3109478121142869,
+        0.7301526295072236,
+        -1.1762857752429547,
+        0.5257320274893249
+      ],
+      "training_outcomes": {
+        "DRAW": 9,
+        "D": 18,
+        "truncated": 1,
+        "A": 4
+      },
+      "new_samples": 1864,
+      "rolling_samples": 4756,
+      "batch_labels": {
+        "0": 342,
+        "1": 1316,
+        "-1": 206
+      },
+      "rolling_labels": {
+        "1": 2778,
+        "0": 840,
+        "-1": 1138
+      },
+      "rolling_fit_mse": 0.6304365144648818,
+      "sha256": "abc15698ff71eab49b9950b22c71e784063470e280368d23002e938f746ac99b"
+    },
+    {
+      "generation": 5,
+      "candidate": {
+        "overall": {
+          "games": 40,
+          "wins": 14,
+          "draws": 23,
+          "losses": 3,
+          "points": 51
+        },
+        "attacker": {
+          "games": 20,
+          "wins": 7,
+          "draws": 11,
+          "losses": 2,
+          "points": 25
+        },
+        "defender": {
+          "games": 20,
+          "wins": 7,
+          "draws": 12,
+          "losses": 1,
+          "points": 26
+        },
+        "by_opponent": {
+          "greedy": {
+            "overall": {
+              "games": 20,
+              "wins": 13,
+              "draws": 6,
+              "losses": 1,
+              "points": 32
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 7,
+              "draws": 2,
+              "losses": 1,
+              "points": 16
+            },
+            "defender": {
+              "games": 10,
+              "wins": 6,
+              "draws": 4,
+              "losses": 0,
+              "points": 16
+            }
+          },
+          "minimax": {
+            "overall": {
+              "games": 20,
+              "wins": 1,
+              "draws": 17,
+              "losses": 2,
+              "points": 19
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 0,
+              "draws": 9,
+              "losses": 1,
+              "points": 9
+            },
+            "defender": {
+              "games": 10,
+              "wins": 1,
+              "draws": 8,
+              "losses": 1,
+              "points": 10
+            }
+          }
+        },
+        "games": [
+          {
+            "our_side": "A",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.30741670000043086,
+            "defender_seconds": 0.02551459999904182
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.03502960000059829,
+            "defender_seconds": 0.11990399999740475
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 0.5947420999991664,
+            "defender_seconds": 0.309049600000435
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 1.0500174000017068,
+            "defender_seconds": 0.5000212999993892
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.5710138999993433,
+            "defender_seconds": 0.020063099997969402
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.0368890999998257,
+            "defender_seconds": 0.17804250000244792
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.5588565999996717,
+            "defender_seconds": 0.10824489999959042
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.4885492000003069,
+            "defender_seconds": 0.1336157000005187
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.2733994000009261,
+            "defender_seconds": 0.008308600000418664
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.049199899999621266,
+            "defender_seconds": 0.2652861999986271
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.53289080000377,
+            "defender_seconds": 1.0518229999970572
+          },
+          {
+            "our_side": "D",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.059599100000014,
+            "defender_seconds": 0.5203772999993816
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.36569179999696644,
+            "defender_seconds": 0.05675740000060614
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.18693600000005972,
+            "defender_seconds": 0.9597042000023066
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.2550055000010616,
+            "defender_seconds": 0.20941620000121475
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.3027042000012443,
+            "defender_seconds": 0.25731290000021545
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.9073705000009795,
+            "defender_seconds": 0.03611029999956372
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.025522599999931117,
+            "defender_seconds": 0.046802299998489616
+          },
+          {
+            "our_side": "A",
+            "winner": "D",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 0.8823895000004995,
+            "defender_seconds": 0.8426981000020533
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 1.7582044000000678,
+            "defender_seconds": 0.3955887999982224
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.30613960000027873,
+            "defender_seconds": 0.017303599999650032
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.0634182999992845,
+            "defender_seconds": 0.22912099999939528
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.3126767000003383,
+            "defender_seconds": 0.292773500000294
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.30673470000147063,
+            "defender_seconds": 0.2899345000005269
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.06043690000024071,
+            "defender_seconds": 0.00903329999982816
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.04827909999949043,
+            "defender_seconds": 0.1667604999984178
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 1.0439190999995844,
+            "defender_seconds": 0.8470981999998912
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.279261999998198,
+            "defender_seconds": 1.1827954000000318
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.25925050000023475,
+            "defender_seconds": 0.024589800000285322
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.1557680000005348,
+            "defender_seconds": 0.5014811000010013
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.45782969999982015,
+            "defender_seconds": 0.46965780000118684
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.42782509999778995,
+            "defender_seconds": 0.4481894000000466
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.4525606999977754,
+            "defender_seconds": 0.03126010000141832
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.07544219999999768,
+            "defender_seconds": 0.274286500000926
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.6220097999994323,
+            "defender_seconds": 1.0549540000019988
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.7445136000014827,
+            "defender_seconds": 0.9283039999991161
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.1526944999995976,
+            "defender_seconds": 0.022530399996867345
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.07715029999872058,
+            "defender_seconds": 0.3148537999977634
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.5090597000025809,
+            "defender_seconds": 0.5512546999998449
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.4402552999990803,
+            "defender_seconds": 0.5114955000008194
+          }
+        ]
+      },
+      "best_generation": 4,
+      "best_points": 53,
+      "weights": [
+        -0.3423494938091338,
+        0.9537515084039043,
+        -1.2630377081575976,
+        0.4893024940773107
+      ],
+      "training_outcomes": {
+        "D": 18,
+        "A": 7,
+        "DRAW": 6,
+        "truncated": 1
+      },
+      "new_samples": 1939,
+      "rolling_samples": 5362,
+      "batch_labels": {
+        "1": 1174,
+        "-1": 561,
+        "0": 204
+      },
+      "rolling_labels": {
+        "1": 3150,
+        "-1": 1450,
+        "0": 762
+      },
+      "rolling_fit_mse": 0.6713084277725053,
+      "sha256": "8d7f499b6c08be508763c26e8e7b997f18b37b047cd1f63e2005a7a445f3dd3d"
+    },
+    {
+      "generation": 6,
+      "candidate": {
+        "overall": {
+          "games": 40,
+          "wins": 13,
+          "draws": 26,
+          "losses": 1,
+          "points": 52
+        },
+        "attacker": {
+          "games": 20,
+          "wins": 5,
+          "draws": 14,
+          "losses": 1,
+          "points": 24
+        },
+        "defender": {
+          "games": 20,
+          "wins": 8,
+          "draws": 12,
+          "losses": 0,
+          "points": 28
+        },
+        "by_opponent": {
+          "greedy": {
+            "overall": {
+              "games": 20,
+              "wins": 11,
+              "draws": 8,
+              "losses": 1,
+              "points": 30
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 5,
+              "draws": 4,
+              "losses": 1,
+              "points": 14
+            },
+            "defender": {
+              "games": 10,
+              "wins": 6,
+              "draws": 4,
+              "losses": 0,
+              "points": 16
+            }
+          },
+          "minimax": {
+            "overall": {
+              "games": 20,
+              "wins": 2,
+              "draws": 18,
+              "losses": 0,
+              "points": 22
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 0,
+              "draws": 10,
+              "losses": 0,
+              "points": 10
+            },
+            "defender": {
+              "games": 10,
+              "wins": 2,
+              "draws": 8,
+              "losses": 0,
+              "points": 12
+            }
+          }
+        },
+        "games": [
+          {
+            "our_side": "A",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.3365451000008761,
+            "defender_seconds": 0.021969299999000214
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.035941200000706885,
+            "defender_seconds": 0.09141400000044086
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 0.5222611000008328,
+            "defender_seconds": 0.2742640999995274
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 2.148712899997008,
+            "defender_seconds": 0.3023995000003197
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.28954239999893616,
+            "defender_seconds": 0.01508540000031644
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.03881769999952667,
+            "defender_seconds": 0.19327700000030745
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.33185559999856196,
+            "defender_seconds": 0.0749387999994724
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.5826757999993788,
+            "defender_seconds": 0.18217940000067756
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.2931300000000192,
+            "defender_seconds": 0.009448599999814178
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.07517919999827427,
+            "defender_seconds": 0.30580039999858855
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.7065357999981643,
+            "defender_seconds": 1.0987130999983492
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 2.11927950000063,
+            "defender_seconds": 0.6731829000027574
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.39430429999993066,
+            "defender_seconds": 0.057685399998263165
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.11168990000169288,
+            "defender_seconds": 0.4387213999998494
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.3122886999999537,
+            "defender_seconds": 0.26584250000087195
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.3146947999985059,
+            "defender_seconds": 0.2751445000012609
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.9138456000009683,
+            "defender_seconds": 0.03579509999963193
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.020235700000739598,
+            "defender_seconds": 0.03681250000045111
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 0.4793945999999778,
+            "defender_seconds": 0.8232173000023977
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 1.6699114000002737,
+            "defender_seconds": 0.30135430000063934
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.3056114000000889,
+            "defender_seconds": 0.020648900001106085
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.0817947000005006,
+            "defender_seconds": 0.2749586999971143
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.3350192999969295,
+            "defender_seconds": 0.30545660000097996
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.3443127000009554,
+            "defender_seconds": 0.3243721999997433
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.3007985000003828,
+            "defender_seconds": 0.039950599998519465
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.04685759999938455,
+            "defender_seconds": 0.31692409999959636
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.22110169999996288,
+            "defender_seconds": 0.47261059999982535
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.28801339999972697,
+            "defender_seconds": 1.3691648000021814
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.2673605999989377,
+            "defender_seconds": 0.02422240000032616
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.12723970000206464,
+            "defender_seconds": 0.45587000000159605
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.41467690000354196,
+            "defender_seconds": 0.4117230000019845
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.47992279999925813,
+            "defender_seconds": 0.4910726000016439
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.5319524000005913,
+            "defender_seconds": 0.04142979999869567
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.08177679999880638,
+            "defender_seconds": 0.28170939999836264
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.5608805999972901,
+            "defender_seconds": 0.352474300002541
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.9293757000004916,
+            "defender_seconds": 0.9445511999992959
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.4328295999994225,
+            "defender_seconds": 0.029395000000477012
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.06101999999827967,
+            "defender_seconds": 0.25027139999838255
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.4609488000005513,
+            "defender_seconds": 0.5079992999990282
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.3741329999993468,
+            "defender_seconds": 0.4330716000022221
+          }
+        ]
+      },
+      "best_generation": 4,
+      "best_points": 53,
+      "weights": [
+        -0.06510181798223902,
+        0.9945024732293497,
+        -1.285714130088085,
+        0.46735507726903935
+      ],
+      "training_outcomes": {
+        "D": 18,
+        "A": 9,
+        "DRAW": 4,
+        "truncated": 1
+      },
+      "new_samples": 2323,
+      "rolling_samples": 6126,
+      "batch_labels": {
+        "1": 1256,
+        "-1": 827,
+        "0": 240
+      },
+      "rolling_labels": {
+        "0": 786,
+        "1": 3746,
+        "-1": 1594
+      },
+      "rolling_fit_mse": 0.6898805194401687,
+      "sha256": "e9a4d791a7bf5ae837681d192fb9172db98a8bc33d80dd24ea069857f82bc761"
+    },
+    {
+      "generation": 7,
+      "candidate": {
+        "overall": {
+          "games": 40,
+          "wins": 13,
+          "draws": 26,
+          "losses": 1,
+          "points": 52
+        },
+        "attacker": {
+          "games": 20,
+          "wins": 5,
+          "draws": 14,
+          "losses": 1,
+          "points": 24
+        },
+        "defender": {
+          "games": 20,
+          "wins": 8,
+          "draws": 12,
+          "losses": 0,
+          "points": 28
+        },
+        "by_opponent": {
+          "greedy": {
+            "overall": {
+              "games": 20,
+              "wins": 11,
+              "draws": 8,
+              "losses": 1,
+              "points": 30
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 5,
+              "draws": 4,
+              "losses": 1,
+              "points": 14
+            },
+            "defender": {
+              "games": 10,
+              "wins": 6,
+              "draws": 4,
+              "losses": 0,
+              "points": 16
+            }
+          },
+          "minimax": {
+            "overall": {
+              "games": 20,
+              "wins": 2,
+              "draws": 18,
+              "losses": 0,
+              "points": 22
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 0,
+              "draws": 10,
+              "losses": 0,
+              "points": 10
+            },
+            "defender": {
+              "games": 10,
+              "wins": 2,
+              "draws": 8,
+              "losses": 0,
+              "points": 12
+            }
+          }
+        },
+        "games": [
+          {
+            "our_side": "A",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.3696109999982582,
+            "defender_seconds": 0.024441200002002006
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.03681419999975333,
+            "defender_seconds": 0.09192109999821696
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 0.5874013000011473,
+            "defender_seconds": 0.32245760000296286
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 2.4134873999973934,
+            "defender_seconds": 0.34253999999964435
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.30350780000026134,
+            "defender_seconds": 0.01514370000040799
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.03875109999989945,
+            "defender_seconds": 0.19471920000069076
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.3193347000005815,
+            "defender_seconds": 0.08246299999882467
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.5570109999989654,
+            "defender_seconds": 0.174076100000093
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.2810404000010749,
+            "defender_seconds": 0.009288199999900826
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.06964940000034403,
+            "defender_seconds": 0.2702788000005967
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.691121199999543,
+            "defender_seconds": 1.0924353999980667
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 2.0905758999988393,
+            "defender_seconds": 0.6834706000008737
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.3814738999999463,
+            "defender_seconds": 0.05589909999980591
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.10244900000179769,
+            "defender_seconds": 0.38532320000194886
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.29392769999958546,
+            "defender_seconds": 0.2500932999973884
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.29984719999902154,
+            "defender_seconds": 0.2612064000013561
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.9178693999974712,
+            "defender_seconds": 0.0366096000007019
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.02373600000009901,
+            "defender_seconds": 0.04492989999926067
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 0.564137600000322,
+            "defender_seconds": 0.9233248000000458
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 1.82451459999902,
+            "defender_seconds": 0.3108371000007537
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.30962409999847296,
+            "defender_seconds": 0.02094420000048558
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.09898269999939657,
+            "defender_seconds": 0.33669860000009066
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.3608880000010686,
+            "defender_seconds": 0.32333829999970476
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.35511610000048677,
+            "defender_seconds": 0.3301351000018258
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.2841461999987587,
+            "defender_seconds": 0.040028700001130346
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.05598999999983789,
+            "defender_seconds": 0.38650740000048245
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.23656090000076802,
+            "defender_seconds": 0.48793750000186265
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.32032540000091103,
+            "defender_seconds": 1.5321615000002566
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.2537733000017397,
+            "defender_seconds": 0.02099450000150682
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.11920170000030339,
+            "defender_seconds": 0.4318948000009186
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.4512731000013446,
+            "defender_seconds": 0.4461540000011155
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.48667959999966115,
+            "defender_seconds": 0.49303130000043893
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.53129109999918,
+            "defender_seconds": 0.040432900000269
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.08630760000050941,
+            "defender_seconds": 0.3019181000008757
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.6337793000002421,
+            "defender_seconds": 0.42995649999738816
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.9515182000013738,
+            "defender_seconds": 0.9554273999992802
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.16467649999958667,
+            "defender_seconds": 0.02212480000071082
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.06372250000094937,
+            "defender_seconds": 0.25614279999990686
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.5124579000002996,
+            "defender_seconds": 0.5931477000012819
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.42531770000005054,
+            "defender_seconds": 0.5040788000005705
+          }
+        ]
+      },
+      "best_generation": 4,
+      "best_points": 53,
+      "weights": [
+        -0.11729973759577916,
+        1.1817372457300461,
+        -1.8214229451806578,
+        0.43231783131505225
+      ],
+      "training_outcomes": {
+        "D": 18,
+        "DRAW": 4,
+        "A": 8,
+        "truncated": 2
+      },
+      "new_samples": 2011,
+      "rolling_samples": 6273,
+      "batch_labels": {
+        "1": 1276,
+        "0": 145,
+        "-1": 590
+      },
+      "rolling_labels": {
+        "1": 3706,
+        "-1": 1978,
+        "0": 589
+      },
+      "rolling_fit_mse": 0.7119544869225789,
+      "sha256": "9b4533790ad2e9523f98dc6379781494674dfb277faebbd02a12d345a6179fab"
+    },
+    {
+      "generation": 8,
+      "candidate": {
+        "overall": {
+          "games": 40,
+          "wins": 15,
+          "draws": 24,
+          "losses": 1,
+          "points": 54
+        },
+        "attacker": {
+          "games": 20,
+          "wins": 8,
+          "draws": 12,
+          "losses": 0,
+          "points": 28
+        },
+        "defender": {
+          "games": 20,
+          "wins": 7,
+          "draws": 12,
+          "losses": 1,
+          "points": 26
+        },
+        "by_opponent": {
+          "greedy": {
+            "overall": {
+              "games": 20,
+              "wins": 13,
+              "draws": 7,
+              "losses": 0,
+              "points": 33
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 7,
+              "draws": 3,
+              "losses": 0,
+              "points": 17
+            },
+            "defender": {
+              "games": 10,
+              "wins": 6,
+              "draws": 4,
+              "losses": 0,
+              "points": 16
+            }
+          },
+          "minimax": {
+            "overall": {
+              "games": 20,
+              "wins": 2,
+              "draws": 17,
+              "losses": 1,
+              "points": 21
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 1,
+              "draws": 9,
+              "losses": 0,
+              "points": 11
+            },
+            "defender": {
+              "games": 10,
+              "wins": 1,
+              "draws": 8,
+              "losses": 1,
+              "points": 10
+            }
+          }
+        },
+        "games": [
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.3653965999992579,
+            "defender_seconds": 0.04199400000015885
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.03297240000028978,
+            "defender_seconds": 0.12641780000103608
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 0.40869300000213116,
+            "defender_seconds": 0.5065715999962777
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 0.9339050999988103,
+            "defender_seconds": 0.47729760000311217
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.2701727000003302,
+            "defender_seconds": 0.012470500000745233
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.032430899999781104,
+            "defender_seconds": 0.16216429999985849
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.29426989999956277,
+            "defender_seconds": 0.08146160000160307
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.5050339000008535,
+            "defender_seconds": 0.12224060000062309
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.24749329999940528,
+            "defender_seconds": 0.007975500000611646
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.05181780000020808,
+            "defender_seconds": 0.2643576000000394
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.3290775999967082,
+            "defender_seconds": 0.9469979000004969
+          },
+          {
+            "our_side": "D",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 0.9277668999993693,
+            "defender_seconds": 0.4294978000016272
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.2851543999995556,
+            "defender_seconds": 0.04309049999937997
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.15711849999843253,
+            "defender_seconds": 0.8106660000003103
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.2262261000014405,
+            "defender_seconds": 0.1983433999994304
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.2254912999987937,
+            "defender_seconds": 0.19595199999912438
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.6961547999999311,
+            "defender_seconds": 0.02919720000045345
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.01904990000093676,
+            "defender_seconds": 0.03547880000041914
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 0.7676199999987148,
+            "defender_seconds": 0.5119916999992711
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 1.6706708999990951,
+            "defender_seconds": 0.37016879999646335
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.46177329999864014,
+            "defender_seconds": 0.022053600000617735
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.07641190000049392,
+            "defender_seconds": 0.2736221999984991
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.36294529999941005,
+            "defender_seconds": 0.3358812000005855
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.3818554999988919,
+            "defender_seconds": 0.36115029999928083
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.06651330000113376,
+            "defender_seconds": 0.00981320000028063
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.05768110000099114,
+            "defender_seconds": 0.20842410000113887
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 1.0633952000007412,
+            "defender_seconds": 0.9380490000021382
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.34286689999953524,
+            "defender_seconds": 1.385980500000187
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.2766244000004008,
+            "defender_seconds": 0.026305400002456736
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.15294709999943734,
+            "defender_seconds": 0.49401079999915964
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.49118519999956334,
+            "defender_seconds": 0.4867229000010411
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.4781413999990036,
+            "defender_seconds": 0.48858650000056514
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.4474311999993006,
+            "defender_seconds": 0.03254380000089441
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.06687590000001364,
+            "defender_seconds": 0.24083779999909893
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.5624079000008351,
+            "defender_seconds": 0.9950894000021435
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.755067499998404,
+            "defender_seconds": 0.8772021000004315
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.1546799000007013,
+            "defender_seconds": 0.023355000000265136
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.07795290000103705,
+            "defender_seconds": 0.31509660000119766
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.4420872999999119,
+            "defender_seconds": 0.5306123999998817
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.36393970000244735,
+            "defender_seconds": 0.431602999999086
+          }
+        ]
+      },
+      "best_generation": 8,
+      "best_points": 54,
+      "weights": [
+        -0.5300854826534511,
+        0.9842463683048064,
+        -1.5375084416996416,
+        0.552391301810465
+      ],
+      "training_outcomes": {
+        "D": 19,
+        "A": 5,
+        "truncated": 2,
+        "DRAW": 6
+      },
+      "new_samples": 1771,
+      "rolling_samples": 6105,
+      "batch_labels": {
+        "1": 1174,
+        "-1": 331,
+        "0": 266
+      },
+      "rolling_labels": {
+        "1": 3706,
+        "-1": 1748,
+        "0": 651
+      },
+      "rolling_fit_mse": 0.6795340178174516,
+      "sha256": "6823f83e0c70906b0858c7e76e8ae6ca5b088d46fe545ef44e489c54690550de"
+    },
+    {
+      "generation": 9,
+      "candidate": {
+        "overall": {
+          "games": 40,
+          "wins": 17,
+          "draws": 21,
+          "losses": 2,
+          "points": 55
+        },
+        "attacker": {
+          "games": 20,
+          "wins": 8,
+          "draws": 11,
+          "losses": 1,
+          "points": 27
+        },
+        "defender": {
+          "games": 20,
+          "wins": 9,
+          "draws": 10,
+          "losses": 1,
+          "points": 28
+        },
+        "by_opponent": {
+          "greedy": {
+            "overall": {
+              "games": 20,
+              "wins": 14,
+              "draws": 6,
+              "losses": 0,
+              "points": 34
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 7,
+              "draws": 3,
+              "losses": 0,
+              "points": 17
+            },
+            "defender": {
+              "games": 10,
+              "wins": 7,
+              "draws": 3,
+              "losses": 0,
+              "points": 17
+            }
+          },
+          "minimax": {
+            "overall": {
+              "games": 20,
+              "wins": 3,
+              "draws": 15,
+              "losses": 2,
+              "points": 21
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 1,
+              "draws": 8,
+              "losses": 1,
+              "points": 10
+            },
+            "defender": {
+              "games": 10,
+              "wins": 2,
+              "draws": 7,
+              "losses": 1,
+              "points": 11
+            }
+          }
+        },
+        "games": [
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.45501879999937955,
+            "defender_seconds": 0.050938500000484055
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.03388239999912912,
+            "defender_seconds": 0.0972898999998506
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 0.3734554999973625,
+            "defender_seconds": 0.5108277000026646
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 0.4284787000005963,
+            "defender_seconds": 0.5295433000010235
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.45181590000083816,
+            "defender_seconds": 0.015349600000263308
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.03385960000105115,
+            "defender_seconds": 0.28123780000078114
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.49757469999985915,
+            "defender_seconds": 0.09240140000110841
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.5250012000005881,
+            "defender_seconds": 0.10422800000105781
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.2629295999986425,
+            "defender_seconds": 0.008263000000624743
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.0513903000010032,
+            "defender_seconds": 0.18941239999912796
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.1690029000019422,
+            "defender_seconds": 0.6477934000031382
+          },
+          {
+            "our_side": "D",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.0613819999998668,
+            "defender_seconds": 0.4339454000009937
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.3741414000005534,
+            "defender_seconds": 0.05791759999738133
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.21067979999952513,
+            "defender_seconds": 1.0957309000004898
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.3047538999990138,
+            "defender_seconds": 0.25738989999990736
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.2986628999997265,
+            "defender_seconds": 0.260598700002447
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.9024573000006058,
+            "defender_seconds": 0.035789999998087296
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.025611699998989934,
+            "defender_seconds": 0.04712409999956435
+          },
+          {
+            "our_side": "A",
+            "winner": "D",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 0.9115439999995942,
+            "defender_seconds": 0.8842558000014833
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 1.6465970999988713,
+            "defender_seconds": 0.36308979999921576
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.3627403999989838,
+            "defender_seconds": 0.021116699999765842
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.05976909999844793,
+            "defender_seconds": 0.22358920000169746
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.2964292000006026,
+            "defender_seconds": 0.27257209999970655
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.3499345000009271,
+            "defender_seconds": 0.3264858999991702
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.06506350000108796,
+            "defender_seconds": 0.008891100000255392
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.04693979999956355,
+            "defender_seconds": 0.16245339999932185
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 1.5278447000018787,
+            "defender_seconds": 1.3230876000006901
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.2341205999991871,
+            "defender_seconds": 0.5068753999985347
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.26428929999929096,
+            "defender_seconds": 0.023210099999232625
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.15630529999998544,
+            "defender_seconds": 0.4981509000017468
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.48432359999969776,
+            "defender_seconds": 0.48703289999775734
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.4803862000017034,
+            "defender_seconds": 0.48226319999866973
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.5789942000028532,
+            "defender_seconds": 0.037591000001157227
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.08306500000162487,
+            "defender_seconds": 0.2876570000007632
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.6666362999994817,
+            "defender_seconds": 1.1781153999982052
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 1.1431264000038937,
+            "defender_seconds": 1.0310625999973126
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.17485359999955108,
+            "defender_seconds": 0.022873099999742408
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.043586899998445006,
+            "defender_seconds": 0.10718890000043757
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.5149276000001919,
+            "defender_seconds": 0.5971339000016087
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 1.100568300001214,
+            "defender_seconds": 1.0676018999993175
+          }
+        ]
+      },
+      "best_generation": 9,
+      "best_points": 55,
+      "weights": [
+        -0.6775309333259347,
+        0.9468302939788227,
+        -1.195110664250957,
+        0.5598865635403484
+      ],
+      "training_outcomes": {
+        "DRAW": 5,
+        "D": 20,
+        "truncated": 1,
+        "A": 6
+      },
+      "new_samples": 1984,
+      "rolling_samples": 5766,
+      "batch_labels": {
+        "0": 416,
+        "1": 992,
+        "-1": 576
+      },
+      "rolling_labels": {
+        "1": 3442,
+        "0": 827,
+        "-1": 1497
+      },
+      "rolling_fit_mse": 0.6555787509098487,
+      "sha256": "61f87e8d6b6f3f4938b2cbf2286123fda74d6debe9c1f5c552cac68b8d926a3a"
+    },
+    {
+      "generation": 10,
+      "candidate": {
+        "overall": {
+          "games": 40,
+          "wins": 14,
+          "draws": 23,
+          "losses": 3,
+          "points": 51
+        },
+        "attacker": {
+          "games": 20,
+          "wins": 7,
+          "draws": 11,
+          "losses": 2,
+          "points": 25
+        },
+        "defender": {
+          "games": 20,
+          "wins": 7,
+          "draws": 12,
+          "losses": 1,
+          "points": 26
+        },
+        "by_opponent": {
+          "greedy": {
+            "overall": {
+              "games": 20,
+              "wins": 13,
+              "draws": 6,
+              "losses": 1,
+              "points": 32
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 7,
+              "draws": 2,
+              "losses": 1,
+              "points": 16
+            },
+            "defender": {
+              "games": 10,
+              "wins": 6,
+              "draws": 4,
+              "losses": 0,
+              "points": 16
+            }
+          },
+          "minimax": {
+            "overall": {
+              "games": 20,
+              "wins": 1,
+              "draws": 17,
+              "losses": 2,
+              "points": 19
+            },
+            "attacker": {
+              "games": 10,
+              "wins": 0,
+              "draws": 9,
+              "losses": 1,
+              "points": 9
+            },
+            "defender": {
+              "games": 10,
+              "wins": 1,
+              "draws": 8,
+              "losses": 1,
+              "points": 10
+            }
+          }
+        },
+        "games": [
+          {
+            "our_side": "A",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.30290229999900475,
+            "defender_seconds": 0.025096600000324543
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 0,
+            "attacker_seconds": 0.0338569000005009,
+            "defender_seconds": 0.1237001000008604
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 0.5201231999990341,
+            "defender_seconds": 0.25988450000295416
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 0,
+            "attacker_seconds": 1.0724970999972356,
+            "defender_seconds": 0.557428200000686
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.5710060000010344,
+            "defender_seconds": 0.01882000000023254
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 1,
+            "attacker_seconds": 0.041677000001072884,
+            "defender_seconds": 0.1917238999994879
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.5740739999992002,
+            "defender_seconds": 0.11537659999885364
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 1,
+            "attacker_seconds": 0.545915600000626,
+            "defender_seconds": 0.13732700000036857
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.2197833999998693,
+            "defender_seconds": 0.007051099999443977
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 2,
+            "attacker_seconds": 0.04853430000002845,
+            "defender_seconds": 0.2664901000007376
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.458007199998974,
+            "defender_seconds": 1.0088482999999542
+          },
+          {
+            "our_side": "D",
+            "winner": "A",
+            "opponent": "minimax",
+            "pair": 2,
+            "attacker_seconds": 1.1246166999990237,
+            "defender_seconds": 0.5380916000003708
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.3407411999987744,
+            "defender_seconds": 0.05082040000070265
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 3,
+            "attacker_seconds": 0.17688779999662074,
+            "defender_seconds": 0.9411413000025277
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.28530180000052496,
+            "defender_seconds": 0.2459578000007241
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 3,
+            "attacker_seconds": 0.23919849999856524,
+            "defender_seconds": 0.20640350000212493
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.7964785000012853,
+            "defender_seconds": 0.03009359999850858
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 4,
+            "attacker_seconds": 0.02128089999951044,
+            "defender_seconds": 0.03923549999944953
+          },
+          {
+            "our_side": "A",
+            "winner": "D",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 0.8920215999987704,
+            "defender_seconds": 0.8999653999999282
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "minimax",
+            "pair": 4,
+            "attacker_seconds": 1.8406483000007938,
+            "defender_seconds": 0.39282140000068466
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.3862602000008337,
+            "defender_seconds": 0.021858500000234926
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 5,
+            "attacker_seconds": 0.0677213999997548,
+            "defender_seconds": 0.25203510000028473
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.31983990000026097,
+            "defender_seconds": 0.2876378000009936
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 5,
+            "attacker_seconds": 0.29983160000028874,
+            "defender_seconds": 0.29107339999791293
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.047034999998686544,
+            "defender_seconds": 0.006995799999458541
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 6,
+            "attacker_seconds": 0.05008640000050946,
+            "defender_seconds": 0.1704468000007182
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.968801899997743,
+            "defender_seconds": 0.8015924999999697
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 6,
+            "attacker_seconds": 0.29471120000107476,
+            "defender_seconds": 1.22881789999974
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.22781799999847863,
+            "defender_seconds": 0.023454000000128872
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 7,
+            "attacker_seconds": 0.135132599998542,
+            "defender_seconds": 0.4352119000013772
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.4836444000020492,
+            "defender_seconds": 0.4786688000003778
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 7,
+            "attacker_seconds": 0.4772841999983939,
+            "defender_seconds": 0.4923016999991887
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.5078573999999207,
+            "defender_seconds": 0.03437200000098528
+          },
+          {
+            "our_side": "D",
+            "winner": "D",
+            "opponent": "greedy",
+            "pair": 8,
+            "attacker_seconds": 0.08162870000069233,
+            "defender_seconds": 0.27979510000204755
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.6109854999986055,
+            "defender_seconds": 1.06081500000073
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 8,
+            "attacker_seconds": 0.6934105000000272,
+            "defender_seconds": 0.8875504999987243
+          },
+          {
+            "our_side": "A",
+            "winner": "A",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.15443359999881068,
+            "defender_seconds": 0.02232099999946513
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "greedy",
+            "pair": 9,
+            "attacker_seconds": 0.06269239999983256,
+            "defender_seconds": 0.2611359000011362
+          },
+          {
+            "our_side": "A",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.5089411000017208,
+            "defender_seconds": 0.5869788000027256
+          },
+          {
+            "our_side": "D",
+            "winner": "DRAW",
+            "opponent": "minimax",
+            "pair": 9,
+            "attacker_seconds": 0.4264519000016662,
+            "defender_seconds": 0.4980005000015808
+          }
+        ]
+      },
+      "best_generation": 9,
+      "best_points": 55,
+      "weights": [
+        -0.28398682168633727,
+        0.597668876189674,
+        -0.6668165458181159,
+        0.5147928967995492
+      ],
+      "training_outcomes": {
+        "A": 6,
+        "D": 18,
+        "DRAW": 6,
+        "truncated": 2
+      },
+      "new_samples": 1683,
+      "rolling_samples": 5438,
+      "batch_labels": {
+        "-1": 304,
+        "1": 1176,
+        "0": 203
+      },
+      "rolling_labels": {
+        "1": 3342,
+        "-1": 1211,
+        "0": 885
+      },
+      "rolling_fit_mse": 0.6611861487945712,
+      "sha256": "fa4cbbc60e13dca13220ee8ff078075c39af44be9e33881fad7b3662894efbab"
+    }
+  ],
+  "training_outcomes": {
+    "A": 66,
+    "D": 170,
+    "DRAW": 67,
+    "truncated": 17
+  },
+  "total_new_samples": 18242,
+  "sample_labels": {
+    "0": 2800,
+    "1": 10638,
+    "-1": 4804
+  },
+  "experiments": {
+    "baseline": {
+      "standings": {
+        "overall": {
+          "games": 40,
+          "wins": 5,
+          "draws": 29,
+          "losses": 6,
+          "points": 39
+        },
+        "attacker": {
+          "games": 20,
+          "wins": 1,
+          "draws": 15,
+          "losses": 4,
+          "points": 17
+        },
+        "defender": {
+          "games": 20,
+          "wins": 4,
+          "draws": 14,
+          "losses": 2,
+          "points": 22
+        }
+      },
+      "paired": {
+        "pairs": 20,
+        "point_rate": 0.4875,
+        "ci95": [
+          0.425,
+          0.5375
+        ],
+        "bootstrap_seed": 42,
+        "bootstrap_samples": 10000,
+        "pair_scores": {
+          "1": 0.75,
+          "2": 0.5,
+          "3": 0.5,
+          "4": 0.5,
+          "5": 0.5,
+          "6": 0.5,
+          "7": 0.5,
+          "8": 0.5,
+          "9": 0.5,
+          "10": 0.5,
+          "11": 0.5,
+          "12": 0.0,
+          "13": 0.5,
+          "14": 0.5,
+          "15": 0.5,
+          "16": 0.5,
+          "17": 0.5,
+          "18": 0.5,
+          "19": 0.5,
+          "20": 0.5
+        }
+      },
+      "issues": {
+        "illegal_moves": 0,
+        "timeouts": 0,
+        "exceptions": 0
+      },
+      "max_player_seconds": 7.044309000000794,
+      "elapsed_seconds": 55.53036600000269,
+      "sha256": "dde7ff93d7ec78e7e39cfbd0615cc3ad9eef710dff8cb5e527c2cd4ec7c81633"
+    },
+    "candidate10_vs_minimax": {
+      "standings": {
+        "overall": {
+          "games": 40,
+          "wins": 7,
+          "draws": 28,
+          "losses": 5,
+          "points": 42
+        },
+        "attacker": {
+          "games": 20,
+          "wins": 4,
+          "draws": 12,
+          "losses": 4,
+          "points": 20
+        },
+        "defender": {
+          "games": 20,
+          "wins": 3,
+          "draws": 16,
+          "losses": 1,
+          "points": 22
+        }
+      },
+      "paired": {
+        "pairs": 20,
+        "point_rate": 0.525,
+        "ci95": [
+          0.45,
+          0.6125
+        ],
+        "bootstrap_seed": 42,
+        "bootstrap_samples": 10000,
+        "pair_scores": {
+          "1": 0.75,
+          "2": 0.5,
+          "3": 0.5,
+          "4": 0.5,
+          "5": 1.0,
+          "6": 0.25,
+          "7": 0.5,
+          "8": 0.5,
+          "9": 1.0,
+          "10": 0.5,
+          "11": 0.25,
+          "12": 0.5,
+          "13": 0.5,
+          "14": 0.25,
+          "15": 0.5,
+          "16": 0.5,
+          "17": 0.5,
+          "18": 0.5,
+          "19": 0.5,
+          "20": 0.5
+        }
+      },
+      "issues": {
+        "illegal_moves": 0,
+        "timeouts": 0,
+        "exceptions": 0
+      },
+      "max_player_seconds": 1.681431099999827,
+      "elapsed_seconds": 36.63296530000116,
+      "sha256": "db4ee99065373fea2c641c7427282183dd3ee49bb973624b32588d60f10cc172"
+    },
+    "best10_vs_adaptive": {
+      "standings": {
+        "overall": {
+          "games": 40,
+          "wins": 7,
+          "draws": 30,
+          "losses": 3,
+          "points": 44
+        },
+        "attacker": {
+          "games": 20,
+          "wins": 3,
+          "draws": 16,
+          "losses": 1,
+          "points": 22
+        },
+        "defender": {
+          "games": 20,
+          "wins": 4,
+          "draws": 14,
+          "losses": 2,
+          "points": 22
+        }
+      },
+      "paired": {
+        "pairs": 20,
+        "point_rate": 0.55,
+        "ci95": [
+          0.4875,
+          0.6125
+        ],
+        "bootstrap_seed": 42,
+        "bootstrap_samples": 10000,
+        "pair_scores": {
+          "1": 0.5,
+          "2": 0.5,
+          "3": 0.5,
+          "4": 0.5,
+          "5": 1.0,
+          "6": 0.5,
+          "7": 0.5,
+          "8": 0.5,
+          "9": 0.75,
+          "10": 0.5,
+          "11": 0.75,
+          "12": 0.5,
+          "13": 0.25,
+          "14": 0.75,
+          "15": 0.5,
+          "16": 0.5,
+          "17": 0.5,
+          "18": 0.5,
+          "19": 0.5,
+          "20": 0.5
+        }
+      },
+      "issues": {
+        "illegal_moves": 0,
+        "timeouts": 0,
+        "exceptions": 0
+      },
+      "max_player_seconds": 8.747387399998843,
+      "elapsed_seconds": 59.32635610000216,
+      "sha256": "44d27c3148f909862b3290953bb9c369cdd38ca4e08b71fdcffebd0aaf4de49a"
+    },
+    "candidate10_vs_dynamic": {
+      "standings": {
+        "overall": {
+          "games": 40,
+          "wins": 2,
+          "draws": 7,
+          "losses": 31,
+          "points": 11
+        },
+        "attacker": {
+          "games": 20,
+          "wins": 1,
+          "draws": 5,
+          "losses": 14,
+          "points": 7
+        },
+        "defender": {
+          "games": 20,
+          "wins": 1,
+          "draws": 2,
+          "losses": 17,
+          "points": 4
+        }
+      },
+      "paired": {
+        "pairs": 20,
+        "point_rate": 0.1375,
+        "ci95": [
+          0.0625,
+          0.225
+        ],
+        "bootstrap_seed": 42,
+        "bootstrap_samples": 10000,
+        "pair_scores": {
+          "1": 0.5,
+          "2": 0.0,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.25,
+          "6": 0.5,
+          "7": 0.0,
+          "8": 0.0,
+          "9": 0.0,
+          "10": 0.25,
+          "11": 0.0,
+          "12": 0.0,
+          "13": 0.5,
+          "14": 0.0,
+          "15": 0.25,
+          "16": 0.0,
+          "17": 0.25,
+          "18": 0.25,
+          "19": 0.0,
+          "20": 0.0
+        }
+      },
+      "issues": {
+        "illegal_moves": 0,
+        "timeouts": 0,
+        "exceptions": 0
+      },
+      "max_player_seconds": 51.983813899998495,
+      "elapsed_seconds": 871.6898079999955,
+      "sha256": "7209b79ab349aa8e199b9a67a605ac6d93436b4a8f78f4a55eaee9c054ada3cc"
+    },
+    "best10_vs_minimax": {
+      "standings": {
+        "overall": {
+          "games": 40,
+          "wins": 7,
+          "draws": 28,
+          "losses": 5,
+          "points": 42
+        },
+        "attacker": {
+          "games": 20,
+          "wins": 3,
+          "draws": 14,
+          "losses": 3,
+          "points": 20
+        },
+        "defender": {
+          "games": 20,
+          "wins": 4,
+          "draws": 14,
+          "losses": 2,
+          "points": 22
+        }
+      },
+      "paired": {
+        "pairs": 20,
+        "point_rate": 0.525,
+        "ci95": [
+          0.4625,
+          0.6
+        ],
+        "bootstrap_seed": 42,
+        "bootstrap_samples": 10000,
+        "pair_scores": {
+          "1": 0.25,
+          "2": 0.5,
+          "3": 0.5,
+          "4": 0.5,
+          "5": 1.0,
+          "6": 0.5,
+          "7": 0.5,
+          "8": 0.5,
+          "9": 0.5,
+          "10": 0.5,
+          "11": 0.75,
+          "12": 0.5,
+          "13": 0.25,
+          "14": 0.75,
+          "15": 0.5,
+          "16": 0.5,
+          "17": 0.5,
+          "18": 0.5,
+          "19": 0.5,
+          "20": 0.5
+        }
+      },
+      "issues": {
+        "illegal_moves": 0,
+        "timeouts": 0,
+        "exceptions": 0
+      },
+      "max_player_seconds": 1.6828093999974953,
+      "elapsed_seconds": 30.52841190000254,
+      "sha256": "38140b1f0d6d64e6dbeeacf3b3e2a7ca229c58df09e03179a63401c2d74f4d23"
+    },
+    "frozen_best_holdout": {
+      "standings": {
+        "overall": {
+          "games": 60,
+          "wins": 0,
+          "draws": 57,
+          "losses": 3,
+          "points": 57
+        },
+        "attacker": {
+          "games": 30,
+          "wins": 0,
+          "draws": 28,
+          "losses": 2,
+          "points": 28
+        },
+        "defender": {
+          "games": 30,
+          "wins": 0,
+          "draws": 29,
+          "losses": 1,
+          "points": 29
+        }
+      },
+      "paired": {
+        "pairs": 30,
+        "point_rate": 0.475,
+        "ci95": [
+          0.43333333333333335,
+          0.5
+        ],
+        "bootstrap_seed": 42,
+        "bootstrap_samples": 10000,
+        "pair_scores": {
+          "1": 0.5,
+          "2": 0.5,
+          "3": 0.5,
+          "4": 0.0,
+          "5": 0.5,
+          "6": 0.5,
+          "7": 0.5,
+          "8": 0.5,
+          "9": 0.5,
+          "10": 0.5,
+          "11": 0.5,
+          "12": 0.5,
+          "13": 0.5,
+          "14": 0.5,
+          "15": 0.25,
+          "16": 0.5,
+          "17": 0.5,
+          "18": 0.5,
+          "19": 0.5,
+          "20": 0.5,
+          "21": 0.5,
+          "22": 0.5,
+          "23": 0.5,
+          "24": 0.5,
+          "25": 0.5,
+          "26": 0.5,
+          "27": 0.5,
+          "28": 0.5,
+          "29": 0.5,
+          "30": 0.5
+        }
+      },
+      "issues": {
+        "illegal_moves": 0,
+        "timeouts": 0,
+        "exceptions": 0
+      },
+      "max_player_seconds": 1.7142132999979367,
+      "elapsed_seconds": 40.16705049999928,
+      "sha256": "08475134694dcee0b0336a2f181a902b97e1f213efd07d3b86b0526cbc239661"
+    }
+  },
+  "selected_generation": 9,
+  "selected_weights": [
+    -0.6775309333259347,
+    0.9468302939788227,
+    -1.195110664250957,
+    0.5598865635403484
+  ],
+  "continuation": {
+    "continue_to_30": false,
+    "reason": "Adaptive paired improvement confidence interval includes zero",
+    "gain_point_rate": 0.0625,
+    "gain_ci95": [
+      -0.0125,
+      0.15
+    ],
+    "final_generation": 10,
+    "selected_best_generation": 9,
+    "formal_bot_promoted": false
+  },
+  "split_audit": {
+    "selection_holdout_overlap": 0,
+    "trainer_holdout_overlap": 0,
+    "trainer_selection_overlap": 0,
+    "holdout_generated_after_freeze": true,
+    "selection_seed": 31415,
+    "holdout_seed": 27182,
+    "selection_pairs": 20,
+    "holdout_pairs": 30
+  },
+  "commands_total_minutes": 38.11310432666666,
+  "scope": "Linear training and validation only. Six dynamic ablations explicitly deferred by user."
+}

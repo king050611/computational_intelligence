@@ -92,3 +92,7 @@ benchmark汇总没有完整走法，不能还原成棋谱；replay_demo会重新
 可审计汇总及原始文件校验值见 [final_merge_validation.json](final_merge_validation.json)。本地原始输出位于 `experiments/final_baseline.json`、`experiments/aths/`、`replays/final_merge/` 和 `training/final_merge_*`。大型产物不随代码上传。合并前67份已有训练、实验、回放文件已复制到仓库外临时备份目录并逐文件验证SHA256；另保留原始稳定和最新开发的远程备份分支。未找到1100轮神经检查点，不宣称已备份或评测它。参考资料目录保持原样。
 
 本轮为自动化测试与本地复核，未声称已经完成组员人工审核；正式组员审核和独立棋力验证仍需团队完成。保留现有功能及备份分支以便追溯，未批量删分支。
+
+## 2026-11-25 线性训练复盘
+
+本轮完成10轮×32局线性自博弈、阶段对照及60局最终留出。详见[训练验收与详细复盘](LINEAR_SELFPLAY_REVIEW_20261125.md)。冻结Best的留出积分率47.5%，未证明优于原版Minimax；正式Bot未切换。原始检查点、对战JSON及归档包保存在本机，未上传GitHub。六组增强搜索调参按用户选择留待下一轮。
