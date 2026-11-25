@@ -7,7 +7,8 @@ from scripts.generate_openings import generate_openings
 from scripts.run_experiments import summarize
 from src.enhanced_search import EnhancedSearch, choose_enhanced, evaluate
 from src.game import apply_move, check_winner, get_legal_moves, get_state_key, initial_board
-from src.search import SearchTimeout, WIN_SCORE, alpha_beta
+from src.enhanced_search import SearchTimeout, WIN_SCORE
+from tests.oracle import exact_score
 from src.tactics import analyze
 from src.time_control import AdaptiveTimeManager
 from src.transposition import MoveHints
@@ -35,8 +36,7 @@ class EnhancedSearchTests(unittest.TestCase):
                     score, pv = session(side).visit(board, side, 2, -inf, inf, ())
                     other = "D" if side == "A" else "A"
                     path = (get_state_key(board, side),)
-                    exact = {move: alpha_beta(apply_move(board, move, side), other,
-                                             side, 1, -inf, inf, inf, path)
+                    exact = {move: exact_score(apply_move(board, move, side), other, side, 1, path)
                              for move in get_legal_moves(board, side)}
                     self.assertEqual(score, max(exact.values()))
                     self.assertEqual(exact[pv[0]], score)
@@ -49,7 +49,7 @@ class EnhancedSearchTests(unittest.TestCase):
         self.assertIsNotNone(search.hints.get(key))
         self.assertEqual(search.visit(board, "A", 2, -inf, inf, (key,)), (0, ()))
         self.assertEqual(search.visit(board, "A", 2, -inf, inf, (get_state_key(board, "D"),))[0],
-                         alpha_beta(board, "A", "A", 2, -inf, inf, inf))
+                         exact_score(board, "A", "A", 2))
 
     def test_completed_layer_survives_timeout(self):
         board = initial_board()

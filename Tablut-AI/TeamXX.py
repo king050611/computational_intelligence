@@ -1,35 +1,7 @@
-"""Official adapter. Create a new Player for each game."""
-from time import perf_counter
-from config.settings import ENABLE_ADAPTIVE_SEARCH
-from src.game import parse_board
-from src.search import TimeManager, choose_move
+"""Official standard-library bot. Learned models are never loaded implicitly."""
+from src.experimental_player import ExperimentalPlayer
+from src.game import initial_board
 
-
-class Player:
+class Player(ExperimentalPlayer):
     def __init__(self, record_search=False):
-        self.clock = TimeManager()
-        self.record_search = record_search
-        self.last_search_stats = None
-
-    def _play(self, board, player):
-        self.last_search_stats = None
-        stats = {} if self.record_search else None
-        start = perf_counter()
-        try:
-            move = choose_move(parse_board(board), player, self.clock.deadline(),
-                               strategy="adaptive" if ENABLE_ADAPTIVE_SEARCH else "minimax", stats=stats)
-            if move is None:
-                raise ValueError("No legal move: game should already be over")
-            return [list(move[0]), list(move[1])]
-        finally:
-            elapsed = perf_counter() - start
-            self.clock.record_elapsed(elapsed)
-            if stats is not None:
-                stats["elapsed_seconds"] = elapsed
-                self.last_search_stats = stats
-
-    def play_attacker(self, board):
-        return self._play(board, "A")
-
-    def play_defender(self, board):
-        return self._play(board, "D")
+        super().__init__("enhanced_dynamic",record_search=record_search, opening=initial_board())

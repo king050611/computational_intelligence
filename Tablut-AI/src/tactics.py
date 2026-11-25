@@ -58,3 +58,15 @@ def analyze(board, side, deadline, history=()):
     except TimeoutError:
         return TacticalInfo(tuple(wins), threat, tuple(safe), False, "unknown")
     return TacticalInfo(tuple(wins), threat, tuple(safe), True, "critical" if threat else "normal")
+
+
+def is_urgent(board):
+    """An open king escape or two adjacent attackers marks a tactical position."""
+    king = next(((r,c) for r in range(9) for c in range(9) if board[r][c] == "K"), None)
+    if king is None:
+        return False
+    r,c = king
+    pressure = sum(0 <= r+dr < 9 and 0 <= c+dc < 9 and board[r+dr][c+dc] == "A"
+                   for dr,dc in ((-1,0),(1,0),(0,-1),(0,1)))
+    return pressure >= 2 or any(start == king and (0 in end or 8 in end)
+                                for start,end in get_legal_moves(board,"D"))

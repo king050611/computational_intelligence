@@ -5,15 +5,23 @@ from time import perf_counter
 
 from config.experimental import SearchOptions
 from config.settings import DIRECTIONS
-from src.evaluation import evaluate_attacker, evaluate_defender
+from config.evolution import BASE_WEIGHTS
+from src.evaluation import WeightedEvaluator
 from src.game import apply_move, check_winner, get_legal_moves, get_state_key
-from src.search import SearchTimeout, WIN_SCORE
+WIN_SCORE = 1_000_000_000.0
+
+
+class SearchTimeout(Exception):
+    """Discard an incomplete search iteration."""
 from src.tactics import opponent
 from src.transposition import MoveHints
 
 
+DEFAULT_EVALUATOR = WeightedEvaluator(BASE_WEIGHTS)
+
+
 def evaluate(board, side):
-    return (evaluate_attacker if side == "A" else evaluate_defender)(board)
+    return DEFAULT_EVALUATOR(board, side)
 
 
 class EnhancedSearch:

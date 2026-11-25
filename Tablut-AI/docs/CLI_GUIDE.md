@@ -1,92 +1,28 @@
-# 与 AI 下棋：普通玩家指南
+# 与AI下棋
 
-需要 Python 3.9+。在项目的 `Tablut-AI/` 文件夹打开终端，输入：
+安装Python 3.9+，在Tablut-AI目录启动：
 
 ```powershell
 python scripts/play_cli.py
+python scripts/play_cli.py --side A --strategy enhanced
+python scripts/play_cli.py --side D --strategy enhanced_dynamic --show-search
 ```
 
-程序会询问你选哪一方：A是进攻方，先走，目标是围捕国王；D是防守方，后走，目标是让国王到达棋盘边缘。
-
-## 选边与策略
-
-```powershell
-# 你进攻，AI防守
-python scripts/play_cli.py --side A
-
-# 你防守，AI进攻并先走
-python scripts/play_cli.py --side D
-```
-
-默认AI策略为adaptive。也可选择：
-
-| `--strategy` | AI的行为 |
-| --- | --- |
-| random | 随机挑选合法动作，可用于熟悉操作 |
-| greedy | 模拟一步，按局面评分选择 |
-| minimax | 考虑双方行动，目标深度2 |
-| adaptive | 根据局面、分支数和预算，目标深度2或3 |
-| first | 固定选择第一个合法动作，主要用于调试 |
-
-这些是策略选项，不保证固定的强弱排名。初次体验可以运行：
-
-```powershell
-python scripts/play_cli.py --side A --strategy random --seed 42
-```
-
-`--seed` 控制random策略的随机选择。`--help` 显示所有启动参数。
-
-## 棋盘与输入
-
-棋盘有9行9列：列是A–I，行是1–9，左上角为A1。输入时先写列字母，再写行号。
-
-| 格子中的字符 | 含义 |
-| --- | --- |
-| A | 进攻棋子 |
-| D | 防守棋子 |
-| K | 国王，属于防守方 |
-| . | 普通空格 |
-| X | 空城堡，位于中心E5 |
-
-表头的列名A与格子里的攻击棋子A不同。移动时输入两个坐标，用空格分开。例如初始进攻方可输入：
-
-```text
-D1 C1
-```
-
-意思是D1的攻击棋子向左移到C1。小写 `d1 c1` 同样有效；不要使用逗号或从0开始的数字坐标。
-
-棋子沿横向或纵向滑动，不能斜行、越子或落在其他棋子上。空城堡可以经过，不能停在上面。输错坐标或走法会收到提示，可在同一回合重新输入。
-
-## 游戏内命令
+A为攻方，先走；D为守方，帮助国王逃到边缘。列A–I、行1–9，例如 `D1 C1`。只能水平或垂直移动，不能越子；空城堡可穿越但不可停留。错误输入会重试。
 
 | 输入 | 作用 |
 | --- | --- |
-| `D1 C1` | 尝试移动棋子 |
-| `help` | 查看操作说明 |
-| `moves` | 列出你当前所有合法走法 |
-| `board` | 重新显示棋盘 |
-| `quit` | 中止本局，不判胜负 |
-| Ctrl+C | 中断本局，不判胜负 |
+| `help` | 操作说明 |
+| `moves` | 所有合法动作 |
+| `board` | 再次显示棋盘 |
+| `quit` / Ctrl+C | 中止，不计胜负 |
 
-命令不区分大小写。每次成功移动后会显示新棋盘，AI行动还会显示走法和耗时。选D时请先等待AI行动。
+默认AI为Enhanced Dynamic，另有Enhanced。`random`仅保留为测试/演示基线。人类思考不限时，AI每局累计60秒。`--show-search`展示实际目标/完成深度、节点、截止和回退；目标深度不保证完成。
 
-## 结束与计时
-
-- 国王到达棋盘边缘，或攻击棋子少于两枚：防守方胜。
-- 国王被捕：进攻方胜。普通夹击和城堡附近的特殊捕获由官方裁判处理。
-- 相同棋盘且轮到同一方再次出现，或当前方无合法动作：平局。因此国王仍在棋盘上也可能已经结束。
-- `quit`、Ctrl+C或输入流关闭：中止，既不算输棋也不算平局。
-- AI异常、非法动作或累计超时：明确提示原因，AI判负。内部裁判一致性问题则停止游戏供检查。
-
-人类思考与输入不限时；AI每局累计预算60秒，在决策返回后检查，沿用原有搜索时间管理。该模式用于本地体验，不作为正式联赛性能证明。
-
-## 观察搜索信息
+只有显式使用已保存的六特征模型时，才启用遗传策略：
 
 ```powershell
-python scripts/play_cli.py --side D --strategy adaptive --show-search
+python scripts/play_cli.py --side D --strategy evolutionary_dynamic --model reports/training/evolution_run/best.json --show-search
 ```
 
-会显示AI实际目标/完成深度、递归节点、结束原因及是否回退。未提供的记录不会补造；具体字段供开发者查阅[技术参考](TECHNICAL_REFERENCE.md)。
-
-当前人机模式不保存JSON或HTML，自动对战回放不能还原你刚下的人机比赛。要进行AI实验请看[实验指南](EXPERIMENT_GUIDE.md)；返回[项目首页](../README.md)。
+模型路径必须实际存在；旧线性/神经模型不兼容。普通策略不能传模型。人机模式当前不保存棋谱；逐步回放请使用[实验指南](EXPERIMENT_GUIDE.md)中的独立Demo。

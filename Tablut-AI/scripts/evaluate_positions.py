@@ -11,7 +11,6 @@ from config.experimental import SearchOptions
 from scripts.generate_openings import generate_openings
 from src.enhanced_search import EnhancedSearch, evaluate
 from src.game import apply_move, get_legal_moves, parse_board
-from src.search import alpha_beta
 
 
 def compare(count, depth, seed):
@@ -23,22 +22,19 @@ def compare(count, depth, seed):
         if side == "D":
             board = apply_move(board, get_legal_moves(board, "A")[0], "A")
         scores, stats = {}, {}
-        implementations = ("legacy", "plain", "ordered", "hinted")
+        implementations = ("plain", "ordered", "hinted")
         for mode in implementations:
             start = perf_counter()
             counter = dict(nodes=0, cutoffs=0, tt_hint_hits=0)
-            if mode == "legacy":
-                score = alpha_beta(board, side, side, depth, -inf, inf, inf, stats=counter)
-            else:
-                options = SearchOptions(depth, 20_000 if mode == "hinted" else 0, mode != "plain")
-                search = EnhancedSearch(side, inf, evaluate, options, counter)
-                score, _ = search.visit(board, side, depth, -inf, inf, ())
+            options = SearchOptions(depth, 20_000 if mode == "hinted" else 0, mode != "plain")
+            search = EnhancedSearch(side, inf, evaluate, options, counter)
+            score, _ = search.visit(board, side, depth, -inf, inf, ())
             seconds = perf_counter() - start
             scores[mode] = score
             stats[mode] = dict(**counter, seconds=seconds, nodes_per_second=counter["nodes"] / seconds)
         if len(set(scores.values())) != 1:
             raise AssertionError(f"Position {entry['id']} ({side}) disagrees: {scores}")
-        results.append(dict(id=entry["id"], side=side, score=scores["legacy"], stats=stats))
+        results.append(dict(id=entry["id"], side=side, score=scores["plain"], stats=stats))
     return results
 
 
@@ -58,7 +54,7 @@ def main():
     for mode in results[0]["stats"]:
         nodes = sum(row["stats"][mode]["nodes"] for row in results)
         seconds = sum(row["stats"][mode]["seconds"] for row in results)
-        slower = sum(row["stats"][mode]["seconds"] > row["stats"]["legacy"]["seconds"] for row in results)
+        slower = sum(row["stats"][mode]["seconds"] > row["stats"]["plain"]["seconds"] for row in results)
         print(f"{mode}: {nodes} nodes, {seconds:.3f}s, {nodes / seconds:.0f} nodes/s, {slower} slower positions")
     print(f"Exact scores agree on {len(results)} positions at depth {args.depth}")
 

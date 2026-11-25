@@ -1,19 +1,26 @@
-"""Course-facing adapter for opt-in searches and turn-aware game history."""
+"""Unified course adapter with time management and turn-aware history."""
 from time import perf_counter
 
-from config.experimental import SearchOptions
-from src.experimental_search import choose_experimental_move
+from random import Random
+from config.experimental import SearchOptions, AVAILABLE_STRATEGIES
+from src.enhanced_search import choose_enhanced
 from src.game import apply_move, get_legal_moves, get_state_key, parse_board
-from src.search import TimeManager, is_urgent
+from src.time_control import TimeManager
+from src.tactics import is_urgent
 from src.tactics import opponent
 from src.time_control import AdaptiveTimeManager
 
 
 class ExperimentalPlayer:
-    def __init__(self, strategy, *, opening=None, options=None, record_search=False):
+    def __init__(self, strategy, *, opening=None, options=None, record_search=False, evaluator=None, seed=42):
+        if strategy not in AVAILABLE_STRATEGIES:
+            raise ValueError(f"Unknown strategy: {strategy}")
+        if (strategy == "evolutionary_dynamic") != (evaluator is not None):
+            raise ValueError("Only evolutionary_dynamic requires a six-feature model")
+        self.evaluator, self.rng = evaluator, Random(seed)
         self.strategy = strategy
         self.options = options if options is not None else SearchOptions()
-        self.clock = AdaptiveTimeManager() if strategy == "enhanced_dynamic" else TimeManager()
+        self.clock = AdaptiveTimeManager() if strategy in ("enhanced_dynamic", "evolutionary_dynamic") else TimeManager()
         self.history = []
         self.opening = opening
         self.record_search = record_search
@@ -40,13 +47,15 @@ class ExperimentalPlayer:
             else:
                 hard = start + self.clock.allocate_time()
             if stats is not None:
-                stats["budget_seconds"] = hard - start
-            move = choose_experimental_move(
-                board, side, strategy=self.strategy, deadline=hard, soft_deadline=soft,
+                stats.update(strategy=self.strategy, budget_seconds=hard - start)
+            move = self.rng.choice(moves) if self.strategy == "random" else choose_enhanced(
+                board, side, evaluator=self.evaluator, deadline=hard, soft_deadline=soft,
                 history=self.history, stats=stats, options=self.options, moves=moves,
             )
+            if stats is not None and self.strategy == "random":
+                stats.update(completed_depth=0, target_depth=0, nodes=0, timed_out=False, fallback_used=False, finish_reason="random_test_baseline")
             if move not in moves:
-                raise ValueError("Experimental search did not return a legal move")
+                raise ValueError("Search did not return a legal move")
             self.history.extend((get_state_key(board, side),
                                  get_state_key(apply_move(board, move, side), opponent(side))))
             return [list(square) for square in move]

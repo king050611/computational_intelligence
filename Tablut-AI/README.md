@@ -1,81 +1,51 @@
-# JC4004 Tablut AI v2.2
+# JC4004 Tablut AI — 统一 Alpha-Beta
 
-Python Tablut 机器人，支持终端人机对战、自动对战实验、搜索监控和离线棋谱回放。正式评测入口为 `TeamXX.py`。
+项目围绕一个增强搜索引擎、三个核心策略和一个遗传训练入口维护。Python 3.9+，全部运行功能只需标准库；在 `Tablut-AI/` 目录运行命令。
 
-## 准备环境
-
-安装 Python 3.9+，在 `Tablut-AI/` 目录打开终端：
-
-```powershell
-python --version
-python -m unittest discover -s tests -v
-```
-
-原版机器人和线性自博弈只使用 Python 标准库。神经网络训练、神经网络模型对战需要额外安装 `requirements-neural.txt`；未安装NumPy时相关测试会明确跳过。`reference/requirements.txt` 是课程提供的环境快照，不是默认运行的必装依赖。
-
-## 三个入口
-
-### 与 AI 下棋
-
-```powershell
-python scripts/play_cli.py
-```
-
-按提示选 A（进攻，先走）或 D（防守，AI先走）。输入 `D1 C1` 将D列第1行的棋子移到C列第1行；输入 `help` 查看命令。
-
-```powershell
-python scripts/play_cli.py --side A --strategy random
-python scripts/play_cli.py --side D --strategy adaptive --show-search
-```
-
-人类思考不限时，AI累计预算60秒。人机模式尚不保存棋谱或生成回放。完整操作见[人机对战指南](docs/CLI_GUIDE.md)。
-
-### 自动 AI 对战
-
-```powershell
-python scripts/benchmark.py --games 10
-```
-
-默认 Adaptive 对 Random，逐局交换攻守；输出胜平负、积分和JSON统计。实验命令、不同Seed及外部Bot加载见[实验指南](docs/EXPERIMENT_GUIDE.md)。
-
-增强搜索可通过 `--strategy enhanced` 或 `--strategy enhanced_dynamic` 选择。固定深度对照、配对开局和动态计时的复现命令见[实验指南](docs/EXPERIMENT_GUIDE.md)。
-
-### 生成逐步回放
-
-```powershell
-python scripts/replay_demo.py --games 2
-Start-Process 'reports/replays/latest/replay.html'
-```
-
-这是重新进行的两局AI比赛，生成逐步JSON和离线HTML，并不会播放刚才benchmark或人机模式的比赛。两种工具输出的区别见[实验指南](docs/EXPERIMENT_GUIDE.md)。
-
-## 可选：机器学习训练
-
-正式 `Player()`、人机模式、默认自动对战和回放仍使用原有手工评估与搜索，不需要模型文件或 NumPy。线性自博弈可学习三个棋局特征的权重；神经网络扩展提供价值网络+Alpha-Beta，以及策略价值网络+MCTS。它们是按需启用的实验功能，尚不能据训练成功就认定比原版更强。
-
-先做有限轮次的线性流程验证：
-
-```powershell
-python scripts/train_selfplay.py --iterations 1 --train-games 8 --eval-pairs 1 --output-dir reports/training/merge_linear
-```
-
-仅使用神经网络功能时安装额外依赖：
-
-```powershell
-python -m pip install -r requirements-neural.txt
-```
-
-训练、续训、候选/最佳模型、两阶段神经网络、停止和单独评测命令统一见[训练指南](docs/TRAINING_GUIDE.md)。训练产物保存在被Git忽略的 `reports/training/`；当前CLI和Replay尚未接入训练后的神经网络。
-
-## 按任务阅读
-
-| 你想做什么 | 文档 |
+| 策略 | 用途 |
 | --- | --- |
-| 学会与AI下棋 | [CLI_GUIDE.md](docs/CLI_GUIDE.md) |
-| 更换Seed、对照算法、查看回放和验证结果 | [EXPERIMENT_GUIDE.md](docs/EXPERIMENT_GUIDE.md) |
-| 可选线性自博弈、神经网络训练和模型评测 | [TRAINING_GUIDE.md](docs/TRAINING_GUIDE.md) |
-| 理解规则模拟、搜索、接口和JSON字段 | [TECHNICAL_REFERENCE.md](docs/TECHNICAL_REFERENCE.md) |
-| 查看组员分工、当前进度和后续任务 | [DEVELOPMENT_PLAN.md](docs/DEVELOPMENT_PLAN.md) |
-| 找到已有实验数据、棋谱和截图 | [reports/README.md](reports/README.md) |
+| `enhanced` | 迭代加深、完整分支Alpha-Beta、走法排序、置换走法提示；静态预算 |
+| `enhanced_dynamic` | 相同搜索器，使用动态预算；正式 `TeamXX.Player()` 默认 |
+| `evolutionary_dynamic` | 相同动态搜索，显式加载六特征遗传权重；研究策略，尚未证明更强 |
 
-普通玩家只需先阅读人机指南。Adaptive使用Minimax、Alpha-Beta和迭代加深，但不预设它一定比其他策略更强；正式组号、提交包及课程引用要求见开发计划。
+`random` 只作为测试、演示对手保留。First、Greedy、旧Minimax/Adaptive、线性训练、神经网络和MCTS已从当前入口移除。旧成果的归档及历史版本见[精简复盘](reports/SIMPLIFICATION_REVIEW_20261125.md)。
+
+## 验证与人机对战
+
+```powershell
+python -m unittest discover -s tests -v
+python scripts/play_cli.py --side D --strategy enhanced_dynamic --show-search
+```
+
+列A–I、行1–9，输入 `D1 C1` 走棋；支持 `help`、`moves`、`board`、`quit`。人类思考不限时，AI每局累计60秒。详见[CLI指南](docs/CLI_GUIDE.md)。
+
+## 自动对战与棋谱
+
+```powershell
+python scripts/benchmark.py --strategy enhanced_dynamic --opponent enhanced --games 2
+python scripts/replay_demo.py --strategy enhanced_dynamic --opponent random --games 2 --seed 42 --output-dir reports/replays/current_seed42
+Start-Process reports/replays/current_seed42/replay.html
+```
+
+Benchmark输出统计JSON；Replay重新进行比赛，输出逐步棋谱JSON和离线HTML。它不会自动播放Benchmark的对局。更换Random种子可产生不同棋局，不能保证改变胜负。详情见[实验指南](docs/EXPERIMENT_GUIDE.md)。
+
+## 唯一训练入口：遗传权重优化
+
+先验证流程，再决定是否启动耗时更长的正式训练：
+
+```powershell
+python scripts/train_evolution.py --generations 1 --population 2 --elite 1 --pairs 1 --max-depth 1 --output-dir reports/training/evolution_quickstart
+```
+
+这只是低深度、小种群流程验证。正式建议配置为12个体、2精英、10代、4对开局，默认最大搜索深度4，每代96局、10代960局。内部best不等于通过独立验证的模型；正式Bot不自动读取模型。完整训练、续训、停止和留出验证见[训练指南](docs/TRAINING_GUIDE.md)。
+
+## 文档导航
+
+- [CLI_GUIDE](docs/CLI_GUIDE.md)：普通玩家操作。
+- [EXPERIMENT_GUIDE](docs/EXPERIMENT_GUIDE.md)：配对对照、统计和回放。
+- [TECHNICAL_REFERENCE](docs/TECHNICAL_REFERENCE.md)：统一搜索、特征、模型和接口。
+- [TRAINING_GUIDE](docs/TRAINING_GUIDE.md)：唯一遗传训练流程。
+- [DEVELOPMENT_PLAN](docs/DEVELOPMENT_PLAN.md)：已完成及尚待验证的工作。
+- [reports/README](reports/README.md)：当前与历史结果索引。
+
+课程规则、初始棋盘及官方裁判保持原样。正式组号仍需替换TeamXX，并按课程要求打包实际依赖的config/src模块。

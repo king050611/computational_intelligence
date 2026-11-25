@@ -9,10 +9,13 @@ from pathlib import Path
 from time import perf_counter
 
 # Import adapters first: benchmark sets up the project and reference paths.
-from benchmark import ROOT, StrategyBot, Timed
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from scripts.benchmark import ROOT, Timed
 from Tablut import Tablut
-from TeamXX import Player
-from src.search import STRATEGIES
+from config.experimental import AVAILABLE_STRATEGIES as STRATEGIES
+from src.experimental_player import ExperimentalPlayer
+from src.evaluation import load_evaluator
 
 
 def snapshot(board):
@@ -93,11 +96,11 @@ class ObservedPlayer:
         return self._play(board,"D")
 
 
-def record_game(index, strategy, opponent, seed):
+def record_game(index, strategy, opponent, seed, *, evaluator=None, opponent_evaluator=None):
     game = Recorder()
     our_side = "A" if index%2==0 else "D"
-    ours = Player(record_search=True) if strategy=="adaptive" else StrategyBot(strategy,seed,record_search=True)
-    other = StrategyBot(opponent,seed,record_search=True)
+    ours = ExperimentalPlayer(strategy,seed=seed,record_search=True,evaluator=evaluator,opening=game.initial_board)
+    other = ExperimentalPlayer(opponent,seed=seed,record_search=True,evaluator=opponent_evaluator,opening=game.initial_board)
     ours = ObservedPlayer(ours,game,strategy)
     other = ObservedPlayer(other,game,opponent)
     attacker, defender = (ours,other) if our_side=="A" else (other,ours)
@@ -135,17 +138,26 @@ def write_replay(data, output):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--games",type=int,default=2)
-    parser.add_argument("--strategy",choices=STRATEGIES,default="adaptive")
+    parser.add_argument("--strategy",choices=STRATEGIES,default="enhanced_dynamic")
     parser.add_argument("--opponent",choices=STRATEGIES,default="random")
     parser.add_argument("--seed",type=int,default=42)
     parser.add_argument("--output-dir",type=Path,default=ROOT/"reports"/"replays"/"latest")
+    parser.add_argument("--model",type=Path)
+    parser.add_argument("--opponent-model",type=Path)
     args=parser.parse_args()
+    if (args.strategy == "evolutionary_dynamic") != (args.model is not None) or (args.opponent == "evolutionary_dynamic") != (args.opponent_model is not None):
+        parser.error("Evolutionary strategies require their corresponding model; other strategies reject models")
+    try:
+        evaluator=load_evaluator(args.model) if args.model else None
+        other_evaluator=load_evaluator(args.opponent_model) if args.opponent_model else None
+    except (OSError,ValueError,KeyError,TypeError) as exc:
+        parser.error(str(exc))
     if args.games<1:
         parser.error("--games must be positive")
     data=dict(schema_version="1.1",created_at=datetime.now(timezone.utc).isoformat(),
               coordinates="zero-based [row, column]",symbols={"A":"attacker","D":"defender","K":"king","X":"empty castle",".":"empty"},
               note="Demo observation adds overhead. Nodes count alpha-beta recursion only; null means unrecorded.",
-              games=[record_game(i,args.strategy,args.opponent,args.seed+i) for i in range(args.games)])
+              games=[record_game(i,args.strategy,args.opponent,args.seed+i,evaluator=evaluator,opponent_evaluator=other_evaluator) for i in range(args.games)])
     path=write_replay(data,args.output_dir)
     for game in data["games"]:
         print(f"Game {game['game']}: {game['accepted_moves']} moves; {game['result']}")

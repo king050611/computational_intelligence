@@ -18,13 +18,10 @@ from time import perf_counter
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "reference")]
 from Tablut import Tablut
-from TeamXX import Player
-from src.learning import load_evaluator
-from config.experimental import SearchOptions
+from src.evaluation import load_evaluator
+from config.experimental import SearchOptions, AVAILABLE_STRATEGIES
 from src.experimental_player import ExperimentalPlayer
-from src.experimental_search import EXPERIMENTAL_STRATEGIES
 from src.game import check_winner, parse_board
-from src.search import choose_move, TimeManager, STRATEGIES
 
 
 def _external_worker(connection, filename):
@@ -107,35 +104,6 @@ class ExternalBot:
             self.process.terminate()
         self.process.join(timeout=2)
         self.connection.close()
-
-
-class StrategyBot:
-    def __init__(self, strategy, seed, record_search=False, *, evaluator=None):
-        self.strategy, self.rng, self.clock = strategy, random.Random(seed), TimeManager()
-        self.record_search = record_search
-        self.evaluator = evaluator
-        self.last_search_stats = None
-
-    def _play(self, board, side):
-        self.last_search_stats = None
-        stats = {} if self.record_search else None
-        start = perf_counter()
-        try:
-            move = choose_move(board,side,self.clock.deadline(),self.strategy,self.rng,
-                               stats=stats,evaluator=self.evaluator)
-            return [list(x) for x in move]
-        finally:
-            elapsed = perf_counter()-start
-            self.clock.record_elapsed(elapsed)
-            if stats is not None:
-                stats["elapsed_seconds"] = elapsed
-                self.last_search_stats = stats
-
-    def play_attacker(self, board):
-        return self._play(board,"A")
-
-    def play_defender(self, board):
-        return self._play(board,"D")
 
 
 class Timed:
@@ -222,29 +190,21 @@ def experiment_manifest(options, opening_sha):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--games",type=int)
-    choices = STRATEGIES + EXPERIMENTAL_STRATEGIES
-    parser.add_argument("--strategy",choices=choices,default=None)
+    choices = AVAILABLE_STRATEGIES
+    parser.add_argument("--strategy",choices=choices,default="enhanced_dynamic")
     opponents=parser.add_mutually_exclusive_group()
     opponents.add_argument("--opponent",choices=choices,default="random")
     opponents.add_argument("--opponent-file",type=Path)
-    models=parser.add_mutually_exclusive_group()
-    models.add_argument("--model",type=Path,help="Use the best evaluator in a training checkpoint")
-    models.add_argument("--neural-model",type=Path,help="Use Alpha鈥揃eta or MCTS as specified by a neural checkpoint")
-    parser.add_argument("--candidate",action="store_true",help="Use the candidate in --model")
-    parser.add_argument("--opponent-model",type=Path,help="Use a training checkpoint for the built-in opponent")
+    parser.add_argument("--model",type=Path,help="Six-feature evolutionary model for evolutionary_dynamic")
+    parser.add_argument("--opponent-model",type=Path,help="Model for an evolutionary_dynamic opponent")
     parser.add_argument("--seed",type=int,default=42)
     parser.add_argument("--output",type=Path)
     parser.add_argument("--openings", type=Path, help="Use each opening twice, swapping roles")
-    parser.add_argument("--max-depth", type=int, default=4, help="Experimental search only")
+    parser.add_argument("--max-depth", type=int, default=4, help="Maximum iterative-deepening depth")
     parser.add_argument("--tt-capacity", type=int, default=20_000, help="Zero disables move hints")
     parser.add_argument("--no-ordering", action="store_true", help="Disable experimental move ordering")
-    parser.add_argument("--record-search", action="store_true", help="Record experimental decision statistics")
+    parser.add_argument("--record-search", action="store_true", help="Record decision statistics")
     args=parser.parse_args()
-    if args.neural_model and args.strategy is not None:
-        parser.error("--strategy cannot be combined with --neural-model; the checkpoint selects value or MCTS search")
-    args.strategy = args.strategy or "adaptive"
-    experimental = args.strategy in EXPERIMENTAL_STRATEGIES or args.opponent in EXPERIMENTAL_STRATEGIES
-    isolated = experimental or args.openings is not None
     openings, opening_sha = None, None
     try:
         options = SearchOptions(args.max_depth, args.tt_capacity, not args.no_ordering)
@@ -262,59 +222,31 @@ def main():
         parser.error("--opponent-file must be an existing Python file")
     if args.opponent_file and args.opponent_model:
         parser.error("--opponent-model requires a built-in opponent")
-    if args.candidate and not args.model:
-        parser.error("--candidate requires --model")
-    if (args.model and args.strategy not in ("greedy","minimax","adaptive")) or (
-        args.opponent_model and args.opponent not in ("greedy","minimax","adaptive")
-    ):
-        parser.error("A checkpoint requires greedy, minimax or adaptive search")
+    if (args.strategy == "evolutionary_dynamic") != (args.model is not None):
+        parser.error("--model is required only for evolutionary_dynamic")
+    if not args.opponent_file and ((args.opponent == "evolutionary_dynamic") != (args.opponent_model is not None)):
+        parser.error("--opponent-model is required only for an evolutionary_dynamic opponent")
     try:
-        evaluator = load_evaluator(args.model,candidate=args.candidate) if args.model else None
+        evaluator = load_evaluator(args.model) if args.model else None
         opponent_evaluator = load_evaluator(args.opponent_model) if args.opponent_model else None
-        if args.neural_model:
-            from src.neural import load_network
-            from src.neural_player import NeuralPlayer
-
-            network, metadata = load_network(args.neural_model)
-            phase = metadata["phase"]
-            simulations = metadata["config"]["simulations"]
-            if type(simulations) is not int or simulations < 1:
-                raise ValueError("Neural checkpoint simulations must be a positive integer")
-    except ModuleNotFoundError as exc:
-        if exc.name != "numpy":
-            raise
-        parser.error("Neural models require NumPy: python -m pip install -r requirements-neural.txt")
     except (OSError, ValueError, KeyError, TypeError) as exc:
         parser.error(str(exc))
     output = args.output
-    if output is None and (args.model or args.neural_model or args.opponent_model) and not isolated:
-        label = "neural_" + phase if args.neural_model else "selfplay"
+    if output is None:
         stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
-        output = ROOT / "reports/experiments" / f"{label}_seed{args.seed}_{stamp}.json"
-    if output is None and isolated:
-        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
-        output = ROOT / "reports/experiments/aths" / f"{args.strategy}_vs_{args.opponent}_{stamp}.json"
-    output = output or ROOT / "reports/experiments/latest_v2.json"
-    if isolated and output.exists():
-        parser.error(f"Experimental output already exists: {output}")
-    manifest = experiment_manifest(options, opening_sha) if isolated else None
+        output = ROOT / "reports/experiments/search" / f"{args.strategy}_vs_{args.opponent}_{stamp}.json"
+    if output.exists():
+        parser.error(f"Output already exists: {output}")
+    manifest = experiment_manifest(options, opening_sha)
 
-    def make_bot(strategy, seed, board, official, evaluator=None):
-        if strategy in EXPERIMENTAL_STRATEGIES:
-            return ExperimentalPlayer(strategy, opening=board, options=options,
-                                      record_search=args.record_search)
-        if official and strategy == "adaptive" and evaluator is None:
-            return Player()
-        return StrategyBot(strategy, seed, evaluator=evaluator)
+    def make_bot(strategy, seed, board, evaluator=None):
+        return ExperimentalPlayer(strategy, opening=board, options=options,
+                                  record_search=args.record_search, evaluator=evaluator, seed=seed)
 
-    if manifest is not None:
-        manifest["evaluator"] = "neural_" + phase if args.neural_model else "linear" if args.model else "hand_tuned"
-        manifest["opponent_evaluator"] = "linear" if args.opponent_model else "hand_tuned"
-        manifest["model_sha256"] = {
-            name: hashlib.sha256(path.read_bytes()).hexdigest()
-            for name, path in (("model", args.model), ("neural_model", args.neural_model),
-                               ("opponent_model", args.opponent_model)) if path
-        }
+    manifest["evaluator"] = "evolutionary_six_features" if args.model else "hand_tuned"
+    manifest["opponent_evaluator"] = "evolutionary_six_features" if args.opponent_model else "hand_tuned"
+    manifest["model_sha256"] = {name: hashlib.sha256(path.read_bytes()).hexdigest()
+                               for name,path in (("model",args.model),("opponent_model",args.opponent_model)) if path}
     results=[]
     for i in range(args.games):
         side="A" if i%2==0 else "D"
@@ -326,9 +258,8 @@ def main():
                 opening_id, board = openings[i//2]
                 game.board = [list(row) for row in board]
             seed = args.seed + (i//2 if openings else i)
-            ours = Timed(NeuralPlayer(network, phase, simulations) if args.neural_model else
-                         make_bot(args.strategy, seed, game.board, True, evaluator))
-            other = Timed(external or make_bot(args.opponent, seed, game.board, False, opponent_evaluator))
+            ours = Timed(make_bot(args.strategy, seed, game.board, evaluator))
+            other = Timed(external or make_bot(args.opponent, seed, game.board, opponent_evaluator))
             a,d=(ours,other) if side=="A" else (other,ours)
             start=perf_counter()
             with contextlib.redirect_stdout(io.StringIO()) as log:
@@ -346,35 +277,29 @@ def main():
                                 illegal_moves=sum(x["illegal_moves"] for x in issues.values()),
                                 timeouts=sum(x["timeouts"] for x in issues.values()),exceptions=sum(x["exceptions"] for x in issues.values()),
                                 issues=issues,log=message,opponent_log="".join(external.log) if external else ""))
-            if isolated:
-                winner = results[-1]["winner"]
-                results[-1].update(opening_id=opening_id, seed=seed,
-                                   points=1 if winner == "DRAW" else 2 if winner == side else 0,
-                                   invalid_returns=sum(len(x["invalid_returns"]) for x in issues.values()))
-                if args.record_search:
-                    results[-1]["search_stats"] = {"A": a.search_stats, "D": d.search_stats}
-                print(f"Game {i + 1}/{args.games}: {side} vs {winner}", flush=True)
+            winner = results[-1]["winner"]
+            results[-1].update(opening_id=opening_id, seed=seed,
+                               points=1 if winner == "DRAW" else 2 if winner == side else 0,
+                               invalid_returns=sum(len(x["invalid_returns"]) for x in issues.values()))
+            if args.record_search:
+                results[-1]["search_stats"] = {"A": a.search_stats, "D": d.search_stats}
+            print(f"Game {i + 1}/{args.games}: {side} vs {winner}", flush=True)
         finally:
             if external:
                 external.close()
     table=standings(results)
-    summary=dict(version="2.0",strategy=args.strategy,opponent=str(args.opponent_file.resolve()) if args.opponent_file else args.opponent,
+    summary=dict(version="3.0",strategy=args.strategy,opponent=str(args.opponent_file.resolve()) if args.opponent_file else args.opponent,
                  seed=args.seed,games=args.games,standings=table,our_win_rate=table["overall"]["wins"]/args.games,results=results)
     if args.model:
         summary["model"] = str(args.model.resolve())
-        summary["model_selection"] = "candidate" if args.candidate else "best"
-    if args.neural_model:
-        summary["neural_model"] = str(args.neural_model.resolve())
-        summary["strategy"] = "minimax" if phase == "value" else "mcts"
     if args.opponent_model:
         summary["opponent_model"] = str(args.opponent_model.resolve())
-    if manifest is not None:
-        summary["manifest"] = manifest
+    summary["manifest"] = manifest
     for label,row in table.items():
         print(f"{label:10} W {row['wins']} D {row['draws']} L {row['losses']} Points {row['points']}/{2*row['games']}")
     print("Illegal moves / timeouts / exceptions:",*[sum(x[k] for x in results) for k in ("illegal_moves","timeouts","exceptions")])
     output.parent.mkdir(parents=True,exist_ok=True)
-    with output.open("x" if isolated else "w", encoding="utf-8") as file:
+    with output.open("x", encoding="utf-8") as file:
         json.dump(summary, file, indent=2)
     print("JSON:",output)
     if any(x["illegal_moves"] or x["timeouts"] or x["exceptions"] for x in results):

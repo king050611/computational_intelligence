@@ -9,10 +9,10 @@ from time import perf_counter
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "reference")]
 from Tablut import Tablut, TIME_BUDGET
-from TeamXX import Player
-from scripts.benchmark import StrategyBot
+from src.experimental_player import ExperimentalPlayer
+from src.evaluation import load_evaluator
 from src.game import get_legal_moves
-from src.search import STRATEGIES
+from config.experimental import AVAILABLE_STRATEGIES as STRATEGIES
 
 COLUMNS = "ABCDEFGHI"
 HELP = """Enter a move as FROM TO, for example: D1 C1.
@@ -99,8 +99,8 @@ def display_search_stats(stats, write=print):
          "policy_reason", "finish_reason", "timed_out", "fallback_used")))
 
 
-def run_game(human_side, strategy="adaptive", seed=42, show_search=False, *,
-             input_fn=input, write=print, game=None, ai=None):
+def run_game(human_side, strategy="enhanced_dynamic", seed=42, show_search=False, *,
+             input_fn=input, write=print, game=None, ai=None, evaluator=None):
     """Run one local game. Return its outcome; do not save a replay in this phase."""
     if human_side not in ("A", "D"):
         raise ValueError("Human side must be A or D.")
@@ -108,8 +108,7 @@ def run_game(human_side, strategy="adaptive", seed=42, show_search=False, *,
         raise ValueError("Unknown AI strategy.")
     game = Tablut() if game is None else game
     if ai is None:
-        ai = (Player(record_search=show_search) if strategy == "adaptive" else
-              StrategyBot(strategy, seed, record_search=show_search))
+        ai = ExperimentalPlayer(strategy, seed=seed, record_search=show_search, evaluator=evaluator, opening=game.board)
     ai_seconds = 0.0
 
     def finish(status, winner, reason):
@@ -193,10 +192,17 @@ def run_game(human_side, strategy="adaptive", seed=42, show_search=False, *,
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--side", type=str.upper, choices=("A", "D"), help="Your side; prompts if omitted.")
-    parser.add_argument("--strategy", choices=STRATEGIES, default="adaptive")
+    parser.add_argument("--strategy", choices=STRATEGIES, default="enhanced_dynamic")
     parser.add_argument("--seed", type=int, default=42, help="Seed for the random strategy.")
     parser.add_argument("--show-search", action="store_true", help="Show recorded AI search statistics.")
+    parser.add_argument("--model", type=Path, help="Required only with evolutionary_dynamic")
     args = parser.parse_args(argv)
+    if (args.strategy == "evolutionary_dynamic") != (args.model is not None):
+        parser.error("--model is required only for evolutionary_dynamic")
+    try:
+        evaluator = load_evaluator(args.model) if args.model else None
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        parser.error(str(exc))
     side = args.side
     try:
         while side is None:
@@ -211,7 +217,7 @@ def main(argv=None):
     except (EOFError, KeyboardInterrupt):
         print("Game aborted before side selection; no winner.")
         return 0
-    result = run_game(side, args.strategy, args.seed, args.show_search, input_fn=input)
+    result = run_game(side, args.strategy, args.seed, args.show_search, input_fn=input, evaluator=evaluator)
     return int(result["status"] == "error" or result["reason"].startswith("ai_"))
 
 

@@ -1,139 +1,40 @@
-# 技术参考：接口、搜索与数据格式
+# 统一搜索与数据接口
 
-面向开发者。操作见[CLI指南](CLI_GUIDE.md)，命令见[实验指南](EXPERIMENT_GUIDE.md)，数据见[结果索引](../reports/README.md)。
+## 规则与正式入口
 
-## 1. 数据与规则
+`game.py`和`reference/Tablut.py`保持原样。棋盘9×9，内部不可变元组；A攻、D守、K国王、X空城堡。Move为`((row,col),(row,col))`，正式Player返回两个坐标列表。`get_state_key`同时包含棋盘与接下来行动方；重复历史只包含此前状态。
 
-settings集中参数；game模拟、evaluation评分、search决策。正式入口TeamXX.Player，真实比赛由reference/Tablut.py裁判。
+`TeamXX.Player(record_search=False)`继承统一适配器，默认enhanced_dynamic，不读取模型文件；每局创建新实例。CLI、Benchmark和Replay均使用`ExperimentalPlayer(strategy, evaluator=None, options=None, opening=None, record_search=False, seed=42)`。只有evolutionary_dynamic要求evaluator，其余策略拒绝注入。Random仅测试用途。
 
-- Board：9×9的`tuple[tuple[str, ...], ...]`；外部列表不修改，移动返回新Board。
-- 编码：A攻击者、D防守者、K国王、`.`空格、X空城堡。中心(4,4)为K或X，空城堡可穿不可停。
-- player：A或D，D方控制D和K；A先行。Position为从0开始的`(row, column)`。
-- Move：`((起点行,列),(终点行,列))`；正式输出转换为`[[行,列],[行,列]]`。
-- CLI坐标：列A–I、行1–9；例如D1对应(0,3)，与内部坐标方向一致。
+## 一个搜索器
 
-| game.py接口 | 返回及约定 |
+`choose_enhanced(board, side, *, deadline, soft_deadline=None, history=(), evaluator=None, stats=None, options=None)`处理全部正式策略。根方视角固定、终局优先判定、Alpha-Beta完整分支、从一层迭代加深，未完成的层不会覆盖已完成结果；零预算返回合法备用动作。
+
+`EnhancedSearch.visit`同时支持手工评估和六特征权重。置换表只存深度和走法提示，不缓存分数；当前重复历史始终重新判断。排序使用国王逃生、PV/提示、潜在吃子、killer及history分数，不能删除合法分支。表容量默认20,000，单次决策隔离。固定深度无计时对照应得到相同分数，最优并列走法允许不同。
+
+`SearchOptions(max_depth=4, tt_capacity=20000, order_moves=True)`来自config/experimental.py，是未完成调参的现有默认值。Enhanced使用TimeManager按剩余预算分配；两个Dynamic版本使用相同AdaptiveTimeManager：整局60秒、5秒余量、单步上限4秒、软截止为额度80%，并按剩余步数与紧急程度分配。底层Python操作不能硬抢占，裁判独立检查累计60秒。
+
+## 六特征及评估
+
+模型采用守方视角`sum(w[i]*f[i])`，攻方取负；终局由搜索处理，不用启发式代替胜负。六个特征顺序固定：
+
+| 特征 | 实现 |
 | --- | --- |
-| `parse_board(board)` | 结构校验并复制为Board；错误抛ValueError，不验证可达性 |
-| `initial_board()` | 固定初始Board |
-| `get_legal_moves(board, player)` | list[Move]，无合法动作时为空 |
-| `apply_move(board, move, player)` | 搬动、恢复X、同时捕获后的新Board；非法动作抛ValueError |
-| `check_winner(board, player, history=())` | A/D/DRAW/None；player为接下来行动方 |
-| `get_state_key(board, player)` | `(Board, player)`，包含行动方 |
+| 国王包围压力 | 邻接攻击者数 / 4 |
+| 直接逃生路线 | 国王可一步合法到达边缘的方向数 / 4 |
+| 加权子力差 | (A数量 − 2×普通D数量) / 16 |
+| 距离边缘 | min(row,col,8-row,8-col) / 4 |
+| 国王行动力 | 国王合法目的地数量 / 16 |
+| 逃生通道封锁 | 四条射线上第一个阻挡子为A时累加1/距离，再除4 |
 
-history只含此前状态键。国王被捕、到边缘、攻击者不足两枚决定胜负；无行动或局面重复记平局。搜索不知道完整比赛历史。
+封锁特征区分阻挡距离，不等同于“1−逃生路线”。三个策略均走同一个六特征提取和加权接口，默认使用手工初始化权重；E2不会因两方走不同特征提取代码而混入额外差异。初始化权重`(-400,600,-160,0,0,0)`与原三特征手工评分等价；新增特征初始权重为零，训练后才可能改变。权重有界，终局±十亿始终由规则优先处理。所有新特征的棋力收益仍待消融验证。
 
-终局差异：中心国王被捕后，模拟保留X，裁判可能留下`.`；均为攻击方胜。回放保留裁判棋盘，不改写为本地表示。
+模型JSON须包含`schema_version=1`、`model_type=evolutionary_dynamic`、完全一致的六个features名称及六个有限weights，绝对值不超过10,000。旧四权重模型和神经检查点会被拒绝，不能默默回退成手工评估。
 
-## 2. 搜索与累计预算
+## 监控与结果
 
-`evaluate_attacker(board)`、`evaluate_defender(board)`高分有利于命名方；特征为国王压力、逃生路线和棋子优势，攻守权重独立。
+适配器每步重建last_search_stats；字段包括strategy、budget_seconds、elapsed_seconds、target_depth、completed_depth、nodes、cutoffs、tt_hint_hits、root_moves、pv、score、timed_out、fallback_used、finish_reason。Random深度和节点为0。Replay深拷贝，历史旧字段缺失时显示未记录。
 
-```python
-choose_move(board, player, deadline=float("inf"),
-            strategy="adaptive", rng=None, stats=None, *,
-            evaluator=None, history=(), position_value=None)
-alpha_beta(board, current_player, root_player, depth, alpha, beta,
-           deadline, path=(), *, prune=True, stats=None,
-           evaluator=_evaluate, position_value=None)
-```
+Benchmark结果包括standings的overall/attacker/defender、逐局用时和责任方错误、opening_id、seed、积分、可选search_stats；manifest保存提交SHA、未提交变更、配置、环境、开局SHA256和模型SHA256。Replay schema1.1保存完整每步棋盘及事件，HTML内嵌JSON、可离线打开。历史schema仍可读取，旧数据不会被新算法改写。
 
-choose_move返回Move或无动作时None。支持first/random/greedy/minimax/adaptive，random需RNG。root_player视角固定，根方最大化、对手最小化；胜负分正负十亿，平局0。path为祖先状态键tuple，不含当前节点。
-
-可选训练扩展：evaluator(board, root_player)提供根方视角的线性评分；position_value(board, current_player)提供防守方视角的网络价值，由搜索统一转换根方符号。history仅含此前局面键，并加入搜索路径判重。省略新增参数时保持稳定版走法及统计；正式Player接口没有增加模型参数，模型只通过实验StrategyBot/NeuralPlayer加载。见[训练指南](TRAINING_GUIDE.md)。
-
-搜索先扫描Greedy候选并检测直接胜利，随后迭代尝试深度2。Adaptive仅在以下条件同时满足时把目标改为3：国王存在一步直达边缘的合法动作，或相邻攻击者至少两枚；根合法走法不超过40；Greedy扫描后剩余本步预算至少0.4秒。参数来自settings，目标不保证完成。根走法按Greedy得分稳定排序。完整层才提交结果；截止返回已完成层、部分Greedy或初始合法动作。
-
-`TimeManager(limit=60, margin=5)`每局新建并持续复用。`allocate_time(expected_moves=30)`按剩余可用预算除以预计剩余决策数；`deadline()`使用perf_counter绝对时间，`record_elapsed(elapsed)`累计耗时。递归检查截止，SearchTimeout由choose_move捕获。底层计算不可打断；正式裁判另核对每方整局60秒。
-
-## 3. Player与搜索监控
-
-`Player(record_search=False)`无参兼容，play_attacker/play_defender(board)返回列表动作；ENABLE_ADAPTIVE_SEARCH关闭时用minimax。实验适配器为`StrategyBot(strategy, seed, record_search=False)`。每局新建实例。
-
-开启监控时，每步重建last_search_stats并在finally保存；Replay深拷贝避免串步。Replay自动开启，CLI通过`--show-search`开启；benchmark不存逐步统计。
-
-| search字段 | 定义 |
-| --- | --- |
-| strategy | 实际调用的策略 |
-| target_depth | 计划深度；First/Random为0，Greedy通常1，Minimax通常2，Adaptive最多3 |
-| completed_depth | 完整扫描结束的层数，未完成首层为0 |
-| nodes | 通过截止检查后进入的Alpha-Beta递归节点，含未完成迭代；不含Greedy扫描 |
-| root_moves | 根节点合法动作数量 |
-| urgent | 实际执行的紧急判断；未执行为null，不是false |
-| timed_out | 是否达到本步截止时间 |
-| fallback_used | 是否因此使用浅层或备用动作 |
-| policy_reason / finish_reason | 实际触发的深度选择与停止条件，见下表 |
-| elapsed_seconds | Bot入口的本次决策耗时 |
-
-policy_reason：normal_depth（普通/固定深度）、urgent_deepening（满足深搜）、branch_limit（紧急但分支多）、insufficient_budget（紧急但预算少）、immediate_win（一步胜）、baseline（基线）。固定Minimax不执行紧急判断。
-
-finish_reason为depth_completed（完成目标）、immediate_win（一步胜）、search_deadline（截止）、proven_terminal（已证明终局提前结束）、no_legal_moves（无行动）。
-
-一步胜会直接返回，统计为target_depth=1、completed_depth=0、fallback_used=false；这不表示没有评估动作。目标3完成2且因search_deadline停止才是深搜截止回退；proven_terminal不等同于超时。First/Random深度0是明确基线定义，缺少数据必须为null或“未记录”。
-
-## 4. 实验JSON与外部Bot
-
-benchmark JSON顶层有version、strategy、opponent、seed、games、standings、our_win_rate、results。standings按overall/attacker/defender分别存games/wins/draws/losses/points，积分为胜2、平1、负0。
-
-results逐局含game、our_side、winner（A/D/DRAW）、plies、elapsed_seconds、attacker_seconds、defender_seconds、our_mean_move_seconds、our_max_move_seconds、illegal_moves、timeouts、exceptions、issues、log、opponent_log。plies是半步数；issues按A/D存责任方、details和invalid_returns。墙钟时间含裁判开销。
-
-benchmark的version仍是2.0标签，实验另记Git SHA及工作区状态。每局种子=基础seed+从0开始局号；外部Bot自行管理随机数。
-
-外部Bot需无参Player及两个攻守方法。独立进程从对手目录加载并隔离同名模块，初始化限10秒，失败在开赛前报错。对局异常回传，格式错误转为负坐标非法动作并保留原值。调用与通信计时，初始化不计时。进程不是安全沙箱，只加载可信代码及齐全依赖。
-
-## 5. 逐步Replay JSON
-
-当前schema_version为1.1。顶层包含created_at（UTC）、coordinates、symbols、note、games。每局games[]包含game、our_side、seed、strategies（A/D）、initial_board、moves、final_board、result（winner/reason）、accepted_moves、双方累计秒数及referee_log。
-
-| moves[]字段 | 内容 |
-| --- | --- |
-| ply / round | 从1开始的半步序号、双方轮次 |
-| player / strategy / piece | 行动方、策略、移动棋子 |
-| move / from_square / to_square | 完整动作、单独起终点；坐标均为从0开始的行列 |
-| captures | 被移除棋子的piece及square列表 |
-| board_before / board_after | 完整9×9棋盘；前后事件应连续 |
-| accepted / status | 是否执行；played、illegal_move、timeout、exception等 |
-| elapsed_seconds | 外层观察器耗时，略多于search中的入口耗时 |
-| result_after | terminal、winner、next_player；终局不再有下一行动方 |
-| search | 当前步统计的独立副本；缺失时null |
-| error / invalid_return | 出错时的诊断信息，仅适用事件提供 |
-
-result.reason为king_captured、king_escaped、fewer_than_two_attackers、repetition、no_legal_moves，或异常结束的timeout/exception/illegal_move。未执行动作accepted=false，棋盘保持原状。逐步result_after在官方平局时winner为null，以terminal和局级result的DRAW识别终局。
-
-旧schema 1.0无search，显示“未记录”。HTML内嵌JSON、离线播放，不随模板或其他JSON自动更新。`write_replay(data, output)`用已有数据重新导出games.json和HTML，覆盖同名输出；无需重跑。CLI与外部Bot尚未接入Replay。
-
-## 6. CLI接口与退出状态
-
-CLI自行交替调用make_move/check_if_game_over。初始检查从空历史开始，加入初始棋盘+A行动的哈希，与play()起始记录一致。非法人类输入不触碰裁判计数；AI收副本，返回后核对累计60秒。
-
-| CLI接口 | 契约 |
-| --- | --- |
-| parse_square(text)、parse_move(text) | 解析用户坐标；错误抛ValueError |
-| format_square(square)、format_move(move) | 内部坐标转A1-I9形式 |
-| display_board(board, write=print) | 输出完整ASCII棋盘 |
-| read_human_move(board, side, *, input_fn=input, write=print) | 命令、合法性重试；quit返回None，EOF/中断向外传递 |
-| display_search_stats(stats, write=print) | 展示可用统计，缺失不补造 |
-| run_game(human_side, strategy='adaptive', seed=42, show_search=False, *, input_fn=input, write=print, game=None, ai=None) | 返回结果dict，后两个参数支持测试注入 |
-| main(argv=None) | 解析参数及选择身份，返回进程退出码 |
-
-run_game返回status/winner/reason/plies/ai_seconds。finished含官方game_over或AI判负；aborted对应quit/eof/interrupted；error对应referee_rejected_move，后两种winner=None。AI异常/非法/超时对应ai_exception/ai_illegal_move/ai_timeout，人类胜且退出码非零；普通结束和用户中止为0。
-
-人类不限时，CLI计时不含输入和输出。人机棋谱未实现。
-
-## 实验增强搜索与动态时间管理
-
-
-基线为 `b51abfd09192698f3fc2e2650d913448f4406aec`，本地备份分支为 `backup/main-before-aths`。新增策略在 Benchmark 中显式选择，正式 Assessment 入口仍使用原来的 Adaptive，同时沿用原版规则、评分及课程裁判。
-
-| 策略 | 搜索与时间控制 |
-| --- | --- |
-| adaptive | 原有搜索与静态预算 |
-| enhanced | 全宽 Alpha-Beta 迭代加深，默认最多四层，沿用旧预算分配方式 |
-| enhanced_dynamic | 相同搜索，按剩余时长、己方已走次数与局面风险分配预算 |
-
-搜索保持根方评分，遇到终局先按规则计分。排序优先检查国王逃生、上一层及置换表提示、潜在捕获和剪枝历史，保留全部合法分支。每次决策至多缓存 20,000 个走法提示。相同棋盘可能对应不同历史，因此置换表只提示走法，每次仍按当前历史判重。战术诊断可确认立即胜和安全应对，预算不足给出未知状态。动态计时使用原有低成本紧急判断调整预算。
-
-动态计时从适配器入口开始计量。每次预算取按预计剩余己方行动数分配的额度、剩余总预算的20%及4秒中的最小值。软截止为该额度的80%，在两层之间检查。硬截止在递归和局面计算前后检查。未完成的层不会覆盖上一个完整结果，零预算走有效的合法回退。课程裁判仍独立执行整局60秒时限。所有初始参数都是实验值。
-
-
-仅 Benchmark 注册 `enhanced` 和 `enhanced_dynamic`；CLI 与 Replay 继续使用原有策略。UCT、Hybrid、完整 ATHS 路由尚未实现，没有注册占位名称。模型参数仅适用于原有 greedy/minimax/adaptive，传给增强策略会报错，避免静默忽略模型。增强策略可通过 `--opponent-model` 与线性模型交叉评测；神经网络可通过 `--neural-model` 配合增强对手评测。正式 Player 不自动加载任何实验模型。
+遗传训练机制、续训约束和最终留出见[训练指南](TRAINING_GUIDE.md)。

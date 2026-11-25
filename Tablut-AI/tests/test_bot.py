@@ -7,7 +7,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "reference"))
 from Tablut import Tablut
 from TeamXX import Player
 from src.game import initial_board, get_legal_moves, apply_move, check_winner, get_state_key
-from src.search import choose_move, TimeManager
 from src.evaluation import evaluate_attacker, evaluate_defender
 
 
@@ -99,101 +98,11 @@ class BotTests(unittest.TestCase):
         blocked = tuple(tuple("K" if (r,c)==(4,4) else "A" for c in range(9)) for r in range(9))
         self.assertEqual(check_winner(blocked,"D"),"DRAW")
 
-    def test_greedy_escape_and_capture(self):
-        board = board_with({(2,2):"K",(2,1):"A",(2,6):"A"})
-        move = choose_move(board,"D",strategy="greedy")
-        self.assertEqual(check_winner(apply_move(board,move,"D"),"A"),"D")
-        move = choose_move(board,"A",strategy="greedy")
-        self.assertEqual(check_winner(apply_move(board,move,"A"),"D"),"A")
-
     def test_evaluation_changes(self):
         a = initial_board()
         b = board_with({(2,2):"K",(2,1):"A",(2,6):"A"})
         self.assertNotEqual(evaluate_attacker(a),evaluate_attacker(b))
         self.assertNotEqual(evaluate_defender(a),evaluate_defender(b))
-
-    def test_budget_fallback_and_input_unchanged(self):
-        clock = TimeManager()
-        clock.record_elapsed(60)
-        self.assertEqual(clock.allocate_time(),0)
-        board = Tablut().board
-        original = copy.deepcopy(board)
-        self.assertIn(choose_move(board,"A",0),get_legal_moves(board,"A"))
-        player = Player()
-        for side,method in (("A",player.play_attacker),("D",player.play_defender)):
-            move = method(board)
-            self.assertTrue(all(isinstance(x,list) for x in move))
-            self.assertIn(tuple(map(tuple,move)),get_legal_moves(board,side))
-        self.assertEqual(board,original)
-
-
-class SearchV2Tests(unittest.TestCase):
-    def test_pruned_scores_equal_exhaustive_for_both_root_views(self):
-        from src.search import alpha_beta
-        board = board_with({(2,2):"K",(2,1):"A",(6,6):"A",(3,2):"D"})
-        scores=[]
-        for root in ("A","D"):
-            pruned, full = {}, {}
-            a=alpha_beta(board,"A",root,2,-float("inf"),float("inf"),float("inf"),stats=pruned)
-            b=alpha_beta(board,"A",root,2,-float("inf"),float("inf"),float("inf"),prune=False,stats=full)
-            self.assertEqual(a,b)
-            self.assertLessEqual(pruned["nodes"],full["nodes"])
-            scores.append(a)
-        self.assertLess(scores[0],0)
-        self.assertGreater(scores[1],0)
-
-    def test_path_repetition_is_a_draw(self):
-        from src.search import alpha_beta
-        board=initial_board()
-        self.assertEqual(alpha_beta(board,"A","A",2,-float("inf"),float("inf"),float("inf"),
-                                    (get_state_key(board,"A"),)),0)
-
-    def test_fixed_minimax_blocks_escape(self):
-        board=board_with({(1,2):"K",(0,2):"A",(1,0):"A",(2,2):"A",(4,8):"A"})
-        stats={}
-        move=choose_move(board,"A",strategy="minimax",stats=stats)
-        after=apply_move(board,move,"A")
-        self.assertEqual(stats["completed_depth"],2)
-        self.assertFalse(any(check_winner(apply_move(after,m,"D"),"A")=="D"
-                             for m in get_legal_moves(after,"D")))
-
-    def test_timeout_keeps_last_completed_iteration(self):
-        from unittest.mock import patch
-        from src.search import SearchTimeout
-        board=initial_board()
-        greedy=choose_move(board,"A",strategy="greedy")
-        stats={}
-        with patch("src.search.alpha_beta",side_effect=SearchTimeout):
-            move=choose_move(board,"A",strategy="adaptive",stats=stats)
-        self.assertEqual(move,greedy)
-        self.assertEqual(stats["completed_depth"],1)
-        self.assertTrue(stats["timed_out"])
-        stats={}
-        self.assertIn(choose_move(board,"A",0,stats=stats),get_legal_moves(board,"A"))
-        self.assertEqual(stats["completed_depth"],0)
-
-    def test_recursive_deadline_and_immediate_win(self):
-        from src.search import alpha_beta, SearchTimeout
-        with self.assertRaises(SearchTimeout):
-            alpha_beta(initial_board(),"A","A",3,-float("inf"),float("inf"),0)
-        board=board_with({(2,2):"K",(2,1):"A",(2,6):"A"})
-        for strategy in ("greedy","minimax","adaptive"):
-            for side in ("A","D"):
-                move=choose_move(board,side,strategy=strategy)
-                self.assertEqual(check_winner(apply_move(board,move,side),"D" if side=="A" else "A"),side)
-
-    def test_adaptive_depth_policy(self):
-        from unittest.mock import patch
-        from src.search import is_urgent
-        board=initial_board()
-        self.assertFalse(is_urgent(board))
-        stats={}
-        # Control only scoring to inspect the policy without a large depth-3 tree.
-        with patch("src.search.is_urgent",return_value=True), patch("src.search.DEEP_SEARCH_MAX_BRANCHES",1000), patch("src.search.alpha_beta",return_value=1):
-            choose_move(board,"A",strategy="adaptive",stats=stats)
-        self.assertEqual(stats["target_depth"],3)
-        self.assertEqual(stats["completed_depth"],3)
-
 
 class BattleV2Tests(unittest.TestCase):
     def test_scores_and_roles(self):
@@ -221,7 +130,6 @@ class BattleV2Tests(unittest.TestCase):
             from src.game import initial_board
             self.assertEqual(initial_board()[4][4],"K")
 
-
 class BattleFailureTests(unittest.TestCase):
     def test_bad_moves_and_exceptions_are_recorded_by_referee(self):
         import contextlib
@@ -242,109 +150,6 @@ class BattleFailureTests(unittest.TestCase):
             else:
                 self.assertEqual(bad.errors[0]["message"],"fixture failure")
                 self.assertIn("Exception caught",log.getvalue())
-
-    def test_unfinished_depth_three_preserves_depth_two(self):
-        from unittest.mock import patch
-        from src.search import SearchTimeout
-        def controlled(board,current,root,depth,*args,**kwargs):
-            if depth==2:
-                raise SearchTimeout()
-            return 1
-        stats={}
-        with patch("src.search.is_urgent",return_value=True), patch("src.search.DEEP_SEARCH_MAX_BRANCHES",1000), patch("src.search.alpha_beta",side_effect=controlled):
-            move=choose_move(initial_board(),"A",stats=stats)
-        self.assertIn(move,get_legal_moves(initial_board(),"A"))
-        self.assertEqual(stats["completed_depth"],2)
-        self.assertTrue(stats["timed_out"])
-
-
-class MonitoringTests(unittest.TestCase):
-    def test_policy_and_deadline_reasons(self):
-        from unittest.mock import patch
-        from src.search import SearchTimeout
-        board=initial_board()
-        cases=[(False,1000,10,2,"normal_depth"),(True,1000,10,3,"urgent_deepening"),
-               (True,0,10,2,"branch_limit"),(True,1000,0.1,2,"insufficient_budget")]
-        for urgent,limit,budget,target,reason in cases:
-            stats={}
-            with patch("src.search.is_urgent",return_value=urgent), patch("src.search.DEEP_SEARCH_MAX_BRANCHES",limit), patch("src.search.perf_counter",return_value=0), patch("src.search.alpha_beta",return_value=1):
-                choose_move(board,"A",deadline=budget,stats=stats)
-            self.assertEqual((stats["target_depth"],stats["completed_depth"],stats["policy_reason"]),(target,target,reason))
-            self.assertEqual(stats["finish_reason"],"depth_completed")
-            self.assertFalse(stats["fallback_used"])
-        for fail_depth,completed in [(1,1),(2,2)]:
-            def recursive(*args,**kwargs):
-                if args[3]==fail_depth: raise SearchTimeout()
-                return 1
-            stats={}
-            with patch("src.search.is_urgent",return_value=True),patch("src.search.DEEP_SEARCH_MAX_BRANCHES",1000),patch("src.search.alpha_beta",side_effect=recursive):
-                move=choose_move(board,"A",stats=stats)
-            self.assertIn(move,get_legal_moves(board,"A"))
-            self.assertEqual(stats["completed_depth"],completed)
-            self.assertTrue(stats["timed_out"] and stats["fallback_used"])
-            self.assertEqual(stats["finish_reason"],"search_deadline")
-
-    def test_baselines_and_immediate_win(self):
-        for strategy,depth in [("first",0),("random",0),("greedy",1)]:
-            stats={}
-            choose_move(initial_board(),"A",strategy=strategy,rng=random.Random(42),stats=stats)
-            self.assertEqual((stats["target_depth"],stats["completed_depth"],stats["nodes"]),(depth,depth,0))
-            self.assertEqual(stats["policy_reason"],"baseline")
-            self.assertFalse(stats["fallback_used"])
-        board=board_with({(2,2):"K",(2,1):"A",(2,6):"A"})
-        stats={}
-        choose_move(board,"D",stats=stats)
-        self.assertEqual(stats["finish_reason"],"immediate_win")
-        self.assertEqual(stats["completed_depth"],0)
-        self.assertFalse(stats["fallback_used"])
-
-    def test_monitoring_does_not_change_moves_and_resets_each_turn(self):
-        from unittest.mock import patch
-        from scripts.benchmark import StrategyBot
-        for strategy in ("first","random","greedy","minimax","adaptive"):
-            plain,observed=StrategyBot(strategy,42),StrategyBot(strategy,42,record_search=True)
-            with patch("src.search.TimeManager.deadline",return_value=float("inf")):
-                self.assertEqual(plain.play_attacker(initial_board()),observed.play_attacker(initial_board()))
-                previous=observed.last_search_stats.copy()
-                previous_ref=observed.last_search_stats
-                observed.play_defender(initial_board())
-            self.assertIsNone(plain.last_search_stats)
-            self.assertIsNot(previous_ref,observed.last_search_stats)
-            self.assertEqual(previous_ref,previous)
-        self.assertIsNone(Player().last_search_stats)
-        player=Player(record_search=True)
-        with patch("src.search.TimeManager.deadline",return_value=float("inf")):
-            self.assertEqual(Player().play_attacker(initial_board()),player.play_attacker(initial_board()))
-        self.assertEqual(player.last_search_stats["strategy"],"adaptive")
-
-    def test_replay_stats_are_copied_and_missing_is_null(self):
-        sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"scripts"))
-        from replay_demo import ObservedPlayer,Recorder
-        class Stub:
-            def __init__(self): self.last_search_stats={"nodes":1}
-            def play_attacker(self,board): return [[0,3],[0,2]]
-        bot=Stub();game=Recorder();observed=ObservedPlayer(bot,game,"first")
-        observed.play_attacker(game.board)
-        event=game.pending
-        bot.last_search_stats["nodes"]=99
-        self.assertEqual(event["search"]["nodes"],1)
-        del bot.last_search_stats
-        observed.play_attacker(game.board)
-        self.assertIsNone(game.pending["search"])
-
-    def test_new_and_old_replay_analysis_javascript(self):
-        import json,subprocess,shutil
-        if not shutil.which("node"): self.skipTest("Node needed for HTML JavaScript test")
-        page=(Path(__file__).resolve().parents[1]/"scripts/replay_template.html").read_text(encoding="utf-8-sig")
-        code=page.split("const policyNames=")[1].split("function render(){")[0]
-        script="const policyNames="+code+"\nconst assert=require('assert');\n"
-        script+="assert(searchText({player:'A'}).includes('未记录'));\n"
-        for strategy in ("random","greedy","minimax"):
-            stats={};choose_move(initial_board(),"A",strategy=strategy,rng=random.Random(42),stats=stats)
-            event=dict(player="A",search=stats)
-            script+="assert(searchText("+json.dumps(event)+").includes('"+strategy+"'));\n"
-        subprocess.run(["node","-"],input=script,text=True,encoding="utf-8",check=True)
-
 
 class ReplayCleanupTests(unittest.TestCase):
     def test_observer_uses_public_side_methods_and_preserves_stats(self):
@@ -400,44 +205,44 @@ class ReplayCleanupTests(unittest.TestCase):
         pos=code.rfind("load();")
         code=code[:pos]+"const aggregate=totalsText;let calls=0;totalsText=g=>{calls++;return aggregate(g)};"+code[pos:]
         dom=r"""
-const assert=require('assert');
-class Element {
- constructor(){this.children=[];this.dataset={};this.classList={toggle(){}};this.value=0;this.checked=false;this.open=false;this.textContent=''}
- setAttribute(){} append(...nodes){this.children.push(...nodes)}
- replaceChildren(...nodes){this.children=nodes} scrollIntoView(){}
-}
-const elements={};
-global.document={getElementById:id=>elements[id]??=(new Element()),
- createElement:()=>new Element(),createElementNS:()=>new Element(),addEventListener(){}};
-let tick=null;
-global.setInterval=fn=>{tick=fn;return 1};global.clearInterval=()=>{tick=null};
-"""
+    const assert=require('assert');
+    class Element {
+     constructor(){this.children=[];this.dataset={};this.classList={toggle(){}};this.value=0;this.checked=false;this.open=false;this.textContent=''}
+     setAttribute(){} append(...nodes){this.children.push(...nodes)}
+     replaceChildren(...nodes){this.children=nodes} scrollIntoView(){}
+    }
+    const elements={};
+    global.document={getElementById:id=>elements[id]??=(new Element()),
+     createElement:()=>new Element(),createElementNS:()=>new Element(),addEventListener(){}};
+    let tick=null;
+    global.setInterval=fn=>{tick=fn;return 1};global.clearInterval=()=>{tick=null};
+    """
         checks=r"""
-assert.equal(calls,1);assert($('summary').textContent.includes('进攻方获胜'));
-assert($('analysis').textContent.includes('初始局面'));
-// Observe which snapshot the actual navigation passes into the renderer.
-diagram=(board,event)=>({board,event});
-$('next').onclick();assert.equal(step,1);
-assert.deepEqual($('board').children[0].board,data.games[0].moves[0].board_after);
-assert($('analysis').textContent.includes('first'));assert.equal(calls,1);
-$('before').checked=true;$('before').onchange();
-assert.deepEqual($('board').children[0].board,data.games[0].moves[0].board_before);
-$('first').onclick();assert.equal(step,0);assert.equal(calls,1);
-$('game').value=1;$('game').onchange();assert.equal(calls,2);
-assert($('summary').textContent.includes('平局'));assert(!$('summary').textContent.includes('平局获胜'));
-assert($('summary').textContent.includes('重复局面'));
-$('before').checked=false;$('last').onclick();assert.equal(step,4);
-assert($('analysis').textContent.includes('未记录'));assert.equal(calls,2);
-$('prev').onclick();assert.equal(step,3);
-$('slider').value=2;$('slider').oninput();assert.equal(step,2);
-$('moves').children[1].onclick();assert.equal(step,1);
-$('all').open=true;$('all').ontoggle();assert.equal($('gallery').children.length,5);
-$('gallery').children[4].onclick();assert.equal(step,4);assert.equal(calls,2);
-$('play').onclick();assert.equal(step,0);assert.equal(typeof tick,'function');
-for(let i=0;i<4;i++)tick();assert.equal(step,4);assert.equal(tick,null);
-assert.equal(calls,2);
-$('game').value=0;$('game').onchange();assert.equal(calls,3);assert.equal(step,0);
-assert.equal($('gallery').children.length,2);
-"""
+    assert.equal(calls,1);assert($('summary').textContent.includes('进攻方获胜'));
+    assert($('analysis').textContent.includes('初始局面'));
+    // Observe which snapshot the actual navigation passes into the renderer.
+    diagram=(board,event)=>({board,event});
+    $('next').onclick();assert.equal(step,1);
+    assert.deepEqual($('board').children[0].board,data.games[0].moves[0].board_after);
+    assert($('analysis').textContent.includes('first'));assert.equal(calls,1);
+    $('before').checked=true;$('before').onchange();
+    assert.deepEqual($('board').children[0].board,data.games[0].moves[0].board_before);
+    $('first').onclick();assert.equal(step,0);assert.equal(calls,1);
+    $('game').value=1;$('game').onchange();assert.equal(calls,2);
+    assert($('summary').textContent.includes('平局'));assert(!$('summary').textContent.includes('平局获胜'));
+    assert($('summary').textContent.includes('重复局面'));
+    $('before').checked=false;$('last').onclick();assert.equal(step,4);
+    assert($('analysis').textContent.includes('未记录'));assert.equal(calls,2);
+    $('prev').onclick();assert.equal(step,3);
+    $('slider').value=2;$('slider').oninput();assert.equal(step,2);
+    $('moves').children[1].onclick();assert.equal(step,1);
+    $('all').open=true;$('all').ontoggle();assert.equal($('gallery').children.length,5);
+    $('gallery').children[4].onclick();assert.equal(step,4);assert.equal(calls,2);
+    $('play').onclick();assert.equal(step,0);assert.equal(typeof tick,'function');
+    for(let i=0;i<4;i++)tick();assert.equal(step,4);assert.equal(tick,null);
+    assert.equal(calls,2);
+    $('game').value=0;$('game').onchange();assert.equal(calls,3);assert.equal(step,0);
+    assert.equal($('gallery').children.length,2);
+    """
         program=dom+"document.getElementById('data').textContent="+json.dumps(json.dumps(dict(games=[win,draw])))+";\n"+code+checks
         subprocess.run(["node","-"],input=program,text=True,encoding="utf-8",check=True)

@@ -1,0 +1,54 @@
+{
+  "runtime": {
+    "before_files": 25,
+    "after_files": 22,
+    "before_lines": 2531,
+    "after_lines": 1671,
+    "reduction": 0.3397866455946267
+  },
+  "official_player": [
+    {
+      "our_side": "A",
+      "winner": "A",
+      "plies": 15,
+      "attacker_seconds": 10.942816799997672,
+      "defender_seconds": 0.0005520999984582886,
+      "log": "Game over, Attackers won!\nRounds played: 8\n"
+    },
+    {
+      "our_side": "D",
+      "winner": "D",
+      "plies": 10,
+      "attacker_seconds": 0.0005430999990494456,
+      "defender_seconds": 5.711296999994374,
+      "log": "Game over, Defenders won!\nRounds played: 5\n"
+    }
+  ],
+  "tests": 51,
+  "stdlib_tests": 51,
+  "manifest": {
+    "commit_sha": "567f3e37128fde255b1968d5dec993202aa19526",
+    "worktree_changes": "M Tablut-AI/README.md\n M Tablut-AI/TeamXX.py\n M Tablut-AI/config/experimental.py\n M Tablut-AI/config/settings.py\n M Tablut-AI/docs/CLI_GUIDE.md\n M Tablut-AI/docs/DEVELOPMENT_PLAN.md\n M Tablut-AI/docs/EXPERIMENT_GUIDE.md\n M Tablut-AI/docs/TECHNICAL_REFERENCE.md\n M Tablut-AI/docs/TRAINING_GUIDE.md\n M Tablut-AI/reports/LINEAR_SELFPLAY_REVIEW_20261125.md\n M Tablut-AI/reports/README.md\n D Tablut-AI/requirements-neural.txt\n M Tablut-AI/scripts/benchmark.py\n M Tablut-AI/scripts/evaluate_positions.py\n M Tablut-AI/scripts/play_cli.py\n M Tablut-AI/scripts/replay_demo.py\n M Tablut-AI/scripts/run_experiments.py\n D Tablut-AI/scripts/train_neural.py\n D Tablut-AI/scripts/train_selfplay.py\n M Tablut-AI/src/enhanced_search.py\n M Tablut-AI/src/evaluation.py\n M Tablut-AI/src/experimental_player.py\n D Tablut-AI/src/experimental_search.py\n D Tablut-AI/src/learning.py\n D Tablut-AI/src/neural.py\n D Tablut-AI/src/neural_player.py\n D Tablut-AI/src/search.py\n M Tablut-AI/src/tactics.py\n M Tablut-AI/src/time_control.py\n D Tablut-AI/tests/fixtures/search_v2_2.json\n M Tablut-AI/tests/test_bot.py\n M Tablut-AI/tests/test_enhanced_search.py\n D Tablut-AI/tests/test_integration_compat.py\n D Tablut-AI/tests/test_learning.py\n D Tablut-AI/tests/test_model_benchmark.py\n D Tablut-AI/tests/test_neural.py\n?? Tablut-AI/config/evolution.py\n?? Tablut-AI/models/\n?? Tablut-AI/reports/archives/\n?? Tablut-AI/reports/replays/simplification_smoke/\n?? Tablut-AI/reports/replays/simplification_unified_final/\n?? Tablut-AI/scripts/train_evolution.py\n?? Tablut-AI/src/evolution.py\n?? Tablut-AI/src/features.py\n?? Tablut-AI/tests/oracle.py\n?? Tablut-AI/tests/test_evolution.py",
+    "python": "3.13.7",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cpu": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+    "openings_sha256": null,
+    "history_rule": "restarted_opening",
+    "options": {
+      "max_depth": 4,
+      "tt_capacity": 20000,
+      "order_moves": true
+    },
+    "evaluator": "hand_tuned",
+    "arguments": [],
+    "created_at": "2026-11-25T10:15:06.660905+00:00"
+  },
+  "source_archive": "archives/before_simplification_567f3e3.zip",
+  "previous_commit": "567f3e37128fde255b1968d5dec993202aa19526",
+  "git_actions": {
+    "branch": "main",
+    "committed": false,
+    "pushed": false,
+    "temporary_branches_removed": true
+  }
+}
