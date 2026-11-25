@@ -8,9 +8,11 @@ import unittest
 from unittest.mock import patch
 
 from scripts import benchmark
+from src.game import initial_board
 
 
 class FinishedGame:
+    board = initial_board()
     winner = "DRAW"
     rounds_played = 0
 
@@ -61,6 +63,8 @@ class ModelBenchmarkTests(unittest.TestCase):
             ["--model", "model.json", "--strategy", "random"],
             ["--model", "model.json", "--neural-model", "net.npz"],
             ["--opponent-model", "model.json", "--opponent", "first"],
+            ["--model", "model.json", "--strategy", "enhanced"],
+            ["--opponent-model", "model.json", "--opponent", "enhanced_dynamic"],
         ]
         for args in cases:
             with self.subTest(args=args), redirect_stderr(io.StringIO()), \
@@ -80,3 +84,30 @@ class ModelBenchmarkTests(unittest.TestCase):
                         self.assertRaises(SystemExit) as stopped:
                     self.run_cli(["--model", str(model), "--games", "1"])
                 self.assertEqual(stopped.exception.code, 2)
+
+
+    def test_enhanced_can_face_linear_model_with_paired_openings(self):
+        evaluator = object()
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "paired.json"
+            model = Path(directory) / "model.json"
+            model.write_text("test model loaded by mock")
+            opening = Path(directory) / "openings.json"
+            opening.write_text(json.dumps({"history_rule": "restarted_opening", "openings": [
+                {"id": 0, "side": "A", "board": initial_board()}]}))
+            with patch.object(benchmark, "Tablut", FinishedGame), \
+                    patch.object(benchmark, "load_evaluator", return_value=evaluator), \
+                    patch.object(benchmark, "ExperimentalPlayer") as enhanced, \
+                    patch.object(benchmark, "StrategyBot") as legacy:
+                self.run_cli(["--strategy", "enhanced", "--opponent", "adaptive",
+                              "--opponent-model", str(model), "--openings", str(opening),
+                              "--output", str(output)])
+            self.assertEqual(enhanced.call_count, 2)
+            self.assertEqual(legacy.call_count, 2)
+            legacy.assert_called_with("adaptive", 42, evaluator=evaluator)
+            data = json.loads(output.read_text())
+            self.assertEqual([r["our_side"] for r in data["results"]], ["A", "D"])
+            self.assertEqual([r["opening_id"] for r in data["results"]], [0, 0])
+            self.assertEqual(data["manifest"]["opponent_evaluator"], "linear")
+            with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                self.run_cli(["--strategy", "enhanced", "--output", str(output)])

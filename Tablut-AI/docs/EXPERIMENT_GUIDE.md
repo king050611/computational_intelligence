@@ -154,3 +154,22 @@ python scripts/benchmark.py --strategy adaptive --opponent-file opponents/Team02
 胜率=`胜/总局数`；积分率=`(2×胜+平)/(2×总局数)`；攻守胜率分别使用对应身份局数作分母。另记录双方累计/单步耗时、非法动作/超时/异常、目标与完成深度分布、节点数和回退，附典型胜负棋谱。
 
 第一轮完成标准：E0规则核验通过，E1三组种子、E2同条件算法对照、E3真实监控数据齐全；所有结论可追溯至版本、参数和原始结果，并解释重复平局或异常。E4按实际对手可获得情况安排。结果不同不必然失败，先核对规则，再分析随机行动、计时和环境。
+
+## 9. 增强搜索与训练模型对照
+
+在 Tablut-AI 目录运行，并为每次实验使用新的输出路径。
+
+```powershell
+python -m unittest discover -s tests -v
+python scripts/evaluate_positions.py --positions 100 --depth 2 --seed 42 --output reports/experiments/aths/depth2_run2.json
+python scripts/generate_openings.py --pairs 10 --seed 42 --output reports/experiments/aths/openings_run2.json
+python scripts/run_experiments.py --strategy enhanced --opponent adaptive --openings reports/experiments/aths/openings_run2.json --output reports/experiments/aths/enhanced_run2.json
+python scripts/run_experiments.py --strategy enhanced_dynamic --opponent enhanced --openings reports/experiments/aths/openings_run2.json --output reports/experiments/aths/dynamic_run2.json
+```
+
+每个开局双方交换角色，使用相同配对种子，重复历史从该开局重新开始。结果包含代码版本、开局 SHA256、环境、配置、逐局耗时与裁判日志。配对汇总按开局而非单局重采样，输出积分率及95%区间。使用 `--record-search` 另行检查实际完成深度、PV、走法提示和回退。要比较排序贡献，可用 `--tt-capacity 0` 关闭置换提示，或 `--no-ordering` 关闭实验排序。测时与监控结果应注明设置。
+
+第一轮验证按固定深度正确性、合法对战及等时棋力依次进行。即使节点减少，排序成本也可能让单个局面变慢。默认 Bot 晋级还需要独立开局集的实测结果和团队审核。UCT、Minimax 引导的 MCTS、ATHS 路由和统计评估留作后续阶段。
+
+
+线性模型、神经网络加载与评测命令见[训练指南](TRAINING_GUIDE.md)。增强搜索模型组合必须遵守[技术参考](TECHNICAL_REFERENCE.md)中的接口限制。首轮筛选数据和统一合并验收见[结果索引](../reports/README.md)。

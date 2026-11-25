@@ -1,0 +1,163 @@
+{
+  "date": "2026-11-25",
+  "source_commits": [
+    "4bdca6109f62a287f7fc0d05032ca2730cfd9d9a",
+    "d7ddf5e079b41beeb17c4e494339875730c1f476"
+  ],
+  "tests": {
+    "numpy": {
+      "passed": 77
+    },
+    "stdlib": {
+      "passed": 70,
+      "skipped": 7
+    }
+  },
+  "artifacts": {
+    "reports/experiments/final_baseline.json": {
+      "sha256": "720042f02f7f3f7de82b851ff1caa02e30ec57364f48a96c882973c40091f0a8",
+      "standings": {
+        "overall": {
+          "games": 10,
+          "wins": 10,
+          "draws": 0,
+          "losses": 0,
+          "points": 20
+        },
+        "attacker": {
+          "games": 5,
+          "wins": 5,
+          "draws": 0,
+          "losses": 0,
+          "points": 10
+        },
+        "defender": {
+          "games": 5,
+          "wins": 5,
+          "draws": 0,
+          "losses": 0,
+          "points": 10
+        }
+      },
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0
+    },
+    "reports/experiments/aths/enhanced_vs_adaptive.json": {
+      "sha256": "ce663e6243b1b75116d75d16645672c7437879f3de8459216ba7b0db30368597",
+      "standings": {
+        "overall": {
+          "games": 20,
+          "wins": 15,
+          "draws": 2,
+          "losses": 3,
+          "points": 32
+        },
+        "attacker": {
+          "games": 10,
+          "wins": 8,
+          "draws": 1,
+          "losses": 1,
+          "points": 17
+        },
+        "defender": {
+          "games": 10,
+          "wins": 7,
+          "draws": 1,
+          "losses": 2,
+          "points": 15
+        }
+      },
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0
+    },
+    "reports/experiments/aths/dynamic_vs_enhanced.json": {
+      "sha256": "94396c6d1379b275edb72f19f37e7400ec273c931bb8d1230bb2fe8964b32517",
+      "standings": {
+        "overall": {
+          "games": 20,
+          "wins": 10,
+          "draws": 6,
+          "losses": 4,
+          "points": 26
+        },
+        "attacker": {
+          "games": 10,
+          "wins": 5,
+          "draws": 2,
+          "losses": 3,
+          "points": 12
+        },
+        "defender": {
+          "games": 10,
+          "wins": 5,
+          "draws": 4,
+          "losses": 1,
+          "points": 14
+        }
+      },
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0
+    },
+    "reports/experiments/aths/final_enhanced_linear.json": {
+      "sha256": "d23d468932f607a2966227ee4f95be20e9ab232f68536709ab196475abcd7515",
+      "standings": {
+        "overall": {
+          "games": 2,
+          "wins": 0,
+          "draws": 1,
+          "losses": 1,
+          "points": 1
+        },
+        "attacker": {
+          "games": 1,
+          "wins": 0,
+          "draws": 1,
+          "losses": 0,
+          "points": 1
+        },
+        "defender": {
+          "games": 1,
+          "wins": 0,
+          "draws": 0,
+          "losses": 1,
+          "points": 0
+        }
+      },
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0
+    },
+    "reports/experiments/aths/final_neural_enhanced.json": {
+      "sha256": "51bf4a3f6edec7872cebd44dbbdd3ca0d83d630fe1a4a15cba588f8cbea37e79",
+      "standings": {
+        "overall": {
+          "games": 2,
+          "wins": 0,
+          "draws": 0,
+          "losses": 2,
+          "points": 0
+        },
+        "attacker": {
+          "games": 1,
+          "wins": 0,
+          "draws": 0,
+          "losses": 1,
+          "points": 0
+        },
+        "defender": {
+          "games": 1,
+          "wins": 0,
+          "draws": 0,
+          "losses": 1,
+          "points": 0
+        }
+      },
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0
+    }
+  }
+}
