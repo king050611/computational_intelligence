@@ -34,10 +34,10 @@ Benchmark输出统计JSON；Replay重新进行比赛，输出逐步棋谱JSON和
 先验证流程，再决定是否启动耗时更长的正式训练：
 
 ```powershell
-python scripts/train_evolution.py --generations 1 --population 2 --elite 1 --pairs 1 --max-depth 1 --output-dir reports/training/evolution_quickstart
+python scripts/train_evolution.py --generations 1 --population 2 --elite 1 --finalists 2 --quick-pairs 1 --quick-depth 1 --final-pairs 1 --max-depth 1 --output-dir reports/training/evolution_v2_quickstart
 ```
 
-这只是低深度、小种群流程验证。正式建议配置为12个体、2精英、10代、4对开局，默认最大搜索深度4，每代96局、10代960局。内部best不等于通过独立验证的模型；正式Bot不自动读取模型。完整训练、续训、停止和留出验证见[训练指南](docs/TRAINING_GUIDE.md)。
+这是8局低深度、小种群流程验证。V2默认先跑1代：8个体在深度2、2对开局快筛，保留4个体在深度4、6对开局复筛，共32+48=80局。训练使用3:1:0胜利奖励、可关闭的符号约束和多对手；正式统计仍为2:1:0。内部best不等于通过独立验证的模型；正式Bot不自动读取模型。完整训练、续训、停止和留出验证见[训练指南](docs/TRAINING_GUIDE.md)。
 
 ## 文档导航
 

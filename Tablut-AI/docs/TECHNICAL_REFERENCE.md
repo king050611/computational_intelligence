@@ -38,3 +38,7 @@
 Benchmark结果包括standings的overall/attacker/defender、逐局用时和责任方错误、opening_id、seed、积分、可选search_stats；manifest保存提交SHA、未提交变更、配置、环境、开局SHA256和模型SHA256。Replay schema1.1保存完整每步棋盘及事件，HTML内嵌JSON、可离线打开。历史schema仍可读取，旧数据不会被新算法改写。
 
 遗传训练机制、续训约束和最终留出见[训练指南](TRAINING_GUIDE.md)。
+
+## 遗传V2兼容性
+
+训练检查点升级schema2，采用两阶段、多对手和3:1:0适应度；模型schema1与现有加载接口兼容，官方比赛积分不变。运行源码及两套训练开局哈希固定，旧训练目录不可跨版本恢复。紧急局面诊断最多10ms或剩余预算5%，确认胜利可直接返回；安全应对仅调整顺序、不删除分支，未知结果不用于过滤。正式时间公式和TeamXX.py默认策略不变。详见[训练指南](TRAINING_GUIDE.md)。

@@ -1,0 +1,798 @@
+{
+  "checkpoint_schema": 2,
+  "source_commit": "1b70c124b3b754a8578fcae637ae53d6642d185e",
+  "source_hash": "26e6db6f0fb424037ac7b0136e5c62806eec3784beae1d65b8ecc080ee5ad1bd",
+  "training_games": 80,
+  "training": {
+    "issues": {
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "invalid_returns": 0
+    },
+    "max_player_seconds": 54.946674000014355,
+    "own_search": {
+      "moves": 0,
+      "mean_depth": null,
+      "mean_nodes": null,
+      "seconds": 0,
+      "fallbacks": 0,
+      "tactical_wins": 0
+    },
+    "control_search": {
+      "moves": 0,
+      "mean_depth": null,
+      "mean_nodes": null,
+      "seconds": 0,
+      "fallbacks": 0,
+      "tactical_wins": 0
+    }
+  },
+  "quick_trials": [
+    {
+      "index": 0,
+      "weights": [
+        -400.0,
+        600.0,
+        -160.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "eligible": true,
+      "fitness": 0.5,
+      "win_rate": 0.5,
+      "loss_rate": 0.5,
+      "points": 4,
+      "training_reward": 6,
+      "standings": {
+        "overall": {
+          "games": 4,
+          "wins": 2,
+          "draws": 0,
+          "losses": 2,
+          "points": 4
+        },
+        "attacker": {
+          "games": 2,
+          "wins": 1,
+          "draws": 0,
+          "losses": 1,
+          "points": 2
+        },
+        "defender": {
+          "games": 2,
+          "wins": 1,
+          "draws": 0,
+          "losses": 1,
+          "points": 2
+        }
+      },
+      "results": [
+        "g0001_t1b3_z2e/quick_i000_enhanced_dynamic_r0.json",
+        "g0001_t1b3_z2e/quick_i000_enhanced_r0.json"
+      ],
+      "stage": "quick"
+    },
+    {
+      "index": 1,
+      "weights": [
+        -411.5272263662343,
+        586.1677119734785,
+        -168.905268925413,
+        0,
+        0,
+        -119.7882731472766
+      ],
+      "eligible": true,
+      "fitness": 0.25,
+      "win_rate": 0.0,
+      "loss_rate": 0.25,
+      "points": 3,
+      "training_reward": 3,
+      "standings": {
+        "overall": {
+          "games": 4,
+          "wins": 0,
+          "draws": 3,
+          "losses": 1,
+          "points": 3
+        },
+        "attacker": {
+          "games": 2,
+          "wins": 0,
+          "draws": 2,
+          "losses": 0,
+          "points": 2
+        },
+        "defender": {
+          "games": 2,
+          "wins": 0,
+          "draws": 1,
+          "losses": 1,
+          "points": 1
+        }
+      },
+      "results": [
+        "g0001_t1b3_z2e/quick_i001_enhanced_dynamic_r0.json",
+        "g0001_t1b3_z2e/quick_i001_enhanced_r0.json"
+      ],
+      "stage": "quick"
+    },
+    {
+      "index": 2,
+      "weights": [
+        -373.41453247458276,
+        578.6130017202265,
+        -177.3566947316156,
+        0,
+        18.58381895253767,
+        0
+      ],
+      "eligible": true,
+      "fitness": 0.3333333333333333,
+      "win_rate": 0.25,
+      "loss_rate": 0.5,
+      "points": 3,
+      "training_reward": 4,
+      "standings": {
+        "overall": {
+          "games": 4,
+          "wins": 1,
+          "draws": 1,
+          "losses": 2,
+          "points": 3
+        },
+        "attacker": {
+          "games": 2,
+          "wins": 0,
+          "draws": 1,
+          "losses": 1,
+          "points": 1
+        },
+        "defender": {
+          "games": 2,
+          "wins": 1,
+          "draws": 0,
+          "losses": 1,
+          "points": 2
+        }
+      },
+      "results": [
+        "g0001_t1b3_z2e/quick_i002_enhanced_dynamic_r0.json",
+        "g0001_t1b3_z2e/quick_i002_enhanced_r0.json"
+      ],
+      "stage": "quick"
+    },
+    {
+      "index": 3,
+      "weights": [
+        -347.4690794561065,
+        608.8405741955065,
+        -219.06572818758565,
+        -81.17298939901737,
+        19.707375616896158,
+        0
+      ],
+      "eligible": true,
+      "fitness": 0.5,
+      "win_rate": 0.25,
+      "loss_rate": 0.0,
+      "points": 5,
+      "training_reward": 6,
+      "standings": {
+        "overall": {
+          "games": 4,
+          "wins": 1,
+          "draws": 3,
+          "losses": 0,
+          "points": 5
+        },
+        "attacker": {
+          "games": 2,
+          "wins": 1,
+          "draws": 1,
+          "losses": 0,
+          "points": 3
+        },
+        "defender": {
+          "games": 2,
+          "wins": 0,
+          "draws": 2,
+          "losses": 0,
+          "points": 2
+        }
+      },
+      "results": [
+        "g0001_t1b3_z2e/quick_i003_enhanced_dynamic_r0.json",
+        "g0001_t1b3_z2e/quick_i003_enhanced_r0.json"
+      ],
+      "stage": "quick"
+    },
+    {
+      "index": 4,
+      "weights": [
+        -396.6674508877293,
+        591.4941364983373,
+        -117.45790236793046,
+        -116.28362384069425,
+        0,
+        0
+      ],
+      "eligible": true,
+      "fitness": 0.5833333333333334,
+      "win_rate": 0.5,
+      "loss_rate": 0.25,
+      "points": 5,
+      "training_reward": 7,
+      "standings": {
+        "overall": {
+          "games": 4,
+          "wins": 2,
+          "draws": 1,
+          "losses": 1,
+          "points": 5
+        },
+        "attacker": {
+          "games": 2,
+          "wins": 1,
+          "draws": 0,
+          "losses": 1,
+          "points": 2
+        },
+        "defender": {
+          "games": 2,
+          "wins": 1,
+          "draws": 1,
+          "losses": 0,
+          "points": 3
+        }
+      },
+      "results": [
+        "g0001_t1b3_z2e/quick_i004_enhanced_dynamic_r0.json",
+        "g0001_t1b3_z2e/quick_i004_enhanced_r0.json"
+      ],
+      "stage": "quick"
+    },
+    {
+      "index": 5,
+      "weights": [
+        -330.12764916964426,
+        580.7496261875891,
+        -129.87201130496717,
+        0,
+        62.58614469629137,
+        -89.05777713985381
+      ],
+      "eligible": true,
+      "fitness": 0.3333333333333333,
+      "win_rate": 0.25,
+      "loss_rate": 0.5,
+      "points": 3,
+      "training_reward": 4,
+      "standings": {
+        "overall": {
+          "games": 4,
+          "wins": 1,
+          "draws": 1,
+          "losses": 2,
+          "points": 3
+        },
+        "attacker": {
+          "games": 2,
+          "wins": 1,
+          "draws": 1,
+          "losses": 0,
+          "points": 3
+        },
+        "defender": {
+          "games": 2,
+          "wins": 0,
+          "draws": 0,
+          "losses": 2,
+          "points": 0
+        }
+      },
+      "results": [
+        "g0001_t1b3_z2e/quick_i005_enhanced_dynamic_r0.json",
+        "g0001_t1b3_z2e/quick_i005_enhanced_r0.json"
+      ],
+      "stage": "quick"
+    },
+    {
+      "index": 6,
+      "weights": [
+        -354.5399449931691,
+        478.83836866198885,
+        -369.59563377750817,
+        -48.55125825596021,
+        0,
+        0
+      ],
+      "eligible": true,
+      "fitness": 0.3333333333333333,
+      "win_rate": 0.25,
+      "loss_rate": 0.5,
+      "points": 3,
+      "training_reward": 4,
+      "standings": {
+        "overall": {
+          "games": 4,
+          "wins": 1,
+          "draws": 1,
+          "losses": 2,
+          "points": 3
+        },
+        "attacker": {
+          "games": 2,
+          "wins": 1,
+          "draws": 0,
+          "losses": 1,
+          "points": 2
+        },
+        "defender": {
+          "games": 2,
+          "wins": 0,
+          "draws": 1,
+          "losses": 1,
+          "points": 1
+        }
+      },
+      "results": [
+        "g0001_t1b3_z2e/quick_i006_enhanced_dynamic_r0.json",
+        "g0001_t1b3_z2e/quick_i006_enhanced_r0.json"
+      ],
+      "stage": "quick"
+    },
+    {
+      "index": 7,
+      "weights": [
+        -346.8587280309684,
+        502.4740206963444,
+        -92.21108613215998,
+        -80.17622593938798,
+        0,
+        -23.511982236522574
+      ],
+      "eligible": true,
+      "fitness": 0.3333333333333333,
+      "win_rate": 0.25,
+      "loss_rate": 0.5,
+      "points": 3,
+      "training_reward": 4,
+      "standings": {
+        "overall": {
+          "games": 4,
+          "wins": 1,
+          "draws": 1,
+          "losses": 2,
+          "points": 3
+        },
+        "attacker": {
+          "games": 2,
+          "wins": 1,
+          "draws": 0,
+          "losses": 1,
+          "points": 2
+        },
+        "defender": {
+          "games": 2,
+          "wins": 0,
+          "draws": 1,
+          "losses": 1,
+          "points": 1
+        }
+      },
+      "results": [
+        "g0001_t1b3_z2e/quick_i007_enhanced_dynamic_r0.json",
+        "g0001_t1b3_z2e/quick_i007_enhanced_r0.json"
+      ],
+      "stage": "quick"
+    }
+  ],
+  "final_trials": [
+    {
+      "index": 0,
+      "weights": [
+        -400.0,
+        600.0,
+        -160.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "eligible": true,
+      "fitness": 0.6388888888888888,
+      "win_rate": 0.5833333333333334,
+      "loss_rate": 0.25,
+      "points": 16,
+      "training_reward": 23,
+      "standings": {
+        "overall": {
+          "games": 12,
+          "wins": 7,
+          "draws": 2,
+          "losses": 3,
+          "points": 16
+        },
+        "attacker": {
+          "games": 6,
+          "wins": 4,
+          "draws": 1,
+          "losses": 1,
+          "points": 9
+        },
+        "defender": {
+          "games": 6,
+          "wins": 3,
+          "draws": 1,
+          "losses": 2,
+          "points": 7
+        }
+      },
+      "results": [
+        "g0001_t1b3_z2e/final_i000_enhanced_r0.json",
+        "g0001_t1b3_z2e/final_i000_enhanced_dynamic_r0.json"
+      ],
+      "stage": "final"
+    },
+    {
+      "index": 4,
+      "weights": [
+        -396.6674508877293,
+        591.4941364983373,
+        -117.45790236793046,
+        -116.28362384069425,
+        0,
+        0
+      ],
+      "eligible": true,
+      "fitness": 0.2222222222222222,
+      "win_rate": 0.16666666666666666,
+      "loss_rate": 0.6666666666666666,
+      "points": 6,
+      "training_reward": 8,
+      "standings": {
+        "overall": {
+          "games": 12,
+          "wins": 2,
+          "draws": 2,
+          "losses": 8,
+          "points": 6
+        },
+        "attacker": {
+          "games": 6,
+          "wins": 1,
+          "draws": 0,
+          "losses": 5,
+          "points": 2
+        },
+        "defender": {
+          "games": 6,
+          "wins": 1,
+          "draws": 2,
+          "losses": 3,
+          "points": 4
+        }
+      },
+      "results": [
+        "g0001_t1b3_z2e/final_i004_enhanced_r0.json",
+        "g0001_t1b3_z2e/final_i004_enhanced_dynamic_r0.json"
+      ],
+      "stage": "final"
+    },
+    {
+      "index": 3,
+      "weights": [
+        -347.4690794561065,
+        608.8405741955065,
+        -219.06572818758565,
+        -81.17298939901737,
+        19.707375616896158,
+        0
+      ],
+      "eligible": true,
+      "fitness": 0.4722222222222222,
+      "win_rate": 0.4166666666666667,
+      "loss_rate": 0.4166666666666667,
+      "points": 12,
+      "training_reward": 17,
+      "standings": {
+        "overall": {
+          "games": 12,
+          "wins": 5,
+          "draws": 2,
+          "losses": 5,
+          "points": 12
+        },
+        "attacker": {
+          "games": 6,
+          "wins": 1,
+          "draws": 0,
+          "losses": 5,
+          "points": 2
+        },
+        "defender": {
+          "games": 6,
+          "wins": 4,
+          "draws": 2,
+          "losses": 0,
+          "points": 10
+        }
+      },
+      "results": [
+        "g0001_t1b3_z2e/final_i003_enhanced_r0.json",
+        "g0001_t1b3_z2e/final_i003_enhanced_dynamic_r0.json"
+      ],
+      "stage": "final"
+    },
+    {
+      "index": 2,
+      "weights": [
+        -373.41453247458276,
+        578.6130017202265,
+        -177.3566947316156,
+        0,
+        18.58381895253767,
+        0
+      ],
+      "eligible": true,
+      "fitness": 0.6111111111111112,
+      "win_rate": 0.5833333333333334,
+      "loss_rate": 0.3333333333333333,
+      "points": 15,
+      "training_reward": 22,
+      "standings": {
+        "overall": {
+          "games": 12,
+          "wins": 7,
+          "draws": 1,
+          "losses": 4,
+          "points": 15
+        },
+        "attacker": {
+          "games": 6,
+          "wins": 3,
+          "draws": 0,
+          "losses": 3,
+          "points": 6
+        },
+        "defender": {
+          "games": 6,
+          "wins": 4,
+          "draws": 1,
+          "losses": 1,
+          "points": 9
+        }
+      },
+      "results": [
+        "g0001_t1b3_z2e/final_i002_enhanced_r0.json",
+        "g0001_t1b3_z2e/final_i002_enhanced_dynamic_r0.json"
+      ],
+      "stage": "final"
+    }
+  ],
+  "manual_control": {
+    "index": 0,
+    "weights": [
+      -400.0,
+      600.0,
+      -160.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "eligible": true,
+    "fitness": 0.6388888888888888,
+    "win_rate": 0.5833333333333334,
+    "loss_rate": 0.25,
+    "points": 16,
+    "training_reward": 23,
+    "standings": {
+      "overall": {
+        "games": 12,
+        "wins": 7,
+        "draws": 2,
+        "losses": 3,
+        "points": 16
+      },
+      "attacker": {
+        "games": 6,
+        "wins": 4,
+        "draws": 1,
+        "losses": 1,
+        "points": 9
+      },
+      "defender": {
+        "games": 6,
+        "wins": 3,
+        "draws": 1,
+        "losses": 2,
+        "points": 7
+      }
+    },
+    "results": [
+      "g0001_t1b3_z2e/final_i000_enhanced_r0.json",
+      "g0001_t1b3_z2e/final_i000_enhanced_dynamic_r0.json"
+    ],
+    "stage": "final"
+  },
+  "current_champion": {
+    "index": 0,
+    "weights": [
+      -400.0,
+      600.0,
+      -160.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "eligible": true,
+    "fitness": 0.6388888888888888,
+    "win_rate": 0.5833333333333334,
+    "loss_rate": 0.25,
+    "points": 16,
+    "training_reward": 23,
+    "standings": {
+      "overall": {
+        "games": 12,
+        "wins": 7,
+        "draws": 2,
+        "losses": 3,
+        "points": 16
+      },
+      "attacker": {
+        "games": 6,
+        "wins": 4,
+        "draws": 1,
+        "losses": 1,
+        "points": 9
+      },
+      "defender": {
+        "games": 6,
+        "wins": 3,
+        "draws": 1,
+        "losses": 2,
+        "points": 7
+      }
+    },
+    "results": [
+      "g0001_t1b3_z2e/final_i000_enhanced_r0.json",
+      "g0001_t1b3_z2e/final_i000_enhanced_dynamic_r0.json"
+    ],
+    "stage": "final",
+    "generation": 1
+  },
+  "manual_equivalent": true,
+  "validation": {
+    "standings": {
+      "overall": {
+        "games": 8,
+        "wins": 2,
+        "draws": 2,
+        "losses": 4,
+        "points": 6
+      },
+      "attacker": {
+        "games": 4,
+        "wins": 0,
+        "draws": 2,
+        "losses": 2,
+        "points": 2
+      },
+      "defender": {
+        "games": 4,
+        "wins": 2,
+        "draws": 0,
+        "losses": 2,
+        "points": 4
+      }
+    },
+    "paired": {
+      "pairs": 4,
+      "point_rate": 0.375,
+      "ci95": [
+        0.25,
+        0.5
+      ],
+      "bootstrap_seed": 42,
+      "bootstrap_samples": 10000,
+      "pair_points": {
+        "1": 0.5,
+        "2": 0.25,
+        "3": 0.5,
+        "4": 0.25
+      }
+    },
+    "issues": {
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "invalid_returns": 0
+    },
+    "max_player_seconds": 27.021315299996786,
+    "own_search": {
+      "moves": 96,
+      "mean_depth": 3.3229166666666665,
+      "mean_nodes": 13856.4375,
+      "seconds": 121.56411019999814,
+      "fallbacks": 46,
+      "tactical_wins": 2
+    },
+    "control_search": {
+      "moves": 97,
+      "mean_depth": 3.381443298969072,
+      "mean_nodes": 12923.948453608247,
+      "seconds": 113.45592320000014,
+      "fallbacks": 36,
+      "tactical_wins": 3
+    }
+  },
+  "next_population": [
+    [
+      -400.0,
+      600.0,
+      -160.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      -373.41453247458276,
+      578.6130017202265,
+      -177.3566947316156,
+      0,
+      18.58381895253767,
+      0
+    ],
+    [
+      -373.41453247458276,
+      578.6130017202265,
+      -177.3566947316156,
+      0,
+      115.36035580571368,
+      0
+    ],
+    [
+      -400.0,
+      501.0754396548265,
+      -177.3566947316156,
+      -21.322714067949846,
+      0,
+      0
+    ],
+    [
+      -373.41453247458276,
+      578.6130017202265,
+      -177.3566947316156,
+      0,
+      18.58381895253767,
+      0
+    ],
+    [
+      -347.4690794561065,
+      608.8405741955065,
+      -296.4274402933328,
+      0,
+      0,
+      0
+    ],
+    [
+      -373.41453247458276,
+      578.6130017202265,
+      -68.73454409203599,
+      0,
+      18.58381895253767,
+      0
+    ],
+    [
+      -396.6674508877293,
+      591.4941364983373,
+      -156.42298740667403,
+      0,
+      0,
+      0
+    ]
+  ],
+  "formal_bot_weights_changed": false
+}

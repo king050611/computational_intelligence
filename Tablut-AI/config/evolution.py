@@ -1,23 +1,33 @@
-"""Initial genetic experiment settings; not proven competitive defaults."""
+"""Win-oriented, two-stage genetic experiments; formal bot defaults stay separate."""
 from dataclasses import dataclass
 from math import isfinite
 
 BASE_WEIGHTS = (-400.0,600.0,-160.0,0.0,0.0,0.0)
+GENE_SIGNS = (-1,1,-1,-1,1,-1)
 
 @dataclass(frozen=True)
 class EvolutionConfig:
-    population: int = 12
+    population: int = 8
     elite: int = 2
     crossover: float = 0.7
     mutation: float = 0.2
     sigma: float = 80.0
-    bound: float = 2000.0
+    bound: float = 1000.0
     seed: int = 42
+    win_reward: int = 3
+    constrained: bool = True
+    quick_pairs: int = 2
+    quick_depth: int = 2
+    finalists: int = 4
+    final_pairs: int = 6
 
     def __post_init__(self):
-        if type(self.seed) is not int or self.seed < 0:
-            raise ValueError("Seed must be a nonnegative integer")
-        if type(self.population) is not int or type(self.elite) is not int or not 1 <= self.elite < self.population:
-            raise ValueError("Require population > elite >= 1")
-        if not all(isfinite(v) for v in (self.crossover,self.mutation,self.sigma,self.bound)) or not 0 <= self.crossover <= 1 or not 0 <= self.mutation <= 1 or self.sigma <= 0 or self.bound < 600:
-            raise ValueError("Invalid evolution probabilities, mutation scale or weight bound")
+        integers=(self.population,self.elite,self.seed,self.win_reward,self.quick_pairs,self.quick_depth,self.finalists,self.final_pairs)
+        if any(type(v) is not int for v in integers) or self.seed<0:
+            raise ValueError("Counts and seed must be integers, seed nonnegative")
+        if not 1 <= self.elite < self.population or not max(2,self.elite) <= min(self.finalists,self.population):
+            raise ValueError("Require population > elite >= 1 and sufficient finalists")
+        if min(self.quick_pairs,self.quick_depth,self.finalists,self.final_pairs)<1 or self.win_reward not in (2,3,5):
+            raise ValueError("Positive screening sizes and win reward 2, 3 or 5 are required")
+        if not all(isfinite(v) for v in (self.crossover,self.mutation,self.sigma,self.bound)) or not 0<=self.crossover<=1 or not 0<=self.mutation<=1 or self.sigma<=0 or self.bound<600 or type(self.constrained) is not bool:
+            raise ValueError("Invalid genetic probability, mutation scale or weight bounds")

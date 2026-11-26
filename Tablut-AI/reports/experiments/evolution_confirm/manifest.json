@@ -1,0 +1,31 @@
+{
+  "scope": "Direction A: 40-game independent confirmation only; no training or weight/code changes",
+  "source_commit": "1b70c124b3b754a8578fcae637ae53d6642d185e",
+  "candidate_sha256": "8e61127a6f1074cd9f0068a7cbfedfb5d107381b183f150a378b120898e9cfa9",
+  "started_at": "2026-11-25T12:01:14.607181+00:00",
+  "search_options": {
+    "max_depth": 4,
+    "tt_capacity": 20000,
+    "order_moves": true
+  },
+  "commands": [
+    {
+      "name": "generate_openings",
+      "argv": [
+        "D:\\\u5de5\u5177\\Python\\python.exe",
+        "-u",
+        "scripts/generate_openings.py",
+        "--pairs",
+        "20",
+        "--seed",
+        "61827",
+        "--output",
+        "D:\\workstudy\\\u5927\u56db\\\u5927\u56db\u4e0a\\computational_intelligence\\Tablut-AI\\reports\\experiments\\evolution_confirm\\openings.json"
+      ],
+      "seconds": 0.08689219999723719,
+      "returncode": 0
+    }
+  ],
+  "status": "interrupted_before_completion",
+  "note": "Prior turn interrupted; partial game log retained, no complete result counted."
+}

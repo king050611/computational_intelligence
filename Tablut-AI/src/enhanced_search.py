@@ -13,7 +13,7 @@ WIN_SCORE = 1_000_000_000.0
 
 class SearchTimeout(Exception):
     """Discard an incomplete search iteration."""
-from src.tactics import opponent
+from src.tactics import opponent, is_urgent, prioritize
 from src.transposition import MoveHints
 
 
@@ -35,6 +35,7 @@ class EnhancedSearch:
         self.stats = stats
         self.hints = MoveHints(options.tt_capacity)
         self.children = lru_cache(maxsize=4096)(apply_move)
+        self.root_preferred = set()
         self.killers = {}
         self.history_scores = {}
 
@@ -58,7 +59,7 @@ class EnhancedSearch:
             # Cheap capture potential. The rule engine still decides captures.
             contact = any(0 <= r + dr < size and 0 <= c + dc < size
                           and board[r + dr][c + dc] in enemies for dr, dc in DIRECTIONS)
-            return escape, move == hint, contact, move == killer, self.history_scores.get((side, move), 0)
+            return ply == 0 and move in self.root_preferred, escape, move == hint, contact, move == killer, self.history_scores.get((side, move), 0)
 
         return sorted(moves, key=priority, reverse=True)
 
@@ -115,11 +116,24 @@ def choose_enhanced(board, side, *, deadline, soft_deadline=None, history=(),
     stats = {} if stats is None else stats
     stats.update(target_depth=options.max_depth, completed_depth=0, nodes=0, cutoffs=0,
                  tt_hint_hits=0, root_moves=len(moves), timed_out=False,
-                 fallback_used=False, score=None, pv=[], finish_reason="no_legal_moves")
+                 fallback_used=False, score=None, pv=[], finish_reason="no_legal_moves", tactical_status="not_checked")
     if not moves:
         return None
+    preferred=()
+    now=perf_counter()
+    if now<deadline and is_urgent(board):
+        # Bound diagnostic work to 10ms or 5% of the remaining step budget.
+        moves,info=prioritize(board,side,moves,min(deadline,now+min(.010,(deadline-now)*.05)),history)
+        stats["tactical_status"]="complete" if info.status_complete else "unknown"
+        if info.status_complete and info.opponent_threat_now:
+            preferred=info.safe_replies
+        if info.immediate_wins:
+            move=info.immediate_wins[0]
+            stats.update(score=WIN_SCORE,pv=(move,),finish_reason="tactical_win")
+            return move
     best = moves[0]
     search = EnhancedSearch(side, deadline, evaluator or evaluate, options, stats)
+    search.root_preferred=set(preferred)
     stats["finish_reason"] = "depth_completed"
     for depth in range(1, options.max_depth + 1):
         if perf_counter() >= deadline:

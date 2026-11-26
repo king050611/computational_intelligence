@@ -78,11 +78,11 @@ class EvolutionTests(unittest.TestCase):
         with patch('sys.argv',['replay_demo.py','--strategy','evolutionary_dynamic']),contextlib.redirect_stderr(io.StringIO()),self.assertRaises(SystemExit):replay_demo.main()
 
     def test_resume_stop_and_suite_tampering(self):
-        def fitness(directory,population,generation,options,seed):
-            return [dict(weights=w,points=len(population)-i) for i,w in enumerate(population)]
+        def fitness(directory,population,generation,options,seed,**kwargs):
+            return ([dict(weights=w,points=len(population)-i,fitness=1-i/len(population),eligible=True) for i,w in enumerate(population)],{})
         with tempfile.TemporaryDirectory() as tmp,patch.object(train_evolution,'run_generation',side_effect=fitness),contextlib.redirect_stdout(io.StringIO()):
             directory=Path(tmp)/'run';args=['--output-dir',str(directory)]
-            train_evolution.main(args+['--generations','1','--population','2','--elite','1','--pairs','1','--max-depth','1'])
+            train_evolution.main(args+['--generations','1','--population','2','--elite','1','--pairs','1','--quick-depth','1','--max-depth','1'])
             expected=load_evaluator(directory/'best.json').weights
             (directory/'g0002_partial').mkdir()
             train_evolution.main(args+['--resume','--generations','1'])

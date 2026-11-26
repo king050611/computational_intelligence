@@ -70,3 +70,11 @@ def is_urgent(board):
                    for dr,dc in ((-1,0),(1,0),(0,-1),(0,1)))
     return pressure >= 2 or any(start == king and (0 in end or 8 in end)
                                 for start,end in get_legal_moves(board,"D"))
+
+
+def prioritize(board,side,moves,deadline,history=()):
+    """Keep every legal move; only proved wins or fully checked defenses lead."""
+    info=analyze(board,side,deadline,history)
+    preferred=info.immediate_wins or (info.safe_replies if info.status_complete and info.opponent_threat_now else ())
+    preferred=set(preferred)
+    return sorted(moves,key=lambda move:move in preferred,reverse=True),info
