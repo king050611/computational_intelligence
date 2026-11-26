@@ -2,6 +2,24 @@
 
 V2继续只训练六个评估权重，不新增策略。正式`TeamXX.py`默认手工Enhanced Dynamic，遗传训练不在比赛中执行，也不自动替换正式模型。原V1检查点和实验数据保留，但V1不得续训进V2。
 
+## V3：权重唯一种群与多样性复筛（当前训练机制）
+
+V3只改训练机制，不改棋盘规则、搜索器、六特征、时间公式和正式入口。相对V2的三处变化：
+
+1. **权重唯一种群**：`initial_population`/`next_population` 按六项权重的精确数值去重，重复个体先重新变异（至少一个基因有效变化），超过 `--dedup-attempts` 次仍重复则报错停止，不再无限循环。手工基线、前代冠军和精英始终保留；三者权重相同时合并为一个个体。
+2. **权重唯一复筛**：`select_finalists` 的四个名额依次为手工基线、前代冠军、快筛最高的新候选、多样性候选，任何名额都不接受重复权重。基线与冠军重合时释放名额并按快筛顺序补位；有效候选不足 `finalists` 时中止该代，不用重复权重凑数。多样性候选只在快筛排名前半段里按归一化欧氏距离 `sqrt(Σ((w_i−best_i)/bound)²)` 选取，避免选出排名靠后但距离最远的个体。
+3. **历史权重热启动**：`--initial-model <六特征模型>` 或 `--initial-checkpoint <旧检查点>`（互斥）把既有冠军写入新种群并设为初始历史对手/强制复筛候选，同时记录文件哈希、来源代数与权重。它只迁移权重，不继承旧适应度、旧排名或旧对局，也不绕过源码哈希校验：新运行使用新目录和新源码哈希，`--resume` 不允许重新播种。
+
+热启动与复筛名额的命令示例（V3第一轮，8个体/快筛32局/复筛48局）：
+
+```powershell
+python scripts/train_evolution.py --generations 1 --population 8 --elite 2 --finalists 4 --quick-pairs 2 --quick-depth 2 --final-pairs 6 --max-depth 4 --tt-capacity 20000 --win-reward 3 --constrained --bound 1000 --seed 42 --initial-model reports/training/v2_champion_archive/v2_g1_best.json --output-dir reports/training/evolution_v3_run
+```
+
+检查点在V2字段外新增 `initial_weights`、`initial_weights_source`（来源类型、路径、SHA256、权重）、`population_stats`（size/distinct/duplicates）、`population_retention`（基线与前代冠军是否保留）、`record_search`，以及每个候选的 `statistics`（总分、攻守分项、官方积分率、平均/最大耗时、平均完成深度）和 `screening.finalist_selection`（入选原因、快筛排名、与冠军距离）。`--record-search` 只为统计增加逐决策记录，不改变搜索与时间分配。
+
+V3首轮仍只跑一代，不自动追加代数；结论必须结合独立留出对局，内部best不等于通过验证的棋力。
+
 ## 先验证，再跑一整代
 
 ```powershell

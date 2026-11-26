@@ -20,6 +20,9 @@ class EvolutionConfig:
     quick_depth: int = 2
     finalists: int = 4
     final_pairs: int = 6
+    # V3 training-mechanism knobs: weight-unique populations and a diversity slot.
+    dedup_attempts: int = 64
+    diversity_slots: int = 1
 
     def __post_init__(self):
         integers=(self.population,self.elite,self.seed,self.win_reward,self.quick_pairs,self.quick_depth,self.finalists,self.final_pairs)
@@ -31,3 +34,7 @@ class EvolutionConfig:
             raise ValueError("Positive screening sizes and win reward 2, 3 or 5 are required")
         if not all(isfinite(v) for v in (self.crossover,self.mutation,self.sigma,self.bound)) or not 0<=self.crossover<=1 or not 0<=self.mutation<=1 or self.sigma<=0 or self.bound<600 or type(self.constrained) is not bool:
             raise ValueError("Invalid genetic probability, mutation scale or weight bounds")
+        if type(self.dedup_attempts) is not int or self.dedup_attempts<1:
+            raise ValueError("dedup_attempts must be a positive integer")
+        if type(self.diversity_slots) is not int or not 0<=self.diversity_slots<=max(0,self.finalists-1):
+            raise ValueError("diversity_slots must be a nonnegative integer below finalists")
