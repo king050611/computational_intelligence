@@ -1,0 +1,144 @@
+{
+  "version": "3.0",
+  "strategy": "evolutionary_dynamic",
+  "opponent": "enhanced",
+  "seed": 42,
+  "games": 2,
+  "standings": {
+    "overall": {
+      "games": 2,
+      "wins": 1,
+      "draws": 1,
+      "losses": 0,
+      "points": 3
+    },
+    "attacker": {
+      "games": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "points": 2
+    },
+    "defender": {
+      "games": 1,
+      "wins": 0,
+      "draws": 1,
+      "losses": 0,
+      "points": 1
+    }
+  },
+  "our_win_rate": 0.5,
+  "results": [
+    {
+      "game": 1,
+      "our_side": "A",
+      "winner": "A",
+      "plies": 75,
+      "elapsed_seconds": 2.017084999999497,
+      "attacker_seconds": 1.1589223999981186,
+      "defender_seconds": 0.8503280000040832,
+      "our_mean_move_seconds": 0.030497957894687334,
+      "our_max_move_seconds": 0.10589009999966947,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Attackers won!\nRounds played: 38\n",
+      "opponent_log": "",
+      "opening_id": 2,
+      "seed": 42,
+      "points": 2,
+      "invalid_returns": 0
+    },
+    {
+      "game": 2,
+      "our_side": "D",
+      "winner": "DRAW",
+      "plies": 36,
+      "elapsed_seconds": 0.9825898999988567,
+      "attacker_seconds": 0.5293480999935127,
+      "defender_seconds": 0.4493356999992102,
+      "our_mean_move_seconds": 0.024963094444400567,
+      "our_max_move_seconds": 0.036755600001924904,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Repeated position found\nGame over, it is draw, no winner!\nRounds played: 18\n",
+      "opponent_log": "",
+      "opening_id": 2,
+      "seed": 42,
+      "points": 1,
+      "invalid_returns": 0
+    }
+  ],
+  "model": "D:\\6\\\u8ba1\u7b97\u667a\u80fd\\new_code\\Tablut-AI\\reports\\training\\evolution_v2_pilot\\g0001_21d3lgsy\\quick_i003_model.json",
+  "manifest": {
+    "commit_sha": "b7a8915f2bc9ff3b80b0abef8b08a984f8b5d72d",
+    "worktree_changes": "",
+    "python": "3.14.4",
+    "platform": "Windows-11-10.0.22000-SP0",
+    "cpu": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+    "openings_sha256": "4b4f4c50baffa696864e1c88bdf5c2082428af29a97dc017b98a0c0ba5eb3a92",
+    "history_rule": "restarted_opening",
+    "options": {
+      "max_depth": 2,
+      "tt_capacity": 20000,
+      "order_moves": true
+    },
+    "evaluator": "evolutionary_six_features",
+    "arguments": [
+      "--strategy",
+      "evolutionary_dynamic",
+      "--model",
+      "D:\\6\\\u8ba1\u7b97\u667a\u80fd\\new_code\\Tablut-AI\\reports\\training\\evolution_v2_pilot\\g0001_21d3lgsy\\quick_i003_model.json",
+      "--opponent",
+      "enhanced",
+      "--openings",
+      "D:\\6\\\u8ba1\u7b97\u667a\u80fd\\new_code\\Tablut-AI\\reports\\training\\evolution_v2_pilot\\g0001_21d3lgsy\\quick_enhanced_openings.json",
+      "--seed",
+      "42",
+      "--max-depth",
+      "2",
+      "--tt-capacity",
+      "20000",
+      "--output",
+      "D:\\6\\\u8ba1\u7b97\u667a\u80fd\\new_code\\Tablut-AI\\reports\\training\\evolution_v2_pilot\\g0001_21d3lgsy\\quick_i003_enhanced_r0.json"
+    ],
+    "created_at": "2026-11-26T09:45:41.323869+00:00",
+    "opponent_evaluator": "hand_tuned",
+    "model_sha256": {
+      "model": "16eff9f5276141fac98d6cea776bc29f32168792cb2513ebbe06abd415530ebb"
+    }
+  }
+}
