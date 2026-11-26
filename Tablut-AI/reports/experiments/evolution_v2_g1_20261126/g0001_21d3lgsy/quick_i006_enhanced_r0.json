@@ -1,0 +1,144 @@
+{
+  "version": "3.0",
+  "strategy": "evolutionary_dynamic",
+  "opponent": "enhanced",
+  "seed": 42,
+  "games": 2,
+  "standings": {
+    "overall": {
+      "games": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "points": 0
+    },
+    "attacker": {
+      "games": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "points": 0
+    },
+    "defender": {
+      "games": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "points": 0
+    }
+  },
+  "our_win_rate": 0.0,
+  "results": [
+    {
+      "game": 1,
+      "our_side": "A",
+      "winner": "D",
+      "plies": 1386,
+      "elapsed_seconds": 37.66531369999939,
+      "attacker_seconds": 23.580933900091622,
+      "defender_seconds": 13.921718299912754,
+      "our_mean_move_seconds": 0.03402732164515385,
+      "our_max_move_seconds": 0.0673655000027793,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Defenders won!\nRounds played: 693\n",
+      "opponent_log": "",
+      "opening_id": 2,
+      "seed": 42,
+      "points": 0,
+      "invalid_returns": 0
+    },
+    {
+      "game": 2,
+      "our_side": "D",
+      "winner": "A",
+      "plies": 33,
+      "elapsed_seconds": 0.949741799999174,
+      "attacker_seconds": 0.5477573000098346,
+      "defender_seconds": 0.3970149999950081,
+      "our_mean_move_seconds": 0.024813437499688007,
+      "our_max_move_seconds": 0.039988299999095034,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Attackers won!\nRounds played: 17\n",
+      "opponent_log": "",
+      "opening_id": 2,
+      "seed": 42,
+      "points": 0,
+      "invalid_returns": 0
+    }
+  ],
+  "model": "D:\\6\\\u8ba1\u7b97\u667a\u80fd\\new_code\\Tablut-AI\\reports\\training\\evolution_v2_pilot\\g0001_21d3lgsy\\quick_i006_model.json",
+  "manifest": {
+    "commit_sha": "b7a8915f2bc9ff3b80b0abef8b08a984f8b5d72d",
+    "worktree_changes": "",
+    "python": "3.14.4",
+    "platform": "Windows-11-10.0.22000-SP0",
+    "cpu": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+    "openings_sha256": "4b4f4c50baffa696864e1c88bdf5c2082428af29a97dc017b98a0c0ba5eb3a92",
+    "history_rule": "restarted_opening",
+    "options": {
+      "max_depth": 2,
+      "tt_capacity": 20000,
+      "order_moves": true
+    },
+    "evaluator": "evolutionary_six_features",
+    "arguments": [
+      "--strategy",
+      "evolutionary_dynamic",
+      "--model",
+      "D:\\6\\\u8ba1\u7b97\u667a\u80fd\\new_code\\Tablut-AI\\reports\\training\\evolution_v2_pilot\\g0001_21d3lgsy\\quick_i006_model.json",
+      "--opponent",
+      "enhanced",
+      "--openings",
+      "D:\\6\\\u8ba1\u7b97\u667a\u80fd\\new_code\\Tablut-AI\\reports\\training\\evolution_v2_pilot\\g0001_21d3lgsy\\quick_enhanced_openings.json",
+      "--seed",
+      "42",
+      "--max-depth",
+      "2",
+      "--tt-capacity",
+      "20000",
+      "--output",
+      "D:\\6\\\u8ba1\u7b97\u667a\u80fd\\new_code\\Tablut-AI\\reports\\training\\evolution_v2_pilot\\g0001_21d3lgsy\\quick_i006_enhanced_r0.json"
+    ],
+    "created_at": "2026-11-26T09:46:59.265081+00:00",
+    "opponent_evaluator": "hand_tuned",
+    "model_sha256": {
+      "model": "c30524280d7042ad8d6011be9baf889a2a9bf2b1b8ef7e89bb873815b9fd9783"
+    }
+  }
+}

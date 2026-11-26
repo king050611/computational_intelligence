@@ -1,0 +1,144 @@
+{
+  "version": "3.0",
+  "strategy": "evolutionary_dynamic",
+  "opponent": "enhanced",
+  "seed": 42,
+  "games": 2,
+  "standings": {
+    "overall": {
+      "games": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "points": 2
+    },
+    "attacker": {
+      "games": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "points": 0
+    },
+    "defender": {
+      "games": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "points": 2
+    }
+  },
+  "our_win_rate": 0.5,
+  "results": [
+    {
+      "game": 1,
+      "our_side": "A",
+      "winner": "D",
+      "plies": 1386,
+      "elapsed_seconds": 34.09651579999991,
+      "attacker_seconds": 21.370198200016603,
+      "defender_seconds": 12.556230499976664,
+      "our_mean_move_seconds": 0.0308372268398508,
+      "our_max_move_seconds": 0.09633870000106981,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Defenders won!\nRounds played: 693\n",
+      "opponent_log": "",
+      "opening_id": 2,
+      "seed": 42,
+      "points": 0,
+      "invalid_returns": 0
+    },
+    {
+      "game": 2,
+      "our_side": "D",
+      "winner": "D",
+      "plies": 1378,
+      "elapsed_seconds": 28.217079599999124,
+      "attacker_seconds": 17.48423880008704,
+      "defender_seconds": 10.588454500040825,
+      "our_mean_move_seconds": 0.01536785849062529,
+      "our_max_move_seconds": 0.04869029999827035,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Defenders won!\nRounds played: 689\n",
+      "opponent_log": "",
+      "opening_id": 2,
+      "seed": 42,
+      "points": 2,
+      "invalid_returns": 0
+    }
+  ],
+  "model": "D:\\6\\\u8ba1\u7b97\u667a\u80fd\\new_code\\Tablut-AI\\reports\\training\\evolution_v2_pilot\\g0001_21d3lgsy\\quick_i004_model.json",
+  "manifest": {
+    "commit_sha": "b7a8915f2bc9ff3b80b0abef8b08a984f8b5d72d",
+    "worktree_changes": "",
+    "python": "3.14.4",
+    "platform": "Windows-11-10.0.22000-SP0",
+    "cpu": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+    "openings_sha256": "4b4f4c50baffa696864e1c88bdf5c2082428af29a97dc017b98a0c0ba5eb3a92",
+    "history_rule": "restarted_opening",
+    "options": {
+      "max_depth": 2,
+      "tt_capacity": 20000,
+      "order_moves": true
+    },
+    "evaluator": "evolutionary_six_features",
+    "arguments": [
+      "--strategy",
+      "evolutionary_dynamic",
+      "--model",
+      "D:\\6\\\u8ba1\u7b97\u667a\u80fd\\new_code\\Tablut-AI\\reports\\training\\evolution_v2_pilot\\g0001_21d3lgsy\\quick_i004_model.json",
+      "--opponent",
+      "enhanced",
+      "--openings",
+      "D:\\6\\\u8ba1\u7b97\u667a\u80fd\\new_code\\Tablut-AI\\reports\\training\\evolution_v2_pilot\\g0001_21d3lgsy\\quick_enhanced_openings.json",
+      "--seed",
+      "42",
+      "--max-depth",
+      "2",
+      "--tt-capacity",
+      "20000",
+      "--output",
+      "D:\\6\\\u8ba1\u7b97\u667a\u80fd\\new_code\\Tablut-AI\\reports\\training\\evolution_v2_pilot\\g0001_21d3lgsy\\quick_i004_enhanced_r0.json"
+    ],
+    "created_at": "2026-11-26T09:45:49.595815+00:00",
+    "opponent_evaluator": "hand_tuned",
+    "model_sha256": {
+      "model": "179968d426d41141407c238deac82aecd205ae02ca7a0519ffb8828751ad5018"
+    }
+  }
+}
