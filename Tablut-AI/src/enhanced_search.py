@@ -19,8 +19,8 @@ from config.settings import DIRECTIONS
 from config.evolution import BASE_WEIGHTS
 from src.evaluation import WeightedEvaluator
 from src.game import apply_move, check_winner, get_legal_moves, get_state_key
-from src.transposition import EXACT, LOWER, UPPER, TranspositionTable
-WIN_SCORE = 1_000_000_000.0
+from src.transposition import EXACT, LOWER, UPPER, MATE_BOUND, MATE_SCORE, TranspositionTable
+WIN_SCORE = MATE_SCORE
 
 
 class SearchTimeout(Exception):
@@ -50,6 +50,7 @@ class EnhancedSearch:
         self.repetition_hits = 0
         self.children = lru_cache(maxsize=4096)(apply_move)
         self.root_preferred = set()
+        self.root_draw_moves = set()
         self.killers = {}
         self.history_scores = {}
 
@@ -73,12 +74,16 @@ class EnhancedSearch:
         killer = self.killers.get(ply)
         size = len(board)
         root_preferred = self.root_preferred
+        draw_moves = self.root_draw_moves if ply == 0 else ()
         history_scores = self.history_scores
         target = ply == 0
 
         def priority(move):
             (row, col), (r, c) = move
+            # Tie-break, never a score rule: among equally scored root moves the ones
+            # that would repeat a position immediately are searched last.
             return (target and move in root_preferred,
+                    move not in draw_moves,
                     board[row][col] == "K" and (r in (0, size - 1) or c in (0, size - 1)),
                     move == hint,
                     move == killer,
@@ -98,13 +103,17 @@ class EnhancedSearch:
         terminal = check_winner(board, side)
         self.check_time()
         if terminal is not None:
-            return (0.0 if terminal == "DRAW" else WIN_SCORE if terminal == self.side else -WIN_SCORE), ()
+            if terminal == "DRAW":
+                return 0.0, ()
+            # Mate distance: prefer the shorter win and the longer loss.
+            distance = WIN_SCORE - ply
+            return (distance if terminal == self.side else -distance), ()
         if depth == 0:
             score = self.evaluator(board, self.side)
             self.check_time()
             return score, ()
 
-        cached = self.table.probe(key, depth, alpha, beta)
+        cached = self.table.probe(key, depth, alpha, beta, ply)
         if cached is not None:
             move = self.table.get(key)
             return cached, ((move,) if move else ())
@@ -139,7 +148,7 @@ class EnhancedSearch:
         if pv and self.repetition_hits == repetitions_before:
             # Bounds must be compared with the window this node was entered with.
             flag = LOWER if best >= beta_start else UPPER if best <= alpha_start else EXACT
-            self.table.store(key, depth, best, flag, pv[0])
+            self.table.store(key, depth, best, flag, pv[0], ply)
         return best, pv
 
 
@@ -169,11 +178,18 @@ def choose_enhanced(board, side, *, deadline, soft_deadline=None, history=(),
             preferred = info.safe_replies
         if info.immediate_wins:
             move = info.immediate_wins[0]
-            stats.update(score=WIN_SCORE, pv=(move,), finish_reason="tactical_win")
+            stats.update(score=WIN_SCORE - 1, pv=(move,), finish_reason="tactical_win")
             return move
     best = moves[0]
     search = EnhancedSearch(side, deadline, evaluator or evaluate, options, stats)
     search.root_preferred = set(preferred)
+    if history:
+        # A root move whose resulting position already occurred is an instant draw.
+        # It stays legal and is never banned; it only loses tie-breaks (see order()).
+        other = opponent(side)
+        search.root_draw_moves = {move for move in moves
+                                  if get_state_key(apply_move(board, move, side), other) in history}
+        stats["root_draw_moves"] = len(search.root_draw_moves)
     stats["finish_reason"] = "depth_completed"
     for depth in range(1, options.max_depth + 1):
         if perf_counter() >= deadline:
@@ -192,7 +208,7 @@ def choose_enhanced(board, side, *, deadline, soft_deadline=None, history=(),
             return None
         best = pv[0]
         stats.update(completed_depth=depth, score=score, pv=pv)
-        if abs(score) == WIN_SCORE:
+        if abs(score) >= MATE_BOUND:
             stats["finish_reason"] = "proven_terminal"
             break
     return best

@@ -2,8 +2,10 @@
 from dataclasses import dataclass
 from math import isfinite
 
-BASE_WEIGHTS = (-400.0,600.0,-160.0,0.0,0.0,0.0)
-GENE_SIGNS = (-1,1,-1,-1,1,-1)
+# Eight genes after V5: the two new structural features start at zero so that an
+# untrained model stays numerically identical to the six-feature baseline.
+BASE_WEIGHTS = (-400.0,600.0,-160.0,0.0,0.0,0.0,0.0,0.0)
+GENE_SIGNS = (-1,1,-1,-1,1,-1,-1,-1)
 
 @dataclass(frozen=True)
 class EvolutionConfig:
@@ -26,6 +28,10 @@ class EvolutionConfig:
     # V4: a diversity candidate must be within this screening-fitness margin of the
     # manual baseline before weight distance is even considered.
     diversity_margin: float = 0.10
+    # V5: attacker games are the largest loss source, so training can weight them.
+    # 1.0/1.0 reproduces the plain 3:1:0 fitness exactly.
+    attacker_game_weight: float = 1.0
+    defender_game_weight: float = 1.0
 
     def __post_init__(self):
         integers=(self.population,self.elite,self.seed,self.win_reward,self.quick_pairs,self.quick_depth,self.finalists,self.final_pairs)
@@ -43,3 +49,7 @@ class EvolutionConfig:
             raise ValueError("diversity_slots must be a nonnegative integer below finalists")
         if not isfinite(self.diversity_margin) or not 0<=self.diversity_margin<=1:
             raise ValueError("diversity_margin must be a probability between 0 and 1")
+        if not all(isfinite(v) for v in (self.attacker_game_weight,self.defender_game_weight)) \
+                or self.attacker_game_weight<0 or self.defender_game_weight<0 \
+                or self.attacker_game_weight+self.defender_game_weight<=0:
+            raise ValueError("Side game weights must be finite, nonnegative and not both zero")

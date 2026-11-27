@@ -22,7 +22,7 @@ class EvolutionTests(unittest.TestCase):
     def test_features_baseline_equivalence_and_perspective(self):
         board=initial_board();model=WeightedEvaluator(BASE_WEIGHTS)
         for ply in range(20):
-            self.assertEqual(len(extract_features(board)),6)
+            self.assertEqual(len(extract_features(board)),len(FEATURE_NAMES))
             self.assertEqual(model(board,"D"),evaluate_defender(board))
             self.assertEqual(model(board,"A"),-model(board,"D"))
             side="A" if ply%2==0 else "D";moves=get_legal_moves(board,side)
@@ -42,7 +42,7 @@ class EvolutionTests(unittest.TestCase):
             for record in ({"schema_version":1,"best":{"weights":[1,2,3,4]}},dict(model_record(BASE_WEIGHTS),features=list(reversed(FEATURE_NAMES)))):
                 p.write_text(json.dumps(record))
                 with self.assertRaises(ValueError):load_evaluator(p)
-            for w in ([1]*5,[True]*6,[float("nan")]*6,[10001]*6):
+            for w in ([1]*7,[True]*8,[float("nan")]*8,[10001]*8):
                 with self.assertRaises(ValueError):WeightedEvaluator(tuple(w))
 
     def test_shared_search_timing_and_formal_default(self):

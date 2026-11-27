@@ -115,6 +115,21 @@ python scripts/train_evolution.py --generations 1 --population 8 --elite 2 --fin
 `--max-depth` 同时作用于训练中的内置对手，因此换深度会改变整条评测环境；冠军的深度必须由对照实验（同一冻结对手、
 同一开局、40 局一组）决定，不能直接假设“越深越强”。
 
+### V5 训练侧新增开关
+
+| 开关 | 默认 | 作用 |
+| --- | --- | --- |
+| `--attacker-game-weight` | 1.0 | 训练适应度里执攻局的权重；1.0/1.0 与原有 3:1:0 完全等价 |
+| `--defender-game-weight` | 1.0 | 执守局权重；两者不能同时为 0 |
+| `--sigma` | 80 | 冠军附近的精细训练用 40；仍以 80 为对照 |
+
+权重只改变**训练期的候选排序**，官方 2:1:0 积分与裁判规则不受影响。例如攻方是最大损失源时可用
+`--attacker-game-weight 2 --defender-game-weight 1`，让攻方局面在适应度里占更大比重。
+
+特征与模型结构：V5 起为**八特征 / schema 2**；`schema_version=1` 的六权重模型仍可加载并自动补两个 0
+（`load_evaluator` 标记 `migrated=True`），因此旧的 V4 冠军可以直接用 `--initial-model` 热启动，
+落盘时自动升级为 schema 2。
+
 
 ## 先验证，再跑一整代
 

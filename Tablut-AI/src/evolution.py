@@ -20,8 +20,8 @@ from config.evolution import BASE_WEIGHTS, GENE_SIGNS
 
 
 def project(weights,config):
-    if len(weights)!=6:
-        raise ValueError("Six genes are required")
+    if len(weights)!=len(BASE_WEIGHTS):
+        raise ValueError(f"{len(BASE_WEIGHTS)} genes are required")
     return tuple(max(0 if config.constrained and sign>0 else -config.bound,
                      min(0 if config.constrained and sign<0 else config.bound,w))
                  for w,sign in zip(weights,GENE_SIGNS))
@@ -122,8 +122,27 @@ def next_population(ranked,config,generation,*,incumbent=None):
     return population
 
 
-def fitness(standings,win_reward=3):
-    if standings["games"]<=0 or win_reward not in (2,3,5):
+def fitness(standings,win_reward=3,attacker_weight=1.0,defender_weight=1.0):
+    """Win-oriented fitness, optionally weighting attacker and defender games.
+
+    Passing the full standings table with side weights >=0 keeps the official 2:1:0
+    score untouched; it only changes which candidate the trainer prefers. A plain row
+    and weights of 1.0 both reproduce the V2/V3/V4 formula exactly.
+    """
+    if win_reward not in (2,3,5):
+        raise ValueError("A completed match suite and reward 2, 3 or 5 are required")
+    if isinstance(standings,dict) and "attacker" in standings and "defender" in standings:
+        numerator=denominator=0.0
+        for key,weight in (("attacker",attacker_weight),("defender",defender_weight)):
+            block=standings[key]
+            if not weight or block["games"]<=0:
+                continue
+            numerator+=weight*(win_reward*block["wins"]+block["draws"])
+            denominator+=weight*win_reward*block["games"]
+        if denominator<=0:
+            raise ValueError("Weighted games must be positive")
+        return numerator/denominator
+    if standings["games"]<=0:
         raise ValueError("A completed match suite and reward 2, 3 or 5 are required")
     return (win_reward*standings["wins"]+standings["draws"])/(win_reward*standings["games"])
 

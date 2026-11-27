@@ -62,7 +62,7 @@ class PopulationDedupTests(unittest.TestCase):
 
     def test_initial_population_keeps_baseline_and_warm_start_champion(self):
         config = EvolutionConfig()
-        champion = (-373.41453247458276, 578.6130017202265, -177.3566947316156, 0.0, 18.58381895253767, 0.0)
+        champion = (-373.41453247458276, 578.6130017202265, -177.3566947316156, 0.0, 18.58381895253767, 0.0, 0.0, 0.0)
         population = initial_population(config, seed_weights=champion)
         self.assertIn(tuple(BASE_WEIGHTS), population)
         self.assertIn(tuple(champion), population)
@@ -100,7 +100,7 @@ class PopulationDedupTests(unittest.TestCase):
             population = next_population(population[:4], config, generation)
             self.assertEqual(len(set(population)), config.population)
             for genome in population:
-                self.assertTrue(all(w * sign >= 0 for w, sign in zip(genome, (-1, 1, -1, -1, 1, -1))))
+                self.assertTrue(all(w * sign >= 0 for w, sign in zip(genome, (-1, 1, -1, -1, 1, -1, 0.0, 0.0))))
 
     def test_runaway_duplicates_raise_instead_of_looping(self):
         config = EvolutionConfig(population=6, elite=2, dedup_attempts=3)
@@ -151,20 +151,20 @@ class FinalistSelectionTests(unittest.TestCase):
     def test_insufficient_distinct_candidates_aborts(self):
         config = EvolutionConfig(population=4, elite=2, finalists=4)
         trials = [trial(0, BASE_WEIGHTS, 0.5), trial(1, BASE_WEIGHTS, 0.4),
-                  trial(2, (-300.0, 500.0, -100.0, 0.0, 0.0, 0.0), 0.3),
-                  trial(3, (-300.0, 500.0, -100.0, 0.0, 0.0, 0.0), 0.2)]
+                  trial(2, (-300.0, 500.0, -100.0, 0.0, 0.0, 0.0, 0.0, 0.0), 0.3),
+                  trial(3, (-300.0, 500.0, -100.0, 0.0, 0.0, 0.0, 0.0, 0.0), 0.2)]
         with self.assertRaises(RuntimeError):
             select_finalists(trials, config)
 
     def test_diversity_slot_prefers_qualified_distant_candidate(self):
         config = EvolutionConfig()
         base = tuple(BASE_WEIGHTS)
-        qualifying = (-100.0, 300.0, -60.0, 0.0, 0.0, 0.0)
-        weak_far = (-1000.0, 1000.0, -1000.0, 0.0, 0.0, 0.0)
-        near = [(-390.0, 590.0, -158.0, 0.0, 0.0, 0.0),
-                (-380.0, 580.0, -150.0, 0.0, 0.0, 0.0),
-                (-370.0, 570.0, -140.0, 0.0, 0.0, 0.0),
-                (-360.0, 560.0, -130.0, 0.0, 0.0, 0.0)]
+        qualifying = (-100.0, 300.0, -60.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        weak_far = (-1000.0, 1000.0, -1000.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        near = [(-390.0, 590.0, -158.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+                (-380.0, 580.0, -150.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+                (-370.0, 570.0, -140.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+                (-360.0, 560.0, -130.0, 0.0, 0.0, 0.0, 0.0, 0.0)]
         weights = [base, near[0], qualifying, near[1], near[2], near[3]] + [weak_far]
         fitness = [0.60, 0.58, 0.56, 0.55, 0.54, 0.53, 0.20]
         trials = [trial(i, w, f) for i, (w, f) in enumerate(zip(weights, fitness))]
@@ -182,12 +182,12 @@ class FinalistSelectionTests(unittest.TestCase):
     def test_diversity_slot_skips_candidates_below_the_quality_gate(self):
         config = EvolutionConfig()
         base = tuple(BASE_WEIGHTS)
-        weak = [(-200.0, 300.0, -60.0, 0.0, 0.0, 0.0),
-                (-100.0, 200.0, -20.0, 0.0, 0.0, 0.0)]
-        near = [(-392.0, 592.0, -158.0, 0.0, 0.0, 0.0),
-                (-388.0, 588.0, -156.0, 0.0, 0.0, 0.0),
-                (-384.0, 584.0, -154.0, 0.0, 0.0, 0.0)]
-        weights = [base, near[0], near[1], near[2]] + weak + [(-420.0, 610.0, -170.0, 0.0, 0.0, 0.0)]
+        weak = [(-200.0, 300.0, -60.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+                (-100.0, 200.0, -20.0, 0.0, 0.0, 0.0, 0.0, 0.0)]
+        near = [(-392.0, 592.0, -158.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+                (-388.0, 588.0, -156.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+                (-384.0, 584.0, -154.0, 0.0, 0.0, 0.0, 0.0, 0.0)]
+        weights = [base, near[0], near[1], near[2]] + weak + [(-420.0, 610.0, -170.0, 0.0, 0.0, 0.0, 0.0, 0.0)]
         fitness = [0.60, 0.59, 0.58, 0.57, 0.42, 0.38, 0.55]
         trials = [trial(i, w, f) for i, (w, f) in enumerate(zip(weights, fitness))]
         selected = select_finalists(trials, config)
@@ -225,7 +225,8 @@ class WarmStartTests(unittest.TestCase):
             path.write_text(json.dumps(dict(schema_version=2, generation=1, best=dict(weights=champion, generation=1, fitness=0.6, points=16))), encoding="utf-8")
             args = argparse.Namespace(initial_model=None, initial_checkpoint=path)
             weights, source = train.load_initial_weights(args, EvolutionConfig())
-            self.assertEqual(tuple(weights), tuple(champion))
+            # A six-gene (schema-1 era) checkpoint is migrated by padding two zeros.
+            self.assertEqual(tuple(weights), tuple(champion) + (0.0, 0.0))
             self.assertEqual(source["generation"], 1)
             self.assertEqual(source["kind"], "checkpoint")
 
@@ -233,7 +234,7 @@ class WarmStartTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "bad.json"
             args = argparse.Namespace(initial_model=path, initial_checkpoint=None)
-            path.write_text(json.dumps(model_record((100.0, 600.0, -160.0, 0.0, 0.0, 0.0))), encoding="utf-8")
+            path.write_text(json.dumps(model_record((100.0, 600.0, -160.0, 0.0, 0.0, 0.0, 0.0, 0.0))), encoding="utf-8")
             with self.assertRaises(ValueError):
                 train.load_initial_weights(args, EvolutionConfig(constrained=True))
             self.assertEqual(train.load_initial_weights(args, EvolutionConfig(constrained=False))[0][0], 100.0)
@@ -295,7 +296,7 @@ class TrainingPipelineTests(unittest.TestCase):
                       for i, w in enumerate(population[:4])]
             return ranked, dict(finalist_selection=[])
         with tempfile.TemporaryDirectory() as tmp:
-            champion = (-373.0, 578.0, -177.0, 0.0, 18.0, 0.0)
+            champion = (-373.0, 578.0, -177.0, 0.0, 18.0, 0.0, 0.0, 0.0)
             model = Path(tmp) / "v2_champion.json"
             model.write_text(json.dumps(model_record(champion, generation=1)), encoding="utf-8")
             directory = Path(tmp) / "run"

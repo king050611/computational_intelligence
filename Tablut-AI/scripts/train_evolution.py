@@ -23,7 +23,7 @@ from config.evolution import BASE_WEIGHTS,GENE_SIGNS,EvolutionConfig
 from config.experimental import SearchOptions
 from scripts.benchmark import standings
 from scripts.generate_openings import generate_openings
-from src.evaluation import WeightedEvaluator,load_evaluator,model_record
+from src.evaluation import WeightedEvaluator,load_evaluator,migrate_weights,model_record
 from src.evolution import (fitness,initial_population,next_population,opponent_schedule,
                            population_report,rank_key,select_finalists,save_checkpoint,training_lock)
 
@@ -57,7 +57,7 @@ def _own_search_stats(row):
     return [entry for entry in stats if isinstance(entry,dict)]
 
 
-def trial_statistics(rows,win_reward):
+def trial_statistics(rows,win_reward,attacker_weight=1.0,defender_weight=1.0):
     """Attacker/defender rates, official points, timing and depth for one candidate."""
     table=standings(rows)
     def block(entry):
@@ -68,7 +68,7 @@ def trial_statistics(rows,win_reward):
                     loss_rate=entry["losses"]/denominator,points=entry["points"],
                     official_rate=entry["points"]/(2*denominator))
     overall=block(table["overall"])
-    overall["training_fitness"]=fitness(table["overall"],win_reward)
+    overall["training_fitness"]=fitness(table,win_reward,attacker_weight,defender_weight)
     moves=[float(row.get("our_mean_move_seconds") or 0.0) for row in rows]
     totals=[float(row.get("attacker_seconds" if row.get("our_side")=="A" else "defender_seconds") or 0.0)
             for row in rows]
@@ -130,10 +130,10 @@ def evaluate_candidate(directory,attempt,weights,index,generation,stage,config,r
             raise RuntimeError(f"Control/environment failure repeated: {attempt/stem}")
         all_rows.extend(accepted["results"])
     table=standings(all_rows);row=table["overall"]
-    trial=dict(index=index,weights=weights,eligible=True,fitness=fitness(row,config.win_reward),
+    trial=dict(index=index,weights=weights,eligible=True,fitness=fitness(table,config.win_reward,config.attacker_game_weight,config.defender_game_weight),
                win_rate=row["wins"]/row["games"],loss_rate=row["losses"]/row["games"],points=row["points"],
                training_reward=config.win_reward*row["wins"]+row["draws"],standings=table,
-               statistics=trial_statistics(all_rows,config.win_reward),
+               statistics=trial_statistics(all_rows,config.win_reward,config.attacker_game_weight,config.defender_game_weight),
                results=results,stage=stage["name"])
     (attempt/f"{stage['name']}_i{index:03d}_summary.json").write_text(json.dumps(trial,indent=2),encoding="utf-8")
     print(f"Generation {generation} {stage['name']} {index+1}: W{row['wins']} D{row['draws']} L{row['losses']}; fitness {trial['fitness']:.3f}; official {row['points']}/{2*row['games']}",flush=True)
@@ -189,7 +189,7 @@ def load_initial_weights(args,config):
         best=data.get("best") or {}
         if not best.get("weights"):
             raise ValueError("Initial checkpoint carries no champion weights")
-        weights=tuple(float(w) for w in WeightedEvaluator(tuple(best["weights"])).weights)
+        weights=tuple(float(w) for w in WeightedEvaluator(migrate_weights(tuple(best["weights"]))).weights)
         provenance.update(generation=best.get("generation"),fitness=best.get("fitness"),points=best.get("points"))
     if config.constrained and any(w*sign<0 for w,sign in zip(weights,GENE_SIGNS)):
         raise ValueError("Initial weights violate the constrained sign prior")
