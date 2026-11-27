@@ -122,6 +122,24 @@ def is_legal_move(board: Board, move, player: str) -> bool:
     return False
 
 
+def king_capture_supported(board, king, destination, origin=None):
+    """Apply the king capture rule to an attacker landing next to the king."""
+    row, col = king
+    dr, dc = destination[0] - row, destination[1] - col
+    sr, sc = row - dr, col - dc
+    if not (0 <= sr < BOARD_SIZE and 0 <= sc < BOARD_SIZE):
+        return False
+
+    def cell(r, c):
+        if (r, c) == destination:
+            return "A"
+        return "." if (r, c) == origin else board[r][c]
+
+    if abs(row - 4) + abs(col - 4) <= 1:
+        return all(cell(row + dy, col + dx) in "AX" for dy, dx in DIRECTIONS)
+    return cell(sr, sc) == "A"
+
+
 def apply_move(board, move, player):
     """Validate and simulate a move; resolve all captures on one snapshot."""
     if not is_legal_move(board, move, player):
@@ -146,9 +164,7 @@ def apply_move(board, move, player):
             if support == "K" and (br, bc) == CASTLE:
                 take = sum(result[4+dy][4+dx] == "A" for dy, dx in DIRECTIONS) == 3
         elif piece == "A" and victim == "K":
-            near_castle = abs(ar-4) + abs(ac-4) <= 1
-            take = (all(result[ar+dy][ac+dx] in "AX" for dy, dx in DIRECTIONS)
-                    if near_castle else support == "A")
+            take = king_capture_supported(result, (ar, ac), (nr, nc))
         if take:
             captured.append((ar, ac))
     for ar, ac in captured:

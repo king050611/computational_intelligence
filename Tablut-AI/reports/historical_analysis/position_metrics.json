@@ -1,0 +1,82 @@
+{
+  "splits": {
+    "development": {
+      "positions": 16,
+      "games": 10,
+      "references": 16
+    },
+    "regression": {
+      "positions": 6,
+      "games": 3,
+      "references": 6
+    },
+    "holdout": {
+      "positions": 5,
+      "games": 3,
+      "references": 5
+    }
+  },
+  "categories": {
+    "avoidable_mate_in_one": 18,
+    "first_proven_error_in_checks": 18,
+    "king_captured": 10,
+    "king_escaped": 8,
+    "passive_repeat": 3,
+    "active_repeat": 5
+  },
+  "winning_patterns": {
+    "king_captured": {
+      "n": 10,
+      "mean_features": [
+        0.6,
+        0.05,
+        0.60625,
+        0.9,
+        0.25,
+        0.7020833333333333,
+        0.925,
+        1.0
+      ],
+      "completed_depth": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "king_escaped": {
+      "n": 8,
+      "mean_features": [
+        0.0,
+        0.25,
+        -0.2265625,
+        0.9375,
+        0.28125,
+        0.020833333333333332,
+        0.5,
+        0.0
+      ],
+      "completed_depth": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        0
+      ]
+    }
+  },
+  "drawn_positions": {
+    "balanced_proxy": 8
+  },
+  "unknown_summary_losses": 496,
+  "full_replay_wdl": {
+    "A": 10,
+    "D": 8,
+    "DRAW": 8
+  }
+}

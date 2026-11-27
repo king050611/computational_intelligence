@@ -1,8 +1,8 @@
 """Bounded move hints plus a bounds-checked transposition table.
 
 ``MoveHints`` never caches scores. ``TranspositionTable`` does cache scores, but only
-for positions whose searched subtree contained no repetition hit, so a draw caused by
-a specific history can never leak into a different visit of the same board.
+only within an equal ancestry context. Even a subtree that did not repeat in one
+context may repeat under a different set of ancestors. Move hints can still be reused.
 
 Mate scores are stored relative to the node (``score + ply`` for a win, ``score - ply``
 for a loss) and converted back on probe, so a proven win found at one ply is still
@@ -68,13 +68,15 @@ class TranspositionTable:
         entry = self.entries.get(key)
         return entry[3] if entry else None
 
-    def probe(self, key, depth, alpha, beta, ply=0):
+    def probe(self, key, depth, alpha, beta, ply=0, *, context=None):
         if not self.capacity:
             return None
         entry = self.entries.get(key)
         if entry is None:
             return None
-        stored_depth, flag, stored, _ = entry
+        stored_depth, flag, stored, _, stored_context = entry
+        if stored_context != context:
+            return None
         if stored_depth < depth:
             return None
         score = from_table(stored, ply)
@@ -89,13 +91,13 @@ class TranspositionTable:
             return score
         return None
 
-    def store(self, key, depth, score, flag, move, ply=0):
+    def store(self, key, depth, score, flag, move, ply=0, *, context=None):
         if not self.capacity:
             return
         entry = self.entries.get(key)
-        if entry is not None and entry[0] > depth:
+        if entry is not None and entry[0] > depth and entry[4] == context:
             return
-        self.entries[key] = (depth, flag, to_table(score, ply), move)
+        self.entries[key] = (depth, flag, to_table(score, ply), move, context)
         self.entries.move_to_end(key)
         self.stores += 1
         if len(self.entries) > self.capacity:

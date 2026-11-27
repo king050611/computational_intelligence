@@ -38,3 +38,10 @@ python scripts/benchmark.py --strategy enhanced_dynamic --opponent-file opponent
 固定深度工具比较同一引擎的无排序、排序、排序加提示分数；测试另有独立穷举oracle。冷表实验不一定显示提示的独立收益。外部Player在独立进程加载，需实现老师的攻守方法；这不是安全沙箱。外部结果不等于老师正式联赛。
 
 原始输出保存到用户指定路径，缺省Benchmark生成唯一时间戳文件。历史版本结果继续保留在[结果索引](../reports/README.md)，不能当作本轮重新测量。
+
+
+## V6 和棋验证
+
+`--draw-policy` 在 Benchmark 和配对运行器中为我方开启实验排序。对手使用原排序。规则、重复判和与胜利距离沿用正式裁判和搜索评分。这样可以测量排序对胜平负转换的影响。默认策略沿用既有排序。
+
+历史整理命令使用 `python scripts/analyze_history.py` 和 `python scripts/analyze_positions.py`。计时复现实验调用 `python scripts/validate_v6.py --output reports/v6_validation_new`，使用新的输出目录。每局生成的完整棋谱也可在相应实验的 HTML 中逐步核对。详见[历史棋谱与和棋策略报告](../reports/historical_analysis/historical_analysis_report.md)。

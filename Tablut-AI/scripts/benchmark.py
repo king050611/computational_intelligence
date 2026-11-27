@@ -11,7 +11,7 @@ import platform
 import random
 import sys
 import subprocess
-from dataclasses import asdict
+from dataclasses import asdict, replace
 from datetime import datetime, timezone
 from pathlib import Path
 from time import perf_counter
@@ -204,6 +204,7 @@ def main():
     parser.add_argument("--tt-capacity", type=int, default=20_000, help="Zero disables the transposition table")
     parser.add_argument("--node-budget", type=int, default=0, help="Fixed node budget per move; zero uses the wall clock")
     parser.add_argument("--no-ordering", action="store_true", help="Disable experimental move ordering")
+    parser.add_argument("--draw-policy", action="store_true", help="Enable the experimental V6 draw ordering for our side")
     parser.add_argument("--record-search", action="store_true", help="Record decision statistics")
     args=parser.parse_args()
     openings, opening_sha = None, None
@@ -239,9 +240,11 @@ def main():
     if output.exists():
         parser.error(f"Output already exists: {output}")
     manifest = experiment_manifest(options, opening_sha)
+    manifest["candidate_draw_policy"] = args.draw_policy
 
-    def make_bot(strategy, seed, board, evaluator=None):
-        return ExperimentalPlayer(strategy, opening=board, options=options,
+    def make_bot(strategy, seed, board, evaluator=None, *, candidate=False):
+        active_options = replace(options, draw_policy=True) if candidate and args.draw_policy else options
+        return ExperimentalPlayer(strategy, opening=board, options=active_options,
                                   record_search=args.record_search, evaluator=evaluator, seed=seed)
 
     manifest["evaluator"] = "evolutionary_six_features" if args.model else "hand_tuned"
@@ -259,7 +262,7 @@ def main():
                 opening_id, board = openings[i//2]
                 game.board = [list(row) for row in board]
             seed = args.seed + (i//2 if openings else i)
-            ours = Timed(make_bot(args.strategy, seed, game.board, evaluator))
+            ours = Timed(make_bot(args.strategy, seed, game.board, evaluator, candidate=True))
             other = Timed(external or make_bot(args.opponent, seed, game.board, opponent_evaluator))
             a,d=(ours,other) if side=="A" else (other,ours)
             start=perf_counter()

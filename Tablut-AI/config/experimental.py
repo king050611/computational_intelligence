@@ -8,6 +8,7 @@ class SearchOptions:
     tt_capacity: int = 20_000
     order_moves: bool = True
     node_budget: int = 0
+    draw_policy: bool = False
 
     def __post_init__(self):
         if self.max_depth < 1 or self.tt_capacity < 0:

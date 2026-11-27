@@ -41,6 +41,7 @@ def main():
     parser.add_argument("--model", type=Path)
     parser.add_argument("--opponent-model", type=Path)
     parser.add_argument("--no-ordering", action="store_true")
+    parser.add_argument("--draw-policy", action="store_true")
     parser.add_argument("--record-search", action="store_true")
     args = parser.parse_args()
     summary = args.output.with_suffix(".summary.json")
@@ -60,6 +61,8 @@ def main():
             command.extend([flag,str(path)])
     if args.no_ordering:
         command.append("--no-ordering")
+    if args.draw_policy:
+        command.append("--draw-policy")
     if args.record_search:
         command.append("--record-search")
     result = subprocess.run(command)
