@@ -65,6 +65,57 @@ python scripts/train_evolution.py --generations 1 --population 8 --elite 2 --fin
 
 V3冠军权重等于手工基线，因此这次热启动等价于把手工基线设为历史冠军：复筛的“基线”和“前代冠军”两格合并，**释放出一个名额给新候选**，符合V4“多评估新权重”的目标。
 
+## V5：围绕冠军的精细训练与正式验证
+
+V5的第一轮（P0）只做核实与验证，不改引擎：
+
+1. **冠军核实**：`best.json`、`screening.quick_trials[i]`、`trials[i]`、`population[i]` 四处必须给出同一权重向量，并记录 SHA256。
+   注意各代都从 `i0` 开始编号，**V3 的 i7 与 V4 的 i7 不是同一个体**，引用时必须带版本。
+2. **置换表跨历史测试**：`tests/test_transposition_v5.py` 比较“开缓存/关缓存”在真实对局线上的固定深度分数、
+   无关历史、重复根键、浅层预热与必胜分命中。修改终局分值（如胜利距离）后必须重跑。
+3. **正式验证**：60 局（30 对全新开局）对**完整冻结的旧引擎**，而不是只冻结 `TeamXX.py`：
+
+```powershell
+python scripts/benchmark.py --strategy evolutionary_dynamic `
+  --model reports/training/v4_champion_archive/best.json `
+  --opponent-file reports/training/v3_baseline_archive/engine/TeamXX.py `
+  --openings reports/experiments/evolution_v5_formal_validation_20261129/openings.json `
+  --max-depth 4 --tt-capacity 20000 --seed 20261129 --record-search `
+  --output reports/experiments/evolution_v5_formal_validation_20261129/v4_champion_vs_v3_formal_60.json
+```
+
+`--opponent-file` 会在独立进程里按它自己的 `src/`、`config/` 加载对照 Bot，因此搜索器、时间管理、规则模块都是旧版原件；
+加载前应核对归档里的逐文件 SHA256。
+
+晋级判定（三者缺一不可）：官方积分率≥55%、配对95%区间下限>50%、独立验证≥60局，且零违规。
+**只有训练权重与引擎配置同时冻结后跑的正式验证才算数**；引擎改动后旧验证结果作废。
+
+### V5 Phase 6 精细训练配置
+
+以经验证的冠军为中心做小步变异，而不是重新做大幅度随机搜索：
+
+| 参数 | V4 | V5 精细训练 |
+| --- | --- | --- |
+| 初始化 | 手工权重 | `--initial-model` 指向已归档冠军 |
+| sigma | 80 | **40**（`--sigma`），对照组仍用 80 |
+| mutation | 0.2 | 0.2 |
+| quick_pairs | 2 | **4**（64 局快筛） |
+| final_pairs | 15 | 15（120 局复筛） |
+| seed | 42 | **43**（换训练开局与种群抽样，降低过拟合） |
+| 每代局数 | 152 | **184** |
+
+```powershell
+python scripts/train_evolution.py --generations 1 --population 8 --elite 2 --finalists 4 `
+  --quick-pairs 4 --quick-depth 3 --final-pairs 15 --max-depth 4 --tt-capacity 20000 `
+  --win-reward 3 --constrained --bound 1000 --sigma 40 --seed 43 `
+  --initial-model reports/training/v4_champion_archive/best.json --record-search `
+  --output-dir reports/training/evolution_v5_run
+```
+
+`--max-depth` 同时作用于训练中的内置对手，因此换深度会改变整条评测环境；冠军的深度必须由对照实验（同一冻结对手、
+同一开局、40 局一组）决定，不能直接假设“越深越强”。
+
+
 ## 先验证，再跑一整代
 
 ```powershell

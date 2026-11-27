@@ -1,0 +1,78 @@
+{
+  "created_at": "2026-11-27T01:29:24.023852+00:00",
+  "purpose": "Engine source hash at the moment the 60-game formal validation started",
+  "note": "V4 engine (search optimisations), depth 4, TT 20000, manual+champion weights as recorded",
+  "engine_source_hash": "083d190f5d7a6a3c1b08c60f3862a4fde9d0f9d3104e4ca2ddd6c41f733270a9",
+  "files": [
+    {
+      "path": "src/game.py",
+      "sha256": "39338b1895d1530f523b0982d367ec1291a3a6b51a8620650eb499170c8ede6a",
+      "bytes": 6475
+    },
+    {
+      "path": "src/enhanced_search.py",
+      "sha256": "9c3e8a6fbb4a4bb889c218e696fb5f36f49fd7cf8b0785708358ddcdc9701600",
+      "bytes": 8344
+    },
+    {
+      "path": "src/transposition.py",
+      "sha256": "bbc4e5a1cacd3db5837e4cd91e0af588248748e54fd6a95037bad9c45c5ac51a",
+      "bytes": 2339
+    },
+    {
+      "path": "src/features.py",
+      "sha256": "241e8446cb9b4533ca2aceed0ced8023a54f86494e4895bc5e297475d16c507b",
+      "bytes": 1837
+    },
+    {
+      "path": "src/evaluation.py",
+      "sha256": "809889a75c1127952981b9af50e4d4e0089990827101f68cf9185a26f6313f8c",
+      "bytes": 1924
+    },
+    {
+      "path": "src/tactics.py",
+      "sha256": "29d3d1e6cb9aefe4df65546ae60ea5d3a719322b0c3c369c990df81bf471fff5",
+      "bytes": 3471
+    },
+    {
+      "path": "src/experimental_player.py",
+      "sha256": "0e8b6c76b5b88e2c188b3a7fc77edd1cf655b4028e9254bb809a06c4febeb945",
+      "bytes": 3980
+    },
+    {
+      "path": "src/time_control.py",
+      "sha256": "65d1f055e044b91c9ca99a1dfd1b2136687286e6f31ff972cae06836e9c27c36",
+      "bytes": 1565
+    },
+    {
+      "path": "src/evolution.py",
+      "sha256": "b32c8cd287f87bad0dd42f06b6f74a955d0e5ddee4ad19c604cb046417df698f",
+      "bytes": 10775
+    },
+    {
+      "path": "config/settings.py",
+      "sha256": "5fb6200e450c9d665050c6caf1bd088d9f9bd476d9bc61bb95b5c6e509ef65a4",
+      "bytes": 632
+    },
+    {
+      "path": "config/experimental.py",
+      "sha256": "faaac56bc93f51a1ff87870a6c3552d383c52298c914793f411caa17bb12cb17",
+      "bytes": 733
+    },
+    {
+      "path": "config/evolution.py",
+      "sha256": "778862ae44ba5fc4fdb5a5f14d5f02cec1e66643b87c81ad4a2265ff881ea965",
+      "bytes": 2487
+    },
+    {
+      "path": "reference/Tablut.py",
+      "sha256": "b892be9052ac779d4608c821e7f9112a4299a74507af3b4f1a7ca1f97f824bd9",
+      "bytes": 11540
+    },
+    {
+      "path": "TeamXX.py",
+      "sha256": "ad2648a33061e8573622dabb4f9d4c67fcdd89a5fd5e6aa4f17e27f68307b2f7",
+      "bytes": 356
+    }
+  ]
+}
