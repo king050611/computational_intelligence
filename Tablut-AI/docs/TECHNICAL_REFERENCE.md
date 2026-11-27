@@ -10,9 +10,9 @@
 
 `choose_enhanced(board, side, *, deadline, soft_deadline=None, history=(), evaluator=None, stats=None, options=None)`处理全部正式策略。根方视角固定、终局优先判定、Alpha-Beta完整分支、从一层迭代加深，未完成的层不会覆盖已完成结果；零预算返回合法备用动作。
 
-`EnhancedSearch.visit`同时支持手工评估和六特征权重。置换表只存深度和走法提示，不缓存分数；当前重复历史始终重新判断。排序使用国王逃生、PV/提示、潜在吃子、killer及history分数，不能删除合法分支。表容量默认20,000，单次决策隔离。固定深度无计时对照应得到相同分数，最优并列走法允许不同。
+`EnhancedSearch.visit`同时支持手工评估和六特征权重。置换表缓存深度、上下界（EXACT/LOWER/UPPER）、分数与走法提示，但只在三个条件同时满足时使用：节点自身不在重复历史中、子树未出现重复局面、上下界按进入节点时的原始窗口存储。当前重复历史始终重新判断，因此和棋分数不会被错误复用。排序使用国王逃生、PV/置换走法、killer及history分数，不能删除合法分支。表容量默认20,000，单次决策隔离。固定深度无计时对照应得到相同分数，最优并列走法允许不同（`tests/test_search_v4.py` 用随机局面逐一核对纯搜索与缓存搜索的分数一致）。
 
-`SearchOptions(max_depth=4, tt_capacity=20000, order_moves=True)`来自config/experimental.py，是未完成调参的现有默认值。Enhanced使用TimeManager按剩余预算分配；两个Dynamic版本使用相同AdaptiveTimeManager：整局60秒、5秒余量、单步上限4秒、软截止为额度80%，并按剩余步数与紧急程度分配。底层Python操作不能硬抢占，裁判独立检查累计60秒。
+`SearchOptions(max_depth=4, tt_capacity=20000, order_moves=True, node_budget=0)`来自config/experimental.py。`node_budget>0` 是实验模式：每步在固定节点数处停止，战术诊断改为按生成子节点数限制，保证同局面同结果；正式比赛仍用墙钟。Enhanced使用TimeManager按剩余预算分配；两个Dynamic版本使用相同AdaptiveTimeManager：整局60秒、5秒余量、单步上限4秒、软截止为额度80%，并按剩余步数与紧急程度分配。底层Python操作不能硬抢占，裁判独立检查累计60秒。
 
 ## 六特征及评估
 

@@ -201,13 +201,14 @@ def main():
     parser.add_argument("--output",type=Path)
     parser.add_argument("--openings", type=Path, help="Use each opening twice, swapping roles")
     parser.add_argument("--max-depth", type=int, default=4, help="Maximum iterative-deepening depth")
-    parser.add_argument("--tt-capacity", type=int, default=20_000, help="Zero disables move hints")
+    parser.add_argument("--tt-capacity", type=int, default=20_000, help="Zero disables the transposition table")
+    parser.add_argument("--node-budget", type=int, default=0, help="Fixed node budget per move; zero uses the wall clock")
     parser.add_argument("--no-ordering", action="store_true", help="Disable experimental move ordering")
     parser.add_argument("--record-search", action="store_true", help="Record decision statistics")
     args=parser.parse_args()
     openings, opening_sha = None, None
     try:
-        options = SearchOptions(args.max_depth, args.tt_capacity, not args.no_ordering)
+        options = SearchOptions(args.max_depth, args.tt_capacity, not args.no_ordering, args.node_budget)
         if args.openings:
             openings, opening_sha = read_openings(args.openings)
             if args.games is not None and args.games != 2 * len(openings):

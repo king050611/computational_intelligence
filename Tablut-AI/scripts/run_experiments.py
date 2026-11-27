@@ -37,6 +37,7 @@ def main():
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--max-depth", type=int, default=4)
     parser.add_argument("--tt-capacity", type=int, default=20_000)
+    parser.add_argument("--node-budget", type=int, default=0)
     parser.add_argument("--model", type=Path)
     parser.add_argument("--opponent-model", type=Path)
     parser.add_argument("--no-ordering", action="store_true")
@@ -52,6 +53,8 @@ def main():
         "--seed", str(args.seed), "--max-depth", str(args.max_depth),
         "--tt-capacity", str(args.tt_capacity),
     ]
+    if args.node_budget:
+        command.extend(["--node-budget", str(args.node_budget)])
     for flag,path in (("--model",args.model),("--opponent-model",args.opponent_model)):
         if path is not None:
             command.extend([flag,str(path)])

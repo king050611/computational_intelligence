@@ -160,22 +160,41 @@ class FinalistSelectionTests(unittest.TestCase):
         config = EvolutionConfig()
         base = tuple(BASE_WEIGHTS)
         qualifying = (-100.0, 300.0, -60.0, 0.0, 0.0, 0.0)
-        distant = (-1000.0, 1000.0, -1000.0, 0.0, 0.0, 0.0)
+        weak_far = (-1000.0, 1000.0, -1000.0, 0.0, 0.0, 0.0)
         near = [(-390.0, 590.0, -158.0, 0.0, 0.0, 0.0),
                 (-380.0, 580.0, -150.0, 0.0, 0.0, 0.0),
                 (-370.0, 570.0, -140.0, 0.0, 0.0, 0.0),
                 (-360.0, 560.0, -130.0, 0.0, 0.0, 0.0)]
-        weights = [base, (-200.0, 400.0, -100.0, 0.0, 0.0, 0.0), qualifying] + near + [distant]
-        trials = [trial(i, w, 1.0 - i / 10) for i, w in enumerate(weights)]
+        weights = [base, near[0], qualifying, near[1], near[2], near[3]] + [weak_far]
+        fitness = [0.60, 0.58, 0.56, 0.55, 0.54, 0.53, 0.20]
+        trials = [trial(i, w, f) for i, (w, f) in enumerate(zip(weights, fitness))]
         selected = select_finalists(trials, config)
-        diversity = [t for t in selected if t["selection_reason"] == "diversity_candidate"]
-        self.assertTrue(diversity)
         chosen = {tuple(t["weights"]) for t in selected}
-        self.assertIn(tuple(qualifying), chosen)
-        self.assertNotIn(tuple(distant), chosen)
+        diversity = [t for t in selected if t["selection_reason"] == "diversity_candidate"]
+        self.assertEqual(len(diversity), 1)
+        # The farthest qualified candidate wins the slot, not the farthest overall.
+        self.assertEqual(tuple(diversity[0]["weights"]), qualifying)
+        self.assertNotIn(weak_far, chosen)
         self.assertGreater(weight_distance(qualifying, base, config.bound), 0.3)
-        self.assertLess(weight_distance(qualifying, base, config.bound),
-                        weight_distance(distant, base, config.bound))
+        self.assertGreater(weight_distance(weak_far, base, config.bound),
+                           weight_distance(qualifying, base, config.bound))
+
+    def test_diversity_slot_skips_candidates_below_the_quality_gate(self):
+        config = EvolutionConfig()
+        base = tuple(BASE_WEIGHTS)
+        weak = [(-200.0, 300.0, -60.0, 0.0, 0.0, 0.0),
+                (-100.0, 200.0, -20.0, 0.0, 0.0, 0.0)]
+        near = [(-392.0, 592.0, -158.0, 0.0, 0.0, 0.0),
+                (-388.0, 588.0, -156.0, 0.0, 0.0, 0.0),
+                (-384.0, 584.0, -154.0, 0.0, 0.0, 0.0)]
+        weights = [base, near[0], near[1], near[2]] + weak + [(-420.0, 610.0, -170.0, 0.0, 0.0, 0.0)]
+        fitness = [0.60, 0.59, 0.58, 0.57, 0.42, 0.38, 0.55]
+        trials = [trial(i, w, f) for i, (w, f) in enumerate(zip(weights, fitness))]
+        selected = select_finalists(trials, config)
+        chosen = {tuple(t["weights"]) for t in selected}
+        for genome in weak:
+            self.assertNotIn(genome, chosen)
+        self.assertTrue(any(t["selection_reason"] == "diversity_candidate" for t in selected))
 
     def test_weight_distance_is_normalized_by_bound(self):
         base = tuple(BASE_WEIGHTS)

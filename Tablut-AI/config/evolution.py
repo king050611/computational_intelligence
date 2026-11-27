@@ -23,6 +23,9 @@ class EvolutionConfig:
     # V3 training-mechanism knobs: weight-unique populations and a diversity slot.
     dedup_attempts: int = 64
     diversity_slots: int = 1
+    # V4: a diversity candidate must be within this screening-fitness margin of the
+    # manual baseline before weight distance is even considered.
+    diversity_margin: float = 0.10
 
     def __post_init__(self):
         integers=(self.population,self.elite,self.seed,self.win_reward,self.quick_pairs,self.quick_depth,self.finalists,self.final_pairs)
@@ -38,3 +41,5 @@ class EvolutionConfig:
             raise ValueError("dedup_attempts must be a positive integer")
         if type(self.diversity_slots) is not int or not 0<=self.diversity_slots<=max(0,self.finalists-1):
             raise ValueError("diversity_slots must be a nonnegative integer below finalists")
+        if not isfinite(self.diversity_margin) or not 0<=self.diversity_margin<=1:
+            raise ValueError("diversity_margin must be a probability between 0 and 1")

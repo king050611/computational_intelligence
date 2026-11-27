@@ -1,0 +1,138 @@
+{
+  "version": "3.0",
+  "strategy": "enhanced_dynamic",
+  "opponent": "D:\\workstudy\\\u5927\u56db\\\u5927\u56db\u4e0a\\computational_intelligence\\Tablut-AI\\reports\\training\\v3_baseline_archive\\engine\\TeamXX.py",
+  "seed": 77,
+  "games": 2,
+  "standings": {
+    "overall": {
+      "games": 2,
+      "wins": 1,
+      "draws": 1,
+      "losses": 0,
+      "points": 3
+    },
+    "attacker": {
+      "games": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "points": 2
+    },
+    "defender": {
+      "games": 1,
+      "wins": 0,
+      "draws": 1,
+      "losses": 0,
+      "points": 1
+    }
+  },
+  "our_win_rate": 0.5,
+  "results": [
+    {
+      "game": 1,
+      "our_side": "A",
+      "winner": "A",
+      "plies": 59,
+      "elapsed_seconds": 63.73587240000006,
+      "attacker_seconds": 25.769129499999963,
+      "defender_seconds": 37.95942250000098,
+      "our_mean_move_seconds": 0.8589709833333321,
+      "our_max_move_seconds": 1.786602700000003,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Attackers won!\nRounds played: 30\n",
+      "opponent_log": "",
+      "opening_id": null,
+      "seed": 77,
+      "points": 2,
+      "invalid_returns": 0
+    },
+    {
+      "game": 2,
+      "our_side": "D",
+      "winner": "DRAW",
+      "plies": 30,
+      "elapsed_seconds": 32.43205860000012,
+      "attacker_seconds": 23.87040680000041,
+      "defender_seconds": 8.557600900000125,
+      "our_mean_move_seconds": 0.570506726666675,
+      "our_max_move_seconds": 0.7721446999998989,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Repeated position found\nGame over, it is draw, no winner!\nRounds played: 15\n",
+      "opponent_log": "",
+      "opening_id": null,
+      "seed": 78,
+      "points": 1,
+      "invalid_returns": 0
+    }
+  ],
+  "manifest": {
+    "commit_sha": "a4e273d4f6981e42d063b13e38f69ad298576e52",
+    "worktree_changes": "M Tablut-AI/config/evolution.py\n M Tablut-AI/config/experimental.py\n M Tablut-AI/docs/TECHNICAL_REFERENCE.md\n M Tablut-AI/docs/TRAINING_GUIDE.md\n M Tablut-AI/scripts/benchmark.py\n M Tablut-AI/scripts/run_experiments.py\n M Tablut-AI/src/enhanced_search.py\n M Tablut-AI/src/evolution.py\n M Tablut-AI/src/experimental_player.py\n M Tablut-AI/src/features.py\n M Tablut-AI/src/game.py\n M Tablut-AI/src/tactics.py\n M Tablut-AI/src/transposition.py\n M Tablut-AI/tests/test_evolution_v3.py\n?? Tablut-AI/reports/experiments/evolution_v4_validation_20261128/\n?? Tablut-AI/reports/experiments/v4_depth_study/\n?? Tablut-AI/tests/test_search_v4.py",
+    "python": "3.13.7",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cpu": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+    "openings_sha256": null,
+    "history_rule": "restarted_opening",
+    "options": {
+      "max_depth": 4,
+      "tt_capacity": 20000,
+      "order_moves": true,
+      "node_budget": 0
+    },
+    "evaluator": "hand_tuned",
+    "arguments": [
+      "--strategy",
+      "enhanced_dynamic",
+      "--opponent-file",
+      "reports/training/v3_baseline_archive/engine/TeamXX.py",
+      "--games",
+      "2",
+      "--max-depth",
+      "4",
+      "--seed",
+      "77",
+      "--output",
+      "reports/experiments/v4_probe/v3_engine_external.json"
+    ],
+    "created_at": "2026-11-26T23:43:47.563229+00:00",
+    "opponent_evaluator": "hand_tuned",
+    "model_sha256": {}
+  }
+}

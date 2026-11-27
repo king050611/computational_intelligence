@@ -18,22 +18,28 @@ class TacticalInfo:
     risk_level: str
 
 
-def analyze(board, side, deadline, history=()):
-    """Unknown results stay explicit if the scan runs out of time."""
+def analyze(board, side, deadline, history=(), max_nodes=None):
+    """Unknown results stay explicit if the scan runs out of time or work."""
     wins, safe, threat = [], [], None
     path = tuple(history) + (get_state_key(board, side),)
     other = opponent(side)
+    work = [0]
+
+    def tick():
+        work[0] += 1
+        if max_nodes is not None and work[0] > max_nodes:
+            raise TimeoutError
+        if perf_counter() >= deadline:
+            raise TimeoutError
 
     def children(position, turn):
         for move in get_legal_moves(position, turn):
-            if perf_counter() >= deadline:
-                raise TimeoutError
+            tick()
             yield move, apply_move(position, move, turn)
 
     def outcome(child, turn, ancestors):
         result = check_winner(child, turn, ancestors)
-        if perf_counter() >= deadline:
-            raise TimeoutError
+        tick()
         return result
 
     try:
@@ -72,9 +78,9 @@ def is_urgent(board):
                                 for start,end in get_legal_moves(board,"D"))
 
 
-def prioritize(board,side,moves,deadline,history=()):
+def prioritize(board,side,moves,deadline,history=(),max_nodes=None):
     """Keep every legal move; only proved wins or fully checked defenses lead."""
-    info=analyze(board,side,deadline,history)
+    info=analyze(board,side,deadline,history,max_nodes)
     preferred=info.immediate_wins or (info.safe_replies if info.status_complete and info.opponent_threat_now else ())
     preferred=set(preferred)
     return sorted(moves,key=lambda move:move in preferred,reverse=True),info

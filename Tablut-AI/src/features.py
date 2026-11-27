@@ -1,6 +1,6 @@
 """Six bounded, defender-perspective features for evolutionary evaluation."""
 from config.settings import DIRECTIONS
-from src.game import get_legal_moves
+from src.game import get_piece_moves
 
 FEATURE_NAMES = ("king_pressure", "escape_routes", "weighted_material", "edge_distance", "king_mobility", "escape_blockade")
 
@@ -11,7 +11,8 @@ def basic_features(board):
         return 4, 0, material
     r,c = king
     pressure = sum(0 <= r+dr < 9 and 0 <= c+dc < 9 and board[r+dr][c+dc] == "A" for dr,dc in DIRECTIONS)
-    escapes = sum(start == king and (0 in end or 8 in end) for start,end in get_legal_moves(board,"D"))
+    # Only the king's own moves are generated: the defender's other pieces cannot escape.
+    escapes = sum(0 in end or 8 in end for end in (end for _,end in get_piece_moves(board,king,"D")))
     return pressure, escapes, material
 
 def extract_features(board):
@@ -20,7 +21,7 @@ def extract_features(board):
     if king is None:
         return 1.0, 0.0, material/16, 1.0, 0.0, 1.0
     r,c = king
-    destinations = [end for start,end in get_legal_moves(board,"D") if start == king]
+    destinations = [end for _, end in get_piece_moves(board,king,"D")]
     pressure = sum(0 <= r+dr < 9 and 0 <= c+dc < 9 and board[r+dr][c+dc] == "A" for dr,dc in DIRECTIONS)
     escapes = sum(0 in end or 8 in end for end in destinations)
     blockade = 0.0

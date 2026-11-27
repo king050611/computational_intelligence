@@ -1,4 +1,10 @@
-"""Standalone rules. Board is immutable; coordinates are (row, column)."""
+"""Standalone rules. Board is immutable; coordinates are (row, column).
+
+V4 keeps the rules byte-for-byte equivalent to the official referee but adds the
+incremental primitives the engine needs: single-piece move generation, O(path)
+legality checks and an O(81) "has any move" scan. They exist so the search stops
+paying for a full move generation at every node.
+"""
 from typing import Tuple, Sequence
 from config.settings import BOARD_SIZE, CASTLE, INITIAL_BOARD, DIRECTIONS
 Position = Tuple[int, int]
@@ -28,6 +34,57 @@ def get_state_key(board, player):
     return tuple(map(tuple, board)), player
 
 
+def _piece_moves(board: Board, r: int, c: int) -> list[Move]:
+    """Every destination of the piece on (r, c); the castle is passable, not a target."""
+    moves = []
+    for dr, dc in DIRECTIONS:
+        nr, nc = r + dr, c + dc
+        while 0 <= nr < BOARD_SIZE and 0 <= nc < BOARD_SIZE:
+            cell = board[nr][nc]
+            if cell not in (".", "X"):
+                break
+            if cell == ".":
+                moves.append(((r, c), (nr, nc)))
+            nr, nc = nr + dr, nc + dc
+    return moves
+
+
+def get_piece_moves(board: Board, position: Position, player: str) -> list[Move]:
+    """Moves of the single piece at ``position``; empty when that piece is not the player's."""
+    if player not in ("A", "D"):
+        raise ValueError("Player must be A or D")
+    r, c = position
+    if not (0 <= r < BOARD_SIZE and 0 <= c < BOARD_SIZE):
+        return []
+    pieces = "A" if player == "A" else "DK"
+    if board[r][c] not in pieces:
+        return []
+    return _piece_moves(board, r, c)
+
+
+def has_any_move(board: Board, player: str) -> bool:
+    """True when at least one legal move exists; never builds the move list."""
+    if player not in ("A", "D"):
+        raise ValueError("Player must be A or D")
+    pieces = "A" if player == "A" else "DK"
+    for r, row in enumerate(board):
+        for c, piece in enumerate(row):
+            if piece not in pieces:
+                continue
+            for dr, dc in DIRECTIONS:
+                nr, nc = r + dr, c + dc
+                if not (0 <= nr < BOARD_SIZE and 0 <= nc < BOARD_SIZE):
+                    continue
+                cell = board[nr][nc]
+                if cell == ".":
+                    return True
+                if cell == "X":
+                    br, bc = nr + dr, nc + dc
+                    if 0 <= br < BOARD_SIZE and 0 <= bc < BOARD_SIZE and board[br][bc] == ".":
+                        return True
+    return False
+
+
 def get_legal_moves(board: Board, player: str) -> list[Move]:
     if player not in ("A", "D"):
         raise ValueError("Player must be A or D")
@@ -35,23 +92,39 @@ def get_legal_moves(board: Board, player: str) -> list[Move]:
     moves = []
     for r, row in enumerate(board):
         for c, piece in enumerate(row):
-            if piece not in pieces:
-                continue
-            for dr, dc in DIRECTIONS:
-                nr, nc = r + dr, c + dc
-                while 0 <= nr < BOARD_SIZE and 0 <= nc < BOARD_SIZE:
-                    cell = board[nr][nc]
-                    if cell not in (".", "X"):
-                        break
-                    if cell == ".":
-                        moves.append(((r, c), (nr, nc)))
-                    nr, nc = nr + dr, nc + dc
+            if piece in pieces:
+                moves.extend(_piece_moves(board, r, c))
     return moves
+
+
+def is_legal_move(board: Board, move, player: str) -> bool:
+    """O(path) legality check equivalent to ``move in get_legal_moves(board, player)``."""
+    if player not in ("A", "D"):
+        raise ValueError("Player must be A or D")
+    try:
+        (r, c), (nr, nc) = move
+    except (TypeError, ValueError):
+        return False
+    if any(type(v) is not int for v in (r, c, nr, nc)):
+        return False
+    if not (0 <= r < BOARD_SIZE and 0 <= c < BOARD_SIZE
+            and 0 <= nr < BOARD_SIZE and 0 <= nc < BOARD_SIZE):
+        return False
+    pieces = "A" if player == "A" else "DK"
+    if board[r][c] not in pieces or board[nr][nc] != ".":
+        return False
+    if r == nr:
+        step = 1 if nc > c else -1
+        return all(board[r][cc] in (".", "X") for cc in range(c + step, nc, step))
+    if c == nc:
+        step = 1 if nr > r else -1
+        return all(board[rr][c] in (".", "X") for rr in range(r + step, nr, step))
+    return False
 
 
 def apply_move(board, move, player):
     """Validate and simulate a move; resolve all captures on one snapshot."""
-    if move not in get_legal_moves(board, player):
+    if not is_legal_move(board, move, player):
         raise ValueError("Illegal move")
     (r, c), (nr, nc) = move
     result = [list(row) for row in board]
@@ -90,6 +163,6 @@ def check_winner(board, player, history=()):
         return "A"
     if 0 in king or 8 in king or sum(row.count("A") for row in board) < 2:
         return "D"
-    if get_state_key(board, player) in history or not get_legal_moves(board, player):
+    if get_state_key(board, player) in history or not has_any_move(board, player):
         return "DRAW"
     return None

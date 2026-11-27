@@ -193,9 +193,15 @@ def select_finalists(trials,config,incumbent=None):
         remaining=[t for t in eligible if tuple(t["weights"]) not in used]
         if not remaining:
             break
-        # Quality gate first, distance second: only the upper half of the screening
-        # order is eligible, so an unqualified distant genome cannot win the slot.
-        pool=remaining[:max(config.finalists+config.diversity_slots,(len(eligible)+1)//2)]
+        # Quality gate first, distance second: the candidate must stay within
+        # ``diversity_margin`` of the manual baseline's screening fitness and sit in
+        # the upper half of the ranking, so an unqualified distant genome never wins
+        # the slot (the V3 implementation only applied the positional window).
+        window=remaining[:max(config.finalists+config.diversity_slots,(len(eligible)+1)//2)]
+        threshold=baseline["fitness"]-config.diversity_margin
+        pool=[t for t in window if t["fitness"]>=threshold]
+        if not pool:
+            break
         pick=max(pool,key=lambda t:(t["distance_from_champion"],rank_key(t)))
         if not add(pick,"diversity_candidate"):
             break

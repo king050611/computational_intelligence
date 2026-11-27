@@ -20,6 +20,51 @@ python scripts/train_evolution.py --generations 1 --population 8 --elite 2 --fin
 
 V3首轮仍只跑一代，不自动追加代数；结论必须结合独立留出对局，内部best不等于通过验证的棋力。
 
+## V4：先提搜索效率，再谈训练规模
+
+V4的前提结论来自V3：**同一权重跨运行的复筛得分可在12/24–16/24之间漂移，候选间差距只有2–8分**，而深度2快筛与深度4复筛的排名相关为0。因此V4先把单节点成本降下来、把评估样本加上去，再用遗传训练调权重。
+
+### 搜索层改动（`src/game.py`、`src/enhanced_search.py`、`src/transposition.py`）
+
+| 原实现 | V4 |
+| --- | --- |
+| `apply_move` 用 `move in get_legal_moves(...)` 校验，每节点重复生成全部走法 | `is_legal_move` 只检查路径（O(路径长度)），坏路径立即返回 |
+| 终局判定的“无合法走法”也生成全部走法 | `has_any_move` 只找第一条可走路径 |
+| 特征里的“逃生路线”生成守方全部走法 | `get_piece_moves` 只生成国王自己的走法 |
+| 置换表只存深度+走法提示 | 增加分数缓存：深度、EXACT/LOWER/UPPER、分数、走法，LRU 上限 `--tt-capacity` |
+| 排序项包含“相邻敌人集合”，每节点额外 O(81) 扫描 | 去掉该项，排序只用 根优先 > 王逃生 > 置换走法 > killer > history |
+
+分数缓存有三条硬约束，违反任一条都会导致错误搜索结果，测试里有对应用例：
+
+1. 上下界必须与**进入节点时的原始窗口**比较（`alpha_start`/`beta_start`），不能用循环中被抬高的 alpha；
+2. 只有**整个子树没有出现重复局面**时才写入（重复和棋的分数依赖祖先历史，不能复用）；
+3. 节点本身若已在 `history` 中，直接返回和棋分数，不查表。
+
+### 固定节点预算（实验用）
+
+`SearchOptions(node_budget=N)` 或 `python scripts/benchmark.py --node-budget N` 让每步在固定节点数处停止，用于消去 CPU 负载与墙钟分配的影响；此时战术诊断也改为按生成子节点数（`max_nodes=200`）而不是 10ms 计时，保证同局面同结果。**正式比赛仍使用 60 秒墙钟**，节点预算只用于对照实验，并且必须再用真实限时对局验证。
+
+### 训练配置
+
+| 参数 | V3 | V4 |
+| --- | --- | --- |
+| 快筛深度 / 开局对 | 2 / 2 | 3 / 2 |
+| 复筛开局对 / 局数 | 6 / 12 | **15 / 30** |
+| 每代总局数 | 80 | **152**（32 快筛 + 120 复筛） |
+| 多样性门槛 | 仅快筛前半段名次窗口 | 额外要求快筛适应度 ≥ 手工基线 − `diversity_margin`（默认 0.10） |
+
+快筛深度取 3 的依据：深度 2 下双方都近乎盲目，实测出现单局 2000+ 步、单方 55 秒的无效漫游；深度 3 单步约 0.2–0.3 秒，成本可接受且行为稳定。
+
+```powershell
+python scripts/train_evolution.py --generations 1 --population 8 --elite 2 --finalists 4 `
+  --quick-pairs 2 --quick-depth 3 --final-pairs 15 --max-depth 4 --tt-capacity 20000 `
+  --win-reward 3 --constrained --bound 1000 --seed 42 `
+  --initial-model reports/training/evolution_v3_run/best.json --record-search `
+  --output-dir reports/training/evolution_v4_run
+```
+
+V3冠军权重等于手工基线，因此这次热启动等价于把手工基线设为历史冠军：复筛的“基线”和“前代冠军”两格合并，**释放出一个名额给新候选**，符合V4“多评估新权重”的目标。
+
 ## 先验证，再跑一整代
 
 ```powershell
