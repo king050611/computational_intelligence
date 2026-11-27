@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "model_type": "evolutionary_dynamic",
+  "features": [
+    "king_pressure",
+    "escape_routes",
+    "weighted_material",
+    "edge_distance",
+    "king_mobility",
+    "escape_blockade"
+  ],
+  "weights": [
+    -400.0,
+    600.0,
+    -160.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "metadata": {
+    "generation": 1,
+    "fitness": 0.4722222222222222,
+    "win_reward": 3,
+    "official_points": 12,
+    "selection_only": true,
+    "source_commit": "449fe2bc335aea0a392ebdf63d64b0167bbccb73",
+    "source_hash": "c21ca1c9e815cc5a9f1f3fffce3dd5d99c986b5c21c703dd24ddcba205b16899"
+  }
+}

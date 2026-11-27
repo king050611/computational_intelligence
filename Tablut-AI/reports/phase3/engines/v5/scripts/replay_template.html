@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Tablut 逐步棋谱</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eef2f6;color:#1f2937;font:15px system-ui,"Microsoft YaHei",sans-serif}main{max-width:1200px;margin:auto;padding:24px}h1{margin:0 0 8px}p{line-height:1.6}.panel{background:white;border:1px solid #d7dfe9;border-radius:14px;padding:18px;margin-top:16px}.toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap}button,select{font:inherit;padding:8px 12px;border:1px solid #cbd5e1;border-radius:7px;background:#fff;cursor:pointer}button:hover,button.active{background:#e4f0ff;border-color:#2563eb}button:disabled{opacity:.4;cursor:default}.layout{display:grid;grid-template-columns:minmax(300px,1fr) 340px;gap:18px}.board{width:100%;max-width:650px;display:block;margin:auto}input[type=range]{width:100%;margin-top:16px}.move-list{max-height:610px;overflow:auto}.move-list button{display:block;width:100%;text-align:left;margin:5px 0}.muted{color:#64748b}#description{min-height:56px}.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}.frame{border:1px solid #d7dfe9;border-radius:8px;padding:8px}.frame .board{width:100%}summary{cursor:pointer;font-weight:600}@media(max-width:760px){.layout{grid-template-columns:1fr}.move-list{max-height:250px}main{padding:12px}}@media print{button,.toolbar,input,.move-list{display:none}.layout{display:block}.gallery{grid-template-columns:repeat(3,1fr)}.frame{break-inside:avoid}}
+</style>
+<main><h1>Tablut · 双方逐步棋谱</h1><p class="muted">坐标为从 0 开始的 [行, 列]。箭头表示本步移动；绿框为落点，红色叉号为被吃棋子的位置。棋谱记录的是实际动作，不包含 AI 的思考理由。</p>
+<div class="panel toolbar"><label>选择比赛 <select id="game"></select></label><button id="download">下载 JSON 棋谱</button><span id="summary"></span></div>
+<div class="layout"><section class="panel"><div class="toolbar"><button id="first">初始局面</button><button id="prev">上一步</button><button id="play">自动播放</button><button id="next">下一步</button><button id="last">终局</button></div><input id="slider" aria-label="选择半步" type="range" min="0" value="0"><div class="toolbar"><strong id="step"></strong><label><input type="checkbox" id="before">显示本步落子前的棋盘</label></div><div id="board"></div><div id="description"></div><p class="muted">A 蓝色：进攻方；D 金色：防守方；K 红色：国王；X：空城堡。可用键盘 ← → 翻步。</p></section><aside class="panel"><h2>AI Search Analysis</h2><div id="analysis" style="white-space:pre-line;line-height:1.8" aria-live="polite"></div><p class="muted">节点仅统计 Alpha-Beta 递归，不包含 Greedy 扫描。完成深度仅计完整层；一步获胜可提前结束。未执行的判断显示“未记录”。</p><details><summary>本局按行动方统计</summary><div id="searchTotals" style="white-space:pre-line;line-height:1.8"></div></details><h2>双方走法</h2><p class="muted">点击任意记录跳到该局面。</p><div class="move-list" id="moves"></div></aside></div>
+<details class="panel" id="all"><summary>展开整局图解：每一步的棋盘都画出来</summary><p class="muted">含初始局面及全部落子后棋盘，点击小图可在主棋盘查看。</p><div id="gallery" class="gallery"></div></details>
+<p class="muted">此文件已内嵌 games.json 数据，可直接双击离线打开，无需启动服务器。</p></main>
+<script id="data" type="application/json">__REPLAY_DATA__</script>
+<script>
+'use strict';
+const data=JSON.parse(document.getElementById('data').textContent),$=id=>document.getElementById(id);
+let index=0,step=0,timer=null;
+const names={A:'进攻方',D:'防守方',DRAW:'平局'},reasons={king_captured:'国王被捕',king_escaped:'国王逃到边缘',fewer_than_two_attackers:'进攻棋子不足两枚',repetition:'重复局面',no_legal_moves:'无合法走法',timeout:'累计超时',exception:'程序异常',illegal_move:'非法动作'};
+const current=()=>data.games[index],coord=p=>p?'['+p.join(', ')+']':'—';
+function element(tag,attrs={},text){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const[k,v]of Object.entries(attrs))e.setAttribute(k,v);if(text!==undefined)e.textContent=text;return e}
+function diagram(board,event){
+ const svg=element('svg',{viewBox:'0 0 100 100',class:'board',role:'img','aria-label':'9乘9棋盘'});
+ const defs=element('defs'),marker=element('marker',{id:'arrow',viewBox:'0 0 10 10',refX:8,refY:5,markerWidth:4,markerHeight:4,orient:'auto-start-reverse'});marker.append(element('path',{d:'M0 0 L10 5 L0 10 Z',fill:'#059669'}));defs.append(marker);svg.append(defs);
+ for(let i=0;i<9;i++){svg.append(element('text',{x:i*10+15,y:7,'text-anchor':'middle','font-size':3.5,fill:'#64748b'},i));svg.append(element('text',{x:5,y:i*10+16,'text-anchor':'middle','font-size':3.5,fill:'#64748b'},i))}
+ for(let r=0;r<9;r++)for(let c=0;c<9;c++){
+  const x=10+c*10,y=10+r*10,s=board[r][c];
+  svg.append(element('rect',{x,y,width:10,height:10,fill:r===4&&c===4?'#b6bcc6':(r+c)%2?'#e4d5bc':'#f4ead8',stroke:'#fff','stroke-width':.25}));
+  if(s==='A'||s==='D'||s==='K'){
+   svg.append(element('circle',{cx:x+5,cy:y+5,r:3.6,fill:s==='A'?'#2563eb':s==='D'?'#d69a25':'#b42339',stroke:'#fff','stroke-width':.5}));
+   svg.append(element('text',{x:x+5,y:y+6.3,'text-anchor':'middle','font-size':3.7,'font-weight':700,fill:'#fff'},s));
+  }else if(s==='X')svg.append(element('text',{x:x+5,y:y+6.2,'text-anchor':'middle','font-size':3.7,fill:'#525b68'},'X'));
+ }
+ if(event?.accepted){const a=event.from_square,b=event.to_square;
+  for(const[p,color]of [[a,'#059669'],[b,'#059669']])svg.append(element('rect',{x:10+p[1]*10+.5,y:10+p[0]*10+.5,width:9,height:9,fill:'none',stroke:color,'stroke-width':.8}));
+  svg.append(element('line',{x1:15+a[1]*10,y1:15+a[0]*10,x2:15+b[1]*10,y2:15+b[0]*10,stroke:'#059669','stroke-width':.8,'marker-end':'url(#arrow)',opacity:.85}));
+  for(const cap of event.captures){const[r,c]=cap.square;svg.append(element('path',{d:`M${12+c*10} ${12+r*10} l6 6 m0 -6 l-6 6`,stroke:'#dc2626','stroke-width':1,fill:'none'}))}
+ }
+ return svg;
+}
+function label(e){return `${e.ply}. ${e.player} · ${e.piece||'?'} ${coord(e.from_square)} → ${coord(e.to_square)}`+(e.accepted?'':'（未执行）')}
+function stop(){clearInterval(timer);timer=null;$('play').textContent='自动播放'}
+const policyNames={normal_depth:'普通 / 固定深度',urgent_deepening:'紧急局面满足深搜条件',branch_limit:'分支过多，保持普通深度',insufficient_budget:'深搜预算不足',immediate_win:'直接获胜',baseline:'基线策略'};
+const finishNames={depth_completed:'完成目标深度',immediate_win:'发现一步获胜',search_deadline:'达到搜索截止时间',proven_terminal:'已证明终局结果',no_legal_moves:'无合法走法'};
+function searchText(e){
+ if(!e)return '初始局面，尚无行动。';
+ const s=e.search;if(!s)return '本步搜索统计：未记录';
+ const value=x=>x===null||x===undefined?'未记录':x;
+ const flag=x=>x===null||x===undefined?'未记录':x?'是':'否';
+ return [`行动方 / 策略：${e.player} / ${value(s.strategy)}`,
+ `目标深度：${value(s.target_depth)} ｜ 完成深度：${value(s.completed_depth)}`,
+ `递归节点：${value(s.nodes)} ｜ 根合法走法：${value(s.root_moves)}`,
+ `决策耗时：${s.elapsed_seconds==null?'未记录':(s.elapsed_seconds*1000).toFixed(2)+' ms'}`,
+ `紧急局面：${flag(s.urgent)}`,
+ `深度选择：${policyNames[s.policy_reason]||value(s.policy_reason)}`,
+ `结束原因：${finishNames[s.finish_reason]||value(s.finish_reason)}`,
+ `截止中断：${flag(s.timed_out)} ｜ 使用回退：${flag(s.fallback_used)}`].join('\n');
+}
+function totalsText(g){return ['A','D'].map(side=>{
+ const events=g.moves.filter(e=>e.player===side),rows=events.filter(e=>e.search),counts={};
+ for(const e of rows){const d=e.search.completed_depth??'未记录';counts[d]=(counts[d]||0)+1}
+ return `${side}：有记录 ${rows.length}/${events.length} 步\n完成深度分布：${Object.entries(counts).map(([d,n])=>d+'层 '+n+'步').join('，')||'未记录'}\n递归节点合计 ${rows.reduce((n,e)=>n+(e.search.nodes??0),0)}；截止回退 ${rows.filter(e=>e.search.fallback_used).length} 次`;
+}).join('\n\n')}
+function render(){
+ const g=current(),e=step?g.moves[step-1]:null,board=e?($('before').checked?e.board_before:e.board_after):g.initial_board;
+ $('analysis').textContent=searchText(e);
+ $('board').replaceChildren(diagram(board,e));$('slider').value=step;$('step').textContent=`第 ${step} / ${g.moves.length} 半步`;
+ $('description').textContent=e?`${label(e)}；策略 ${e.strategy}；耗时 ${(e.elapsed_seconds*1000).toFixed(2)} ms；吃子：${e.captures.length?e.captures.map(c=>c.piece+' '+coord(c.square)).join('、'):'无'}。${e.result_after.terminal?'终局：'+(reasons[g.result.reason]||g.result.reason):''}`:'初始局面：进攻方先行。';
+ $('prev').disabled=$('first').disabled=step===0;$('next').disabled=$('last').disabled=step===g.moves.length;
+ for(const b of $('moves').children)b.classList.toggle('active',Number(b.dataset.step)===step);
+}
+function jump(n){step=Math.max(0,Math.min(current().moves.length,n));render()}
+function buildGallery(){const g=current();$('gallery').replaceChildren();[null,...g.moves].forEach((e,i)=>{const box=document.createElement('div');box.className='frame';const p=document.createElement('p');p.textContent=e?label(e):'0. 初始局面';box.append(p,diagram(e?e.board_after:g.initial_board,e));box.tabIndex=0;box.onclick=()=>{stop();jump(i);$('board').scrollIntoView({behavior:'smooth',block:'center'})};box.onkeydown=ev=>{if(ev.key==='Enter')box.click()};$('gallery').append(box)})}
+function load(){stop();step=0;const g=current(),outcome=g.result.winner==='DRAW'?'平局':`${names[g.result.winner]}获胜`;$('slider').max=g.moves.length;$('summary').textContent=`我方执${names[g.our_side]} · ${outcome} / ${reasons[g.result.reason]||g.result.reason} · ${g.accepted_moves} 次有效行动`;
+ $('searchTotals').textContent=totalsText(g);
+ $('moves').replaceChildren();[null,...g.moves].forEach((e,i)=>{const b=document.createElement('button');b.dataset.step=i;b.textContent=e?label(e):'0. 初始局面';b.onclick=()=>{stop();jump(i)};$('moves').append(b)});if($('all').open)buildGallery();render()}
+for(const[i,g]of data.games.entries()){const o=document.createElement('option');o.value=i;o.textContent=`第 ${g.game} 局 · A ${g.strategies.A} vs D ${g.strategies.D}`;$('game').append(o)}
+$('game').onchange=()=>{index=Number($('game').value);load()};$('first').onclick=()=>{stop();jump(0)};$('last').onclick=()=>{stop();jump(current().moves.length)};$('prev').onclick=()=>{stop();jump(step-1)};$('next').onclick=()=>{stop();jump(step+1)};$('slider').oninput=()=>{stop();jump(Number($('slider').value))};$('before').onchange=render;
+$('play').onclick=()=>{if(timer){stop();return}if(step===current().moves.length)jump(0);$('play').textContent='暂停';timer=setInterval(()=>{jump(step+1);if(step===current().moves.length)stop()},650)};
+$('all').ontoggle=()=>{if($('all').open)buildGallery()};document.addEventListener('keydown',e=>{if(['INPUT','SELECT'].includes(e.target.tagName))return;if(e.key==='ArrowRight'){stop();jump(step+1)}if(e.key==='ArrowLeft'){stop();jump(step-1)}});
+$('download').onclick=()=>{const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='games.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+load();
+</script></html>
