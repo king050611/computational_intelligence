@@ -51,8 +51,33 @@ class WeightedEvaluator:
         score = fsum(weight * feature for weight, feature in zip(self.weights, features))
         return score if side=="D" else -score
 
+@dataclass(frozen=True)
+class RoleEvaluator:
+    attacker: WeightedEvaluator
+    defender: WeightedEvaluator
+
+    def for_side(self, side):
+        if side == "A":
+            return self.attacker
+        if side == "D":
+            return self.defender
+        raise ValueError("Side must be A or D")
+
+
+def for_root(evaluator, side):
+    return evaluator.for_side(side) if isinstance(evaluator, RoleEvaluator) else evaluator
+
+
 def load_evaluator(path):
     data=json.loads(Path(path).read_text(encoding="utf-8"))
+    if isinstance(data, dict) and data.get("schema_version") == 3:
+        if data.get("model_type") != "dual_role_evolutionary_dynamic" or data.get("features") != list(FEATURE_NAMES):
+            raise ValueError("Invalid Schema-3 model type or feature order")
+        try:
+            return RoleEvaluator(WeightedEvaluator(tuple(data["attacker_weights"])),
+                                 WeightedEvaluator(tuple(data["defender_weights"])))
+        except (KeyError, TypeError) as exc:
+            raise ValueError("Schema-3 requires two eight-weight arrays") from exc
     if not isinstance(data,dict) or data.get("model_type")!="evolutionary_dynamic":
         raise ValueError("Expected an evolutionary_dynamic model")
     schema=data.get("schema_version")

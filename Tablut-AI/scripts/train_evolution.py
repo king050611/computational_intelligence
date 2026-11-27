@@ -198,6 +198,15 @@ def load_initial_weights(args,config):
 
 
 def main(argv=None):
+    arguments = list(sys.argv[1:] if argv is None else argv)
+    role_parser = argparse.ArgumentParser(add_help=False)
+    role_parser.add_argument("--training-role", choices=("both", "attacker", "defender"), default="both")
+    role, remaining = role_parser.parse_known_args(arguments)
+    if role.training_role != "both":
+        from scripts.train_role import main as train_role
+        return train_role(role.training_role, remaining)
+    argv = remaining
+
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir",type=Path,required=True)
     parser.add_argument("--generations",type=int,default=1,help="Additional complete V3 generations")

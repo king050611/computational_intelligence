@@ -1,0 +1,27 @@
+{
+  "schema_version": 2,
+  "model_type": "evolutionary_dynamic",
+  "features": [
+    "king_pressure",
+    "escape_routes",
+    "weighted_material",
+    "edge_distance",
+    "king_mobility",
+    "escape_blockade",
+    "king_escape_distance",
+    "immediate_king_threat"
+  ],
+  "weights": [
+    -620,
+    600,
+    -130,
+    0,
+    4,
+    0,
+    0,
+    -160
+  ],
+  "metadata": {
+    "untrained_style": "aggressive"
+  }
+}

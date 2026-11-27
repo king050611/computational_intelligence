@@ -182,3 +182,54 @@ python scripts/train_evolution.py --resume --generations 1 --output-dir reports/
 训练最佳只说明内部适应度较好。模型冻结后使用不同Seed的新开局，检查与两套训练开局无重复，再对手工Enhanced Dynamic配对测试。先做少量性能初探，正式晋级至少另需30对60局、官方积分率≥55%、配对区间下限>50%、无违规，并分别报告攻守。低深度约束/无约束流程测试不是正式棋力比较。
 
 模型不能因3:1:0适应度较高而自动晋级；尤其要检查增加胜局是否伴随过多败局和官方积分下降。正式默认不加载研究权重。
+
+## V6 Phase 4 攻守独立遗传进化
+
+从项目根目录运行。有关本地基线、数据划分和当前进度，见 [Phase 4 开发复盘](../reports/phase4/PHASE4_REPORT.md)。
+
+### 小规模对手验证
+
+等其他限时实验结束后串行运行。每个模型固定执其专项角色，使用相同的五个开局。四组各五局；检查棋谱、错误记录、累计时间以及策略差异后再决定是否扩展。
+
+```powershell
+$phase = 'reports/phase4'
+$pilotSides = [ordered]@{aggressive='A'; blockade='A'; escape='D'; protective='D'}
+foreach ($style in $pilotSides.Keys) {
+    python -m scripts.generate_research_games --output "$phase/pilot/$style" --pairs 5 --candidate-side $pilotSides[$style] --seed 56001 --candidate-model "$phase/models/$style.json" --control-model "$phase/models/champion.json"
+    if ($LASTEXITCODE -ne 0) { break }
+}
+```
+
+对已有部分棋谱的单组，用原参数和 `--resume` 继续。裁判故障记录位于该组的 `individual/rejected/`。正式比赛默认深度 4，双方各有 60 秒累计预算。
+
+### 各跑一代
+
+压力测试确认对手有效后再执行。每一方快筛 8×4 局，目标深度 3，复筛至多 4×12 局，目标深度 4。每阶段同角色候选共享开局、对手和搜索预算。先过同场冠军的官方 2:1:0 积分底线，再按胜局数、官方积分排序。用 `--ranking-mode fitness` 可运行 3:1:0 对照。
+
+```powershell
+python -m scripts.train_evolution --training-role attacker --opponent-pool reports/phase4/attacker_pool.json --style-model reports/phase4/models/aggressive.json --style-model reports/phase4/models/blockade.json --tactics-dir reports/phase4/tactics --output-dir reports/phase4/attacker
+python -m scripts.train_evolution --training-role defender --opponent-pool reports/phase4/defender_pool.json --style-model reports/phase4/models/escape.json --style-model reports/phase4/models/protective.json --tactics-dir reports/phase4/tactics --output-dir reports/phase4/defender
+```
+
+断点恢复使用原参数加 `--resume`。已完整保存的合法对局会复用。保持同一个输出目录、对手模型、源码和参数；目录中的 `STOP` 文件会阻止开启下一代。输出包括候选模型、分局 JSON、HTML、检查点和该角色的最佳模型。常规共享权重训练继续使用 `--training-role both` 或原命令。
+
+### 打包及独立验收
+
+训练后固定候选权重，E0 用原冠军双侧，E1 只换攻方，E2 只换守方，E3 两侧都换。四组对相同的原冠军，使用同一独立开局集合、相同 V6 配置，且每个开局交换攻守。
+
+```powershell
+$phase = 'reports/phase4'
+$base = "$phase/models/champion.json"
+$a = "$phase/attacker/attacker_best.json"
+$d = "$phase/defender/defender_best.json"
+python -m scripts.merge_role_models $base $base "$phase/E0.json"
+python -m scripts.merge_role_models $a $base "$phase/E1.json"
+python -m scripts.merge_role_models $base $d "$phase/E2.json"
+python -m scripts.merge_role_models $a $d "$phase/E3.json"
+foreach ($id in @('E0','E1','E2','E3')) {
+    python -m scripts.generate_research_games --output "$phase/ablation/$id" --pairs 5 --seed 56002 --candidate-model "$phase/$id.json" --control-model $base
+    if ($LASTEXITCODE -ne 0) { break }
+}
+```
+
+消融结论用于选择待验收组合。正式独立验收优先与 V6 原共享冠军打 30 对，另用全新开局，并检查开局及其对称局面与训练和消融均不重复。按配对开局汇总胜率、官方积分、时间与违规数据。只有该轮显示收益才扩大到历史版本，晋级由实验结果决定。战术留出集在定稿后只评一次，使用 `scripts.evaluate_tactics` 指向 `tactics/holdout.jsonl`。

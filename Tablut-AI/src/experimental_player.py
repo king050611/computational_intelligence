@@ -5,6 +5,7 @@ from random import Random
 from config.experimental import SearchOptions, AVAILABLE_STRATEGIES
 from config.settings import GAME_TIME_LIMIT, TIME_SAFETY_MARGIN
 from src.enhanced_search import choose_enhanced
+from src.evaluation import for_root
 from src.game import apply_move, get_legal_moves, get_state_key, parse_board
 from src.time_control import TimeManager
 from src.tactics import is_urgent
@@ -54,7 +55,7 @@ class ExperimentalPlayer:
             if stats is not None:
                 stats.update(strategy=self.strategy, budget_seconds=hard - start)
             move = self.rng.choice(moves) if self.strategy == "random" else choose_enhanced(
-                board, side, evaluator=self.evaluator, deadline=hard, soft_deadline=soft,
+                board, side, evaluator=for_root(self.evaluator, side), deadline=hard, soft_deadline=soft,
                 history=self.history, stats=stats, options=self.options, moves=moves,
             )
             if stats is not None and self.strategy == "random":

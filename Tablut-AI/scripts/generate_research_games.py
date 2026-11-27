@@ -81,6 +81,12 @@ class Engine:
         self.process.stdout.close()
 
 
+class MatchFault(RuntimeError):
+    def __init__(self, message, faulty_sides):
+        super().__init__(message)
+        self.faulty_sides=frozenset(faulty_sides)
+
+
 def play_job(job):
     from scripts.replay_demo import Recorder, ObservedPlayer, snapshot
     from scripts.analyze_history import normalize_replay
@@ -102,8 +108,20 @@ def play_job(job):
         limits=[spec["seconds"] for spec in specs]
         if side=="D":
             limits.reverse()
-        if not game.termination or any(p.timed.errors or p.timed.invalid_returns for p in players) or any(t>limit for t,limit in zip(elapsed,limits)):
-            raise RuntimeError(f"{file.name}: referee fault: {log.getvalue()}")
+        message=log.getvalue()
+        faults=set()
+        for tag,label,player,time,limit in zip(("A","D"),("Attackers","Defenders"),(a,d),elapsed,limits):
+            if (player.timed.errors or player.timed.invalid_returns or time>limit
+                    or f"Illegal move by {label}" in message or f"{label} exceeded time limit" in message
+                    or f"Exception caught for {label}" in message):
+                faults.add(tag)
+        if not game.termination or faults:
+            detail=dict(side=side,faulty_sides=sorted(faults),log=message,elapsed=elapsed,
+                        initial_board=game.initial_board,moves=game.events,pending=game.pending)
+            quarantine=file.parent/"rejected"
+            quarantine.mkdir(exist_ok=True)
+            (quarantine/file.name).write_text(json.dumps(detail),encoding="utf-8")
+            raise MatchFault(f"{file.name}: referee fault: {message}",faults)
         row=dict(game=int(file.stem),opening_id=entry["id"],seed=seed,our_side=side,
                  strategies=dict(A=a.strategy,D=d.strategy),initial_board=game.initial_board,
                  final_board=snapshot(game.board),moves=game.events,result=game.termination,
