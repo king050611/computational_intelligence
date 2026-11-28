@@ -1,85 +1,20 @@
 """Generate resumable, paired research replays through the course referee."""
 import argparse
 from collections import Counter
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
 import contextlib
 from hashlib import sha256
 import io
 import json
 import os
 from pathlib import Path
-import subprocess
 import sys
 
 ROOT=Path(__file__).resolve().parents[1]
-
-
-def worker(spec):
-    sys.path.insert(0,spec["engine"])
-    from config.experimental import SearchOptions
-    from src.evaluation import load_evaluator
-    from src.experimental_player import ExperimentalPlayer
-    from src import time_control
-    import src.experimental_player as adapter
-    for module in (time_control,adapter):
-        if hasattr(module,"GAME_TIME_LIMIT"):
-            module.GAME_TIME_LIMIT=spec["seconds"]
-    settings={"max_depth":spec["depth"]}
-    if spec["nodes"]:
-        settings["node_budget"]=spec["nodes"]
-    settings.update(spec.get("search_options", {}))
-    model=load_evaluator(spec["model"]) if spec["model"] else None
-    bot=ExperimentalPlayer("evolutionary_dynamic" if model else "enhanced_dynamic",
-                           opening=spec["board"],evaluator=model,options=SearchOptions(**settings),record_search=True)
-    print("ready",flush=True)
-    for line in sys.stdin:
-        side,board=json.loads(line)
-        move=(bot.play_attacker if side=="A" else bot.play_defender)(board)
-        print(json.dumps([move,bot.last_search_stats]),flush=True)
-
-
-class Engine:
-    def __init__(self,spec,board):
-        self.process=subprocess.Popen([sys.executable,"-I",__file__,"--worker",json.dumps(dict(spec,board=board))],
-            stdin=subprocess.PIPE,stdout=subprocess.PIPE,text=True,encoding="utf-8",bufsize=1)
-        self.reader=ThreadPoolExecutor(max_workers=1)
-        self.seconds=spec["seconds"]
-        try:
-            if self.read_line(10).strip()!="ready":
-                raise RuntimeError(f"Engine startup failed for {spec['engine']}")
-        except BaseException:
-            self.close()
-            raise
-        self.last_search_stats=None
-
-    def read_line(self,seconds):
-        try:
-            return self.reader.submit(self.process.stdout.readline).result(timeout=seconds)
-        except TimeoutError:
-            self.process.kill()
-            raise TimeoutError("Research engine exceeded response deadline") from None
-
-    def play(self,side,board):
-        self.process.stdin.write(json.dumps([side,board])+"\n")
-        self.process.stdin.flush()
-        move,self.last_search_stats=json.loads(self.read_line(self.seconds))
-        return move
-
-    def play_attacker(self,board):
-        return self.play("A",board)
-
-    def play_defender(self,board):
-        return self.play("D",board)
-
-    def close(self):
-        self.process.stdin.close()
-        try:
-            self.process.wait(timeout=2)
-        except subprocess.TimeoutExpired:
-            self.process.kill()
-            self.process.wait()
-        self.reader.shutdown(wait=True)
-        self.process.stdout.close()
+if not __package__:
+    sys.path.insert(0,str(ROOT))
+from src.engine_process import Engine
+from src.role_player import fingerprint
 
 
 class MatchFault(RuntimeError):
@@ -144,11 +79,6 @@ def play_job(job):
     finally:
         for bot in engines:
             bot.close()
-
-
-def fingerprint(directory):
-    return {p.relative_to(directory).as_posix():sha256(p.read_bytes()).hexdigest()
-            for folder in ("src","config") for p in sorted((directory/folder).rglob("*.py"))}
 
 
 def select_openings(count, seed):
@@ -225,6 +155,13 @@ def main(argv=None, *, candidate=None, control=None):
                           model_sha256=sha256(model.read_bytes()).hexdigest() if model else None,
                           files=files,depth=depth,nodes=nodes,seconds=cap))
     if args.capture_proof or args.deepen_ties:
+        import ast
+        config_file = Path(specs[0]["engine"]) / "config/experimental.py"
+        fields = {field.target.id for node in ast.parse(config_file.read_bytes()).body
+                  if isinstance(node,ast.ClassDef) and node.name=="SearchOptions"
+                  for field in node.body if isinstance(field,ast.AnnAssign) and isinstance(field.target,ast.Name)}
+        if not {"capture_proof", "deepen_ties"} <= fields:
+            parser.error("Experimental options require an archived R1/R2-compatible candidate engine")
         specs[0]["search_options"] = dict(capture_proof=args.capture_proof,deepen_ties=args.deepen_ties)
     opening_sha=None
     if args.openings:
@@ -283,7 +220,4 @@ def run_games(args,manifest,openings,specs,normalize_replay,write_replay):
 
 
 if __name__=="__main__":
-    if len(sys.argv)==3 and sys.argv[1]=="--worker":
-        worker(json.loads(sys.argv[2]))
-    else:
-        main()
+    main()

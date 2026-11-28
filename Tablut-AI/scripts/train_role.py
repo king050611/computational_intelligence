@@ -45,6 +45,27 @@ def summarize(rows, side):
                 points=2*wins+draws,reward=3*wins+draws,fitness=(3*wins+draws)/(3*len(rows)))
 
 
+def distinct_candidates(vectors):
+    """Preserve the first full-precision representative of each rounded seed."""
+    unique = []
+    for weights in vectors:
+        vector = tuple(weights)
+        if not any(all(abs(a-b) <= .001 for a,b in zip(vector,previous)) for previous in unique):
+            unique.append(vector)
+    return unique
+
+
+def seeded_population(incumbent, vectors, config):
+    accepted = distinct_candidates([incumbent, *(project(vector,config) for vector in vectors)])
+    rng = Random(config.seed)
+    for _ in range(config.population * config.dedup_attempts):
+        if len(accepted) >= config.population:
+            return accepted[:config.population]
+        candidate = mutate_distinct(incumbent, accepted, rng, config)
+        accepted = distinct_candidates([*accepted,candidate])
+    raise ValueError("Cannot fill the population with distinct candidate weights")
+
+
 def population(seed,styles,config):
     initial=list(dict.fromkeys([seed,BASE_WEIGHTS,*styles]))
     rng=Random(config.seed)
@@ -207,9 +228,16 @@ def main(role,argv,*,settings=None):
     provenance={Path(f).name:sha256(Path(f).read_bytes()).hexdigest()
                 for f in (__file__,ROOT/"scripts/generate_research_games.py",ROOT/"scripts/evaluate_tactics.py",ROOT/"reference/Tablut.py")}
     candidate_engine=args.candidate_engine.resolve()
+    if args.initial_population:
+        raw=json.loads(args.initial_population.read_bytes())
+        vectors=[WeightedEvaluator(tuple(item["weights"] if isinstance(item,dict) else item)).weights
+                 for item in raw]
+        seeded=seeded_population(initial,vectors,config)
+    else:
+        seeded=population(initial,style_weights,config)
     manifest=json.loads(json.dumps(dict(role=role,pool=pool,config=asdict(config),initial=initial,
         candidate_engine=dict(path=str(candidate_engine),files=fingerprint(candidate_engine)),
-        styles=style_weights,openings=entries,quick_games=args.quick_games,quick_depth=args.quick_depth,
+        styles=style_weights,seeded_population=seeded,mutation_groups=groups,openings=entries,quick_games=args.quick_games,quick_depth=args.quick_depth,
         final_depth=args.max_depth,ranking=args.ranking_mode,tactics={k:v[1] for k,v in tactical.items()},source=fingerprint(ROOT),provenance=provenance)))
     entries=manifest["openings"]
     out=args.output_dir
@@ -224,16 +252,6 @@ def main(role,argv,*,settings=None):
             if path.exists():
                 raise ValueError("Existing run. Use --resume")
             publish(path,manifest)
-            if args.initial_population:
-                raw=json.loads(args.initial_population.read_bytes())
-                vectors=[tuple(float(x) for x in (item["weights"] if isinstance(item,dict) else item))
-                         for item in raw]
-                seeded=[project(vector,config) for vector in vectors]
-                seeded=list(dict.fromkeys([initial,*seeded]))[:config.population]
-                if len(seeded)<2:
-                    parser.error("Initial population needs at least two distinct vectors")
-            else:
-                seeded=population(initial,style_weights,config)
             checkpoint=dict(generation=0,population=seeded,best=initial)
             save_checkpoint(out,checkpoint)
         baseline=tuple(checkpoint["best"])
@@ -244,9 +262,22 @@ def main(role,argv,*,settings=None):
             quick=entries[:args.quick_games]
             final=entries[args.quick_games:]
             weights=[tuple(w) for w in checkpoint["population"]]
-            weights=list(dict.fromkeys([baseline,*weights]))[:config.population]
+            weights=seeded_population(baseline,weights,config)
+
+            def record_admissions(label,vectors):
+                if len(distinct_candidates(vectors))!=len(vectors):
+                    raise ValueError(f"Near-duplicate candidates in {label}")
+                folder.mkdir(parents=True,exist_ok=True)
+                roster=folder/f"{label}_admissions.json"
+                accepted=[list(vector) for vector in vectors]
+                if roster.exists():
+                    if json.loads(roster.read_bytes())!=accepted:
+                        raise ValueError(f"Admission list changed: {roster}")
+                else:
+                    publish(roster,accepted)
 
             def collect(vectors,label,openings,depth):
+                record_admissions(label,vectors)
                 results=[]
                 for index,vector in enumerate(vectors):
                     try:
@@ -258,6 +289,8 @@ def main(role,argv,*,settings=None):
                             trial["tactical"]=evaluate_cases(cases,WeightedEvaluator(tuple(vector)),depth=depth)
                             if any(stats["illegal"] for stats in trial["tactical"].values()):
                                 raise MatchFault("Candidate produced an illegal tactical move",{side})
+                        if tuple(trial["weights"]) != vector:
+                            raise ValueError("Trial weights differ from the admission list")
                         results.append(trial)
                     except MatchFault as exc:
                         if index==0 or exc.faulty_sides!={side}:

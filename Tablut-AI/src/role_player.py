@@ -3,10 +3,23 @@ from hashlib import sha256
 import json
 from pathlib import Path
 
-from scripts.generate_research_games import Engine, fingerprint
+from weakref import finalize
+
+from src.engine_process import Engine
 from src.game import initial_board
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def fingerprint(directory):
+    return {path.relative_to(directory).as_posix(): sha256(path.read_bytes()).hexdigest()
+            for folder in ("src", "config") for path in sorted((directory / folder).rglob("*.py"))}
+
+
+def _close_engines(engines):
+    for engine in engines.values():
+        engine.close()
+    engines.clear()
 
 
 def role_spec(side, *, verify_attacker=False):
@@ -23,15 +36,17 @@ def role_spec(side, *, verify_attacker=False):
 
 
 class RolePlayer:
-    def __init__(self, *, opening=None, record_search=False):
+    def __init__(self, *, opening=None, record_search=False, verify_attacker=False):
         self.opening = initial_board() if opening is None else opening
         self.record_search = record_search
+        self.verify_attacker = verify_attacker
         self.last_search_stats = None
         self._engines = {}
+        self._finalizer = finalize(self, _close_engines, self._engines)
 
     def _play(self, side, board):
         if side not in self._engines:
-            self._engines[side] = Engine(role_spec(side), self.opening)
+            self._engines[side] = Engine(role_spec(side, verify_attacker=self.verify_attacker), self.opening)
         engine = self._engines[side]
         move = engine.play(side, board)
         self.last_search_stats = engine.last_search_stats if self.record_search else None
@@ -44,9 +59,7 @@ class RolePlayer:
         return self._play("D", board)
 
     def close(self):
-        for engine in self._engines.values():
-            engine.close()
-        self._engines.clear()
+        _close_engines(self._engines)
 
     def __enter__(self):
         return self

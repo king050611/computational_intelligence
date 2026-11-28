@@ -16,7 +16,7 @@ from src.evolution import initial_population,next_population
 from src.enhanced_search import choose_enhanced
 from src.experimental_player import ExperimentalPlayer
 from src.time_control import AdaptiveTimeManager
-from TeamXX import Player
+from TeamXX import LegacyPlayer as Player
 
 class EvolutionTests(unittest.TestCase):
     def test_features_baseline_equivalence_and_perspective(self):

@@ -76,3 +76,18 @@ class RoleTests(unittest.TestCase):
 
 
 from collections import Counter
+
+class SeededAdmissionRegression(unittest.TestCase):
+    def test_rounded_champion_does_not_consume_p7_slot(self):
+        from config.evolution import EvolutionConfig
+        from scripts.train_role import distinct_candidates, seeded_population
+        import json
+
+        seeds = json.loads((ROOT / "config/attacker_population.json").read_bytes())
+        champion = load_evaluator(ROOT / "models/attacker/best.json").weights
+        roster = seeded_population(champion, seeds, EvolutionConfig(constrained=False))
+        self.assertEqual(len(roster), 8)
+        self.assertEqual(roster[0], champion)
+        self.assertNotIn(tuple(seeds[0]), roster)
+        self.assertIn(tuple(seeds[-1]), roster)
+        self.assertEqual(roster, distinct_candidates(roster))

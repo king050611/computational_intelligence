@@ -12,7 +12,6 @@ like the six-feature baseline.
 """
 from config.settings import DIRECTIONS
 from src.game import get_piece_moves
-from src.tactics import capture_threat_available
 
 FEATURE_NAMES = ("king_pressure", "escape_routes", "weighted_material", "edge_distance",
                  "king_mobility", "escape_blockade", "king_escape_distance", "immediate_king_threat")
@@ -31,18 +30,56 @@ def basic_features(board):
 
 
 def king_escape_distance(board, king):
-    """Nearest legal edge ray, normalized. A trapped king gets distance 1."""
-    if any(coord in (0,8) for coord in king):
-        return 0.0
-    return min((abs(r-king[0])+abs(c-king[1]) for _,(r,c) in get_piece_moves(board,king,"D")
-                if r in (0,8) or c in (0,8)),default=8)/8
+    """Steps from the king to the nearest edge along a fully clear ray, /8."""
+    r, c = king
+    best = 9
+    for dr, dc in DIRECTIONS:
+        row, col, distance = r + dr, c + dc, 0
+        clear = True
+        while 0 <= row < 9 and 0 <= col < 9:
+            if board[row][col] in "ADK":
+                clear = False
+                break
+            distance += 1
+            row += dr
+            col += dc
+        if clear and 0 < distance < best:
+            best = distance
+    return 0.0 if best == 9 else best / 8
 
 
 def immediate_king_threat(board, king):
-    return float(capture_threat_available(board, king))
+    """1.0 when the king can be captured by one axial attacker move.
+
+    Exact enough for evaluation and cheap: for each side of the king the opposite
+    square must already hold an attacker (the support), the adjacent square must be
+    empty, and the attacker two squares away must be able to slide in. Diagonal
+    approaches from a perpendicular ray are not counted, which keeps this at O(1)
+    lookups per side; a missed threat is still seen by the search one ply deeper.
+    """
+    r, c = king
+    near_castle = abs(r - 4) + abs(c - 4) <= 1
+    for dr, dc in DIRECTIONS:
+        support_r, support_c = r - dr, c - dc
+        mover_r, mover_c = r + dr, c + dc
+        far_r, far_c = r + 2*dr, c + 2*dc
+        if not (0 <= mover_r < 9 and 0 <= mover_c < 9):
+            continue
+        if board[mover_r][mover_c] != ".":
+            continue
+        if not (0 <= support_r < 9 and 0 <= support_c < 9):
+            continue
+        if near_castle:
+            if all(0 <= y < 9 and 0 <= x < 9 and board[y][x] in "AX"
+                   for y, x in ((r + dy, c + dx) for dy, dx in DIRECTIONS)):
+                return 1.0
+        elif board[support_r][support_c] == "A":
+            if 0 <= far_r < 9 and 0 <= far_c < 9 and board[far_r][far_c] == "A":
+                return 1.0
+    return 0.0
 
 
-def extract_features(board, *, escape_distance=True, king_threat=True):
+def extract_features(board):
     king = next(((r,c) for r in range(9) for c in range(9) if board[r][c] == "K"), None)
     material = sum(row.count("A") - 2*row.count("D") for row in board)
     if king is None:
@@ -62,5 +99,4 @@ def extract_features(board, *, escape_distance=True, king_threat=True):
                     blockade += 1/distance
                 break
     return (pressure/4, escapes/4, material/16, min(r,c,8-r,8-c)/4, len(destinations)/16, blockade/4,
-            king_escape_distance(board, king) if escape_distance else 0.0,
-            immediate_king_threat(board, king) if king_threat else 0.0)
+            king_escape_distance(board, king), immediate_king_threat(board, king))

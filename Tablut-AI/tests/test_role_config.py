@@ -35,7 +35,8 @@ class RoleConfigPinTests(unittest.TestCase):
             self.assertNotEqual(player._engines["A"].process.pid, player._engines["D"].process.pid)
 
     def test_formal_rollback_still_available(self):
-        from TeamXX import Player, independent_player
-        self.assertEqual(Player().strategy, "enhanced_dynamic")
+        from TeamXX import LegacyPlayer, Player, independent_player
+        self.assertEqual(LegacyPlayer().strategy, "enhanced_dynamic")
+        self.assertIsInstance(Player(), RolePlayer)
         with independent_player() as player:
             self.assertIsInstance(player, RolePlayer)
