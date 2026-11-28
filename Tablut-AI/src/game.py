@@ -168,6 +168,9 @@ def apply_move(board, move, player):
         if take:
             captured.append((ar, ac))
     for ar, ac in captured:
+        # Only the king can be captured on the castle square, which ends the game. The
+        # referee writes '.' there; we keep 'X' so that the castle invariant of
+        # parse_board (K or X) still holds if a terminal board is ever re-read.
         result[ar][ac] = "X" if (ar, ac) == CASTLE else "."
     return tuple(map(tuple, result))
 
