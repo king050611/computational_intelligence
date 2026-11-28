@@ -72,6 +72,15 @@ def main(argv=None):
     flags = ["--opponent-pool", str(ROOT / "config/defender_pool.json"),
              "--candidate-engine", candidate["engine"], "--initial-model", candidate["model"],
              "--output-dir", str(output)]
+    for key, flag in (("initial_population", "--initial-population"),
+                      ("mutation_groups", "--mutation-groups")):
+        value = settings.get(key)
+        if not value:
+            continue
+        path = (ROOT / value).resolve()
+        if any(path == protected_path or protected_path in path.parents for protected_path in protected):
+            parser.error(f"{key} must live outside models/ and engines/")
+        flags += [flag, str(path)]
     train_role("attacker", flags + (["--resume"] if args.resume else []), settings=settings)
     if args.archive_to:
         archive_completed(output,archive_dir)

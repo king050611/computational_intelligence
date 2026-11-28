@@ -9,7 +9,7 @@ from pathlib import Path
 from random import Random
 import sys
 
-from config.evolution import BASE_WEIGHTS, EvolutionConfig
+from config.evolution import BASE_WEIGHTS, GENE_SIGNS, EvolutionConfig
 from scripts.build_strategy_dataset import symmetry, read_rows
 from scripts.evaluate_tactics import evaluate_cases
 from src.evaluation import WeightedEvaluator
@@ -55,6 +55,37 @@ def population(seed,styles,config):
     while len(initial)<config.population:
         initial.append(mutate_distinct(seed,initial,rng,config))
     return initial[:config.population]
+
+
+def load_groups(path, genes):
+    groups=json.loads(path.read_bytes())
+    if (not isinstance(groups,list) or not groups
+            or any(not isinstance(group,list) or not group for group in groups)):
+        raise ValueError("Mutation groups must be a non-empty list of non-empty index lists")
+    for group in groups:
+        for index in group:
+            if type(index) is not int or not 0<=index<genes:
+                raise ValueError("Mutation group index out of range")
+    # Uncovered genes stay frozen: the V7 groups intentionally leave W4 untouched.
+    return [list(group) for group in groups]
+
+
+def mutate_groups(parents,incumbent,config,groups,rng,elite):
+    """One group per child: never randomize all eight genes at once."""
+    population=list(dict.fromkeys(tuple(w) for w in [incumbent,*parents[:elite]]))
+    while len(population)<config.population:
+        parent=tuple(rng.choice(parents))
+        group=rng.choice(groups)
+        genes=list(parent)
+        for index in group:
+            value=genes[index]+rng.gauss(0,config.sigma)
+            if config.constrained and GENE_SIGNS[index]*value<0:
+                value=0.0
+            genes[index]=max(-config.bound,min(config.bound,value))
+        child=tuple(genes)
+        if child!=parent and child not in population:
+            population.append(child)
+    return population
 
 
 def model_spec(engine,model,depth,seconds):
@@ -108,6 +139,10 @@ def main(role,argv,*,settings=None):
     parser.add_argument("--output-dir",type=Path,required=True)
     parser.add_argument("--ranking-mode",choices=("fitness","win-first"),default=defaults.get("ranking_mode","win-first"))
     parser.add_argument("--initial-model",type=Path,default=ROOT/"models/attacker/best.json")
+    parser.add_argument("--initial-population",type=Path,
+                        help="JSON list of eight-gene vectors (or model records) seeding generation 0")
+    parser.add_argument("--mutation-groups",type=Path,
+                        help="JSON list of gene-index lists; each child mutates exactly one group")
     parser.add_argument("--candidate-engine",type=Path,default=ROOT,
                         help="Frozen engine directory for the candidate role (defaults to the workspace)")
     parser.add_argument("--style-model",type=Path,action="append",default=[])
@@ -130,6 +165,7 @@ def main(role,argv,*,settings=None):
     if any(not isinstance(model,WeightedEvaluator) for model in models):
         parser.error("Initial and style models must each contain one weight vector")
     initial=models[0].weights
+    groups=load_groups(args.mutation_groups,len(initial)) if args.mutation_groups else None
     if any(abs(w)>config.bound for w in initial):
         parser.error("Initial model exceeds experimental bounds")
     style_weights=[model.weights for model in models[1:]]
@@ -188,7 +224,17 @@ def main(role,argv,*,settings=None):
             if path.exists():
                 raise ValueError("Existing run. Use --resume")
             publish(path,manifest)
-            checkpoint=dict(generation=0,population=population(initial,style_weights,config),best=initial)
+            if args.initial_population:
+                raw=json.loads(args.initial_population.read_bytes())
+                vectors=[tuple(float(x) for x in (item["weights"] if isinstance(item,dict) else item))
+                         for item in raw]
+                seeded=[project(vector,config) for vector in vectors]
+                seeded=list(dict.fromkeys([initial,*seeded]))[:config.population]
+                if len(seeded)<2:
+                    parser.error("Initial population needs at least two distinct vectors")
+            else:
+                seeded=population(initial,style_weights,config)
+            checkpoint=dict(generation=0,population=seeded,best=initial)
             save_checkpoint(out,checkpoint)
         baseline=tuple(checkpoint["best"])
         for generation in range(checkpoint["generation"]+1,checkpoint["generation"]+1+args.generations):
@@ -225,13 +271,21 @@ def main(role,argv,*,settings=None):
             finalists=[baseline,*[tuple(t["weights"]) for t in others[:3]]]
             results=collect(finalists,"final",final,args.max_depth)
             floor=results[0]["points"]
-            safe=[t for t in results if not t.get("disqualified") and t["points"]>=floor]
-            ranked=sorted(safe,key=lambda t:rank(t,args.ranking_mode),reverse=True)
+            valid=[t for t in results if not t.get("disqualified")]
+            for trial in valid:
+                trial["below_points_floor"]=trial["points"]<floor
+            ranked=sorted(valid,key=lambda t:rank(t,args.ranking_mode),reverse=True)
+            if not ranked:
+                raise RuntimeError("No eligible finalist")
             best=tuple(ranked[0]["weights"])
             # Parents also meet the official floor. If only the incumbent qualifies,
             # seed a fresh diverse population instead of breeding an ineligible model.
-            next_weights=(next_population([t["weights"] for t in ranked],config,generation,incumbent=best)
-                          if len(ranked)>=config.elite else population(best,[],config))
+            if groups:
+                next_weights=mutate_groups([t["weights"] for t in ranked],best,config,groups,
+                                           Random(f"{config.seed}:{role}:{generation}"),config.elite)
+            else:
+                next_weights=(next_population([t["weights"] for t in ranked],config,generation,incumbent=best)
+                              if len(ranked)>=config.elite else population(best,[],config))
             checkpoint=dict(generation=generation,population=next_weights,best=best,role=role,
                             points_floor=floor,quick=screened,final=results)
             save_checkpoint(out,checkpoint)

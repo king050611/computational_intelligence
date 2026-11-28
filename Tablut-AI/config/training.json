@@ -3,13 +3,15 @@
   "elite": 2,
   "crossover": 0.7,
   "mutation": 0.2,
-  "sigma": 40,
+  "sigma": 25,
   "bound": 1000,
-  "quick_games": 4,
-  "final_games": 12,
-  "quick_depth": 3,
+  "quick_games": 8,
+  "final_games": 24,
+  "quick_depth": 4,
   "max_depth": 4,
   "seed": 42,
   "generations": 1,
-  "ranking_mode": "win-first"
+  "ranking_mode": "win-first",
+  "initial_population": "reports/v7_weights/population.json",
+  "mutation_groups": "reports/v7_weights/mutation_groups.json"
 }

@@ -40,7 +40,7 @@ class RoleTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             summarize([dict(our_side="D")],"A")
 
-    def test_each_role_runs_one_generation_and_retains_incumbent_at_floor(self):
+    def test_each_role_ranks_by_wins_and_flags_the_points_risk(self):
         for role,side in (("attacker","A"),("defender","D")):
             calls=[]
             def mock_suite(out,weights,actual_side,entries,depth,pool,seed,candidate_engine=None):
@@ -59,9 +59,19 @@ class RoleTests(unittest.TestCase):
                     main(role,args)
                     main(role,args+["--resume"])
                 self.assertEqual(calls,([(side,4)]*8+[(side,12)]*4)*2)
-                expected=load_evaluator(ROOT/"models/attacker/best.json").weights
-                self.assertEqual(load_evaluator(out/f"{role}_best.json").weights,expected)
+                incumbent=load_evaluator(ROOT/"models/attacker/best.json").weights
+                best=load_evaluator(out/f"{role}_best.json").weights
+                # Wins-first: the challenger with one win beats the incumbent with a draw,
+                # even though its official points are below the incumbent's floor.
+                self.assertNotEqual(best,incumbent)
                 ck=json.loads((out/"checkpoint-0002.json").read_bytes())
+                self.assertEqual(ck["points_floor"],4)
+                # The generation's baseline always takes part in the final suite.
+                baseline_of_run=tuple(ck["final"][0]["weights"])
+                self.assertIn(baseline_of_run,{tuple(t["weights"]) for t in ck["final"]})
+                winner=next(t for t in ck["final"] if tuple(t["weights"])==best)
+                self.assertEqual(winner["wins"],1)
+                self.assertTrue(winner["below_points_floor"])
                 self.assertEqual(len({tuple(w) for w in ck["population"]}),8)
 
 
