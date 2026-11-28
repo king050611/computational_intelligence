@@ -43,7 +43,7 @@ class RoleTests(unittest.TestCase):
     def test_each_role_runs_one_generation_and_retains_incumbent_at_floor(self):
         for role,side in (("attacker","A"),("defender","D")):
             calls=[]
-            def mock_suite(out,weights,actual_side,entries,depth,pool,seed):
+            def mock_suite(out,weights,actual_side,entries,depth,pool,seed,candidate_engine=None):
                 calls.append((actual_side,len(entries)))
                 # Challenger wins more but scores below the incumbent's official points.
                 first=out.name.endswith("_00")

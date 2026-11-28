@@ -70,7 +70,7 @@ def model_spec(engine,model,depth,seconds):
                 depth=depth,nodes=0,seconds=seconds)
 
 
-def suite(out,weights,side,entries,depth,pool,seed):
+def suite(out,weights,side,entries,depth,pool,seed,candidate_engine=None):
     out.mkdir(parents=True,exist_ok=True)
     model=out/"model.json"
     if model.exists():
@@ -78,7 +78,7 @@ def suite(out,weights,side,entries,depth,pool,seed):
             raise ValueError("Saved candidate weights differ")
     else:
         publish(model,model_record(weights,training_side=side))
-    candidate=model_spec(ROOT,model,depth,60)
+    candidate=model_spec(candidate_engine or ROOT,model,depth,60)
     rows=[]
     for index,(entry,opponent) in enumerate(zip(entries,allocate(pool,len(entries))),1):
         path=out/f"{index:04d}.json"
@@ -107,6 +107,8 @@ def main(role,argv):
     parser.add_argument("--output-dir",type=Path,required=True)
     parser.add_argument("--ranking-mode",choices=("fitness","win-first"),default="win-first")
     parser.add_argument("--initial-model",type=Path,default=ROOT/"reports/historical_analysis/v4_champion_schema2.json")
+    parser.add_argument("--candidate-engine",type=Path,default=ROOT,
+                        help="Frozen engine directory for the candidate role (defaults to the workspace)")
     parser.add_argument("--style-model",type=Path,action="append",default=[])
     parser.add_argument("--quick-games",type=int,default=4)
     parser.add_argument("--final-games",type=int,default=12)
@@ -165,7 +167,9 @@ def main(role,argv):
             tactical[split]=(read_rows(path),sha256(path.read_bytes()).hexdigest())
     provenance={Path(f).name:sha256(Path(f).read_bytes()).hexdigest()
                 for f in (__file__,ROOT/"scripts/generate_research_games.py",ROOT/"scripts/evaluate_tactics.py",ROOT/"reference/Tablut.py")}
+    candidate_engine=args.candidate_engine.resolve()
     manifest=json.loads(json.dumps(dict(role=role,pool=pool,config=asdict(config),initial=initial,
+        candidate_engine=dict(path=str(candidate_engine),files=fingerprint(candidate_engine)),
         styles=style_weights,openings=entries,quick_games=args.quick_games,quick_depth=args.quick_depth,
         final_depth=args.max_depth,ranking=args.ranking_mode,tactics={k:v[1] for k,v in tactical.items()},source=fingerprint(ROOT),provenance=provenance)))
     entries=manifest["openings"]
@@ -197,7 +201,8 @@ def main(role,argv):
                 results=[]
                 for index,vector in enumerate(vectors):
                     try:
-                        trial=suite(folder/f"{label}_{index:02}",vector,side,openings,depth,pool,args.seed)
+                        trial=suite(folder/f"{label}_{index:02}",vector,side,openings,depth,pool,args.seed,
+                                    candidate_engine=candidate_engine)
                         if tactical:
                             cases=[case for group,(rows,_) in tactical.items() if label=="final" or group=="development"
                                    for case in (rows if label=="final" else rows[:24]) if case["side"]==side]

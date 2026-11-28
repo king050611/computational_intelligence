@@ -1,0 +1,62 @@
+{
+  "created_at": "2026-11-28T03:32:35.561442+00:00",
+  "decision": "V7: attacker uses the frozen V5 engine with the champion weights; defenders stay frozen",
+  "role": "attacker",
+  "candidate": {
+    "engine": "reports/phase3/engines/v5",
+    "engine_files": {
+      "src/__init__.py": "2b42ba599c2519c180ddd26d9baf7826b2dd70a386ffc6797add1e8c755aa1ed",
+      "src/enhanced_search.py": "948a87bb1f029a3b0b29bcaf03a15d2fe918cd4bbd907f2c2595d453d0b94c47",
+      "src/evaluation.py": "1f1bc455a58e0b9db2e2be6a8e63b619738485d8240cb70d9531f7740917ebca",
+      "src/evolution.py": "bd65174cd6100c8595d8233f4b1a40196f3c9884ea2cc1dc7f11e9292dfe951f",
+      "src/experimental_player.py": "0e8b6c76b5b88e2c188b3a7fc77edd1cf655b4028e9254bb809a06c4febeb945",
+      "src/features.py": "a559413184a2c01871f67de12e61c0eaf015573fe20e8deab554f8de1896337b",
+      "src/game.py": "bfe38906e9d5fad26e61d26d37d7e86ed533dbd60cd5c6b70a9e738727975e4c",
+      "src/tactics.py": "29d3d1e6cb9aefe4df65546ae60ea5d3a719322b0c3c369c990df81bf471fff5",
+      "src/time_control.py": "65d1f055e044b91c9ca99a1dfd1b2136687286e6f31ff972cae06836e9c27c36",
+      "src/transposition.py": "0d53774104357fdbc49bb426933a371f746c288905dc973173d9cf1077124e04",
+      "config/__init__.py": "2b42ba599c2519c180ddd26d9baf7826b2dd70a386ffc6797add1e8c755aa1ed",
+      "config/evolution.py": "b687fa018a8b6f388c43132fc0eaaf2f6589a46506e51cc9444ef1a7544ab77c",
+      "config/experimental.py": "24c587e28e706b944d1afb030a11c596241fea542b5956962c14ac475637d209",
+      "config/settings.py": "5fb6200e450c9d665050c6caf1bd088d9f9bd476d9bc61bb95b5c6e509ef65a4"
+    },
+    "model": "reports/phase4/models/champion.json",
+    "model_sha256": "6cf85f04e6dc80bcebfa97e77a211873db8e283f0177fb593919898346463f18",
+    "depth": 4,
+    "seconds": 60,
+    "source_note": "champion weights are the V4-generation champion validated under V5"
+  },
+  "opponent_pool": {
+    "path": "reports/phase4/attacker_pool_v7_frozen.json",
+    "sha256": "c1806d6e898e26c095f084c5b3df6f0acb61895a6aeead241c12cd15391b671b",
+    "engine": "reports/phase3/engines/v6",
+    "engine_files": {
+      "src/__init__.py": "2b42ba599c2519c180ddd26d9baf7826b2dd70a386ffc6797add1e8c755aa1ed",
+      "src/enhanced_search.py": "19599fcaaba91fe7fe01cd659ec13589e76b156579aef3b12231134c19d6592d",
+      "src/evaluation.py": "af0ca7791b119c84923d432b38c47642309547a8a5d0dfce2526a7820d84c199",
+      "src/evolution.py": "bd65174cd6100c8595d8233f4b1a40196f3c9884ea2cc1dc7f11e9292dfe951f",
+      "src/experimental_player.py": "0e8b6c76b5b88e2c188b3a7fc77edd1cf655b4028e9254bb809a06c4febeb945",
+      "src/features.py": "f598721f86bb6c3804dc98f5178c3c71f06a80c1ffc8ffb44b2787e70c5ca005",
+      "src/game.py": "a46215417b898114f378629f7cd6bc234e53c7741772018d4bffb1a8241f0c25",
+      "src/tactics.py": "29d3d1e6cb9aefe4df65546ae60ea5d3a719322b0c3c369c990df81bf471fff5",
+      "src/time_control.py": "65d1f055e044b91c9ca99a1dfd1b2136687286e6f31ff972cae06836e9c27c36",
+      "src/transposition.py": "9098e93f95a753217910d76ff7b8c7f4328260a22e498a5ccf0b29e157e86c75",
+      "config/__init__.py": "2b42ba599c2519c180ddd26d9baf7826b2dd70a386ffc6797add1e8c755aa1ed",
+      "config/evolution.py": "b687fa018a8b6f388c43132fc0eaaf2f6589a46506e51cc9444ef1a7544ab77c",
+      "config/experimental.py": "4344e65107eb71df0306294e5f9d58abdea6aaa7cd9e0c49058167af675682ed",
+      "config/settings.py": "5fb6200e450c9d665050c6caf1bd088d9f9bd476d9bc61bb95b5c6e509ef65a4"
+    },
+    "entries": 4
+  },
+  "search": {
+    "depth": 4,
+    "seconds": 60,
+    "ranking": "win-first"
+  },
+  "training_command": "python -m scripts.train_role --role attacker --candidate-engine reports/phase3/engines/v5 --initial-model reports/phase4/models/champion.json --opponent-pool reports/phase4/attacker_pool_v7_frozen.json --output-dir reports/training/v7_attacker_run --max-depth 4",
+  "evidence": {
+    "candidate_engine_vs_v4_engine_paired60": "61.67% vs 55.83% official (same weights, 9 improved / 5 worsened games)",
+    "attacker_vs_v3_fixed20": "9W 1D 10L, 47.5% official, CI [25%, 70%]",
+    "caveat": "not a promoted model: the 60-game gate was never passed; this pins a configuration, not a validated strength claim"
+  }
+}
