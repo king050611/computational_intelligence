@@ -25,7 +25,8 @@ WIN_SCORE = MATE_SCORE
 
 class SearchTimeout(Exception):
     """Discard an incomplete search iteration."""
-from src.tactics import opponent, is_urgent, prioritize
+from src.tactics import (attacker_move_priority, immediate_escape_count, is_urgent,
+                         opponent, prioritize, structure_state)
 
 
 DEFAULT_EVALUATOR = WeightedEvaluator(BASE_WEIGHTS)
@@ -51,6 +52,7 @@ class EnhancedSearch:
         self.children = lru_cache(maxsize=4096)(apply_move)
         self.root_preferred = set()
         self.root_draw_moves = set()
+        self.root_strategy_ranks = None
         self.killers = {}
         self.history_scores = {}
 
@@ -63,6 +65,27 @@ class EnhancedSearch:
         size = len(board)
         return any(0 <= row + dr < size and 0 <= col + dc < size
                    and board[row + dr][col + dc] in enemies for dr, dc in DIRECTIONS)
+
+    def _compute_root_strategy(self, board, side, moves):
+        """One-shot attacker ordering table, capped at 5% of the remaining step budget."""
+        if self.root_strategy_ranks is not None:
+            return self.root_strategy_ranks
+        start = perf_counter()
+        limit = start + min(max(0.0, (self.deadline - start)) * 0.05, 0.25)
+        escapes_before = immediate_escape_count(board)
+        completion_before = structure_state(board)["completion"]
+        ranks = {}
+        for move in moves:
+            if perf_counter() >= limit:
+                break
+            child = self.children(board, move, side)
+            ranks[move] = attacker_move_priority(board, move, child,
+                                                 escapes_before=escapes_before,
+                                                 completion_before=completion_before)
+        self.root_strategy_ranks = ranks
+        self.stats["attacker_ordering_moves"] = len(ranks)
+        self.stats["attacker_ordering_seconds"] = round(perf_counter() - start, 6)
+        return ranks
 
     def order(self, board, side, moves, ply):
         if not self.options.order_moves:
@@ -78,14 +101,20 @@ class EnhancedSearch:
         history_scores = self.history_scores
         target = ply == 0
 
+        strategic = {}
+        if target and side == "A" and getattr(self.options, "attacker_ordering", False):
+            strategic = self._compute_root_strategy(board, side, moves)
+
         def priority(move):
             (row, col), (r, c) = move
             # Tie-break, never a score rule: among equally scored root moves the ones
-            # that would repeat a position immediately are searched last.
+            # that would repeat a position immediately are searched last. The strategic
+            # tuple (V7 E1) sits below the PV/TT hint and above killer/history.
             return (target and move in root_preferred,
                     move not in draw_moves,
-                    board[row][col] == "K" and (r in (0, size - 1) or c in (0, size - 1)),
                     move == hint,
+                    board[row][col] == "K" and (r in (0, size - 1) or c in (0, size - 1)),
+                    strategic.get(move, (0, 0, 0, 0, 0, 0, 0.0, 0)),
                     move == killer,
                     history_scores.get((side, move), 0))
 
