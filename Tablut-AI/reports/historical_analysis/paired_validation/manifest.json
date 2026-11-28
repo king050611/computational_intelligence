@@ -1,0 +1,51 @@
+{
+  "model_sha256": "6cf85f04e6dc80bcebfa97e77a211873db8e283f0177fb593919898346463f18",
+  "model_weights": [
+    -344.83086639835585,
+    616.3384674338708,
+    -167.99192900832924,
+    0,
+    3.9839896483425608,
+    0,
+    0.0,
+    0.0
+  ],
+  "feature_weights": [
+    -344.83086639835585,
+    616.3384674338708,
+    -167.99192900832924,
+    0,
+    3.9839896483425608,
+    0,
+    -80,
+    -80
+  ],
+  "policy_seed": 63167,
+  "feature_seed": 19873,
+  "historical_overlap": 0,
+  "max_depth": 4,
+  "tt_capacity": 20000,
+  "order_moves": true,
+  "node_budget": 0,
+  "created_at": "2026-11-27T09:03:25.574139+00:00",
+  "git_base": "ff7e4c5c0dddbbe9ed380660bac9b146f8ecd189",
+  "runtime_files_sha256": {
+    "src/__init__.py": "2b42ba599c2519c180ddd26d9baf7826b2dd70a386ffc6797add1e8c755aa1ed",
+    "src/enhanced_search.py": "19599fcaaba91fe7fe01cd659ec13589e76b156579aef3b12231134c19d6592d",
+    "src/evaluation.py": "af0ca7791b119c84923d432b38c47642309547a8a5d0dfce2526a7820d84c199",
+    "src/evolution.py": "bd65174cd6100c8595d8233f4b1a40196f3c9884ea2cc1dc7f11e9292dfe951f",
+    "src/experimental_player.py": "0e8b6c76b5b88e2c188b3a7fc77edd1cf655b4028e9254bb809a06c4febeb945",
+    "src/features.py": "f598721f86bb6c3804dc98f5178c3c71f06a80c1ffc8ffb44b2787e70c5ca005",
+    "src/game.py": "a46215417b898114f378629f7cd6bc234e53c7741772018d4bffb1a8241f0c25",
+    "src/tactics.py": "29d3d1e6cb9aefe4df65546ae60ea5d3a719322b0c3c369c990df81bf471fff5",
+    "src/time_control.py": "65d1f055e044b91c9ca99a1dfd1b2136687286e6f31ff972cae06836e9c27c36",
+    "src/transposition.py": "9098e93f95a753217910d76ff7b8c7f4328260a22e498a5ccf0b29e157e86c75",
+    "config/__init__.py": "2b42ba599c2519c180ddd26d9baf7826b2dd70a386ffc6797add1e8c755aa1ed",
+    "config/evolution.py": "b687fa018a8b6f388c43132fc0eaaf2f6589a46506e51cc9444ef1a7544ab77c",
+    "config/experimental.py": "db8c04587da8d3dcad00bc12ef455a0b3c59c9d57baa2206c7d2915adb8ae5a6",
+    "config/settings.py": "5fb6200e450c9d665050c6caf1bd088d9f9bd476d9bc61bb95b5c6e509ef65a4",
+    "scripts/validate_v6.py": "df0968f4e7e1e18ae7d2ffdc4586d78b43c1c79f2d5043abfed1ab04230f889a",
+    "reference/Tablut.py": "b892be9052ac779d4608c821e7f9112a4299a74507af3b4f1a7ca1f97f824bd9"
+  },
+  "comparison": "Same corrected runtime with V5-style ordering (draw_policy off) versus V6 ordering, against the same corrected control. Frozen V5 code was archived separately."
+}

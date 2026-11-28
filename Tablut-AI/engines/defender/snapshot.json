@@ -1,0 +1,32 @@
+{
+  "name": "D-Champion-01",
+  "side": "D",
+  "strength_commit": "64496776bd85b730dfbbe6dbc63750ebedc83db0",
+  "results_commit": "247efca5b329d02f49111af5d6a0817a14bf53f2",
+  "original_match_manifest": "reports/v7_attacker/screen/A0/champion/manifest.json",
+  "local_engine": ".",
+  "local_model": "../../models/defender/best.json",
+  "local_referee": "../../reference/Tablut.py",
+  "engine_zip_sha256": "76d80c51686e2cedac2b4788c3cc55c5c3fe339c779261501e9f454e2574bf26",
+  "model_sha256": "6cf85f04e6dc80bcebfa97e77a211873db8e283f0177fb593919898346463f18",
+  "referee_sha256": "b892be9052ac779d4608c821e7f9112a4299a74507af3b4f1a7ca1f97f824bd9",
+  "source_line_endings": "CRLF reconstructed from Git blobs to match recorded SHA256",
+  "strategy": "evolutionary_dynamic",
+  "max_depth": 4,
+  "node_budget": 0,
+  "tt_capacity": 20000,
+  "order_moves": true,
+  "game_seconds": 60,
+  "reserve_seconds": 5,
+  "draw_policy": false,
+  "attacker_strategy_bonus": false,
+  "screen": {
+    "games": 24,
+    "wins": 17,
+    "draws": 6,
+    "losses": 1,
+    "win_rate": 0.7083333333333334,
+    "point_rate": 0.8333333333333334
+  },
+  "original_archive_location": "../../../../reference/archive/pre-cleanup-v7-701f0d0.zip (entry reports/frozen_defender/D-Champion-01/engine.zip)"
+}

@@ -1,0 +1,161 @@
+{
+  "matches": {
+    "draw_v5_order": {
+      "standings": {
+        "overall": {
+          "games": 8,
+          "wins": 2,
+          "draws": 4,
+          "losses": 2,
+          "points": 8
+        },
+        "attacker": {
+          "games": 4,
+          "wins": 1,
+          "draws": 2,
+          "losses": 1,
+          "points": 4
+        },
+        "defender": {
+          "games": 4,
+          "wins": 1,
+          "draws": 2,
+          "losses": 1,
+          "points": 4
+        }
+      },
+      "rate": 0.5,
+      "repeat": 4,
+      "faults": 0,
+      "max_seconds": 46.64471559999947
+    },
+    "draw_v6_order": {
+      "standings": {
+        "overall": {
+          "games": 8,
+          "wins": 3,
+          "draws": 2,
+          "losses": 3,
+          "points": 8
+        },
+        "attacker": {
+          "games": 4,
+          "wins": 1,
+          "draws": 2,
+          "losses": 1,
+          "points": 4
+        },
+        "defender": {
+          "games": 4,
+          "wins": 2,
+          "draws": 0,
+          "losses": 2,
+          "points": 4
+        }
+      },
+      "rate": 0.5,
+      "repeat": 2,
+      "faults": 0,
+      "max_seconds": 54.906570099978126
+    },
+    "feature_full": {
+      "standings": {
+        "overall": {
+          "games": 4,
+          "wins": 0,
+          "draws": 2,
+          "losses": 2,
+          "points": 2
+        },
+        "attacker": {
+          "games": 2,
+          "wins": 0,
+          "draws": 0,
+          "losses": 2,
+          "points": 0
+        },
+        "defender": {
+          "games": 2,
+          "wins": 0,
+          "draws": 2,
+          "losses": 0,
+          "points": 2
+        }
+      },
+      "rate": 0.25,
+      "repeat": 2,
+      "faults": 0,
+      "max_seconds": 16.716893499993603
+    },
+    "feature_without_w7": {
+      "standings": {
+        "overall": {
+          "games": 4,
+          "wins": 0,
+          "draws": 2,
+          "losses": 2,
+          "points": 2
+        },
+        "attacker": {
+          "games": 2,
+          "wins": 0,
+          "draws": 0,
+          "losses": 2,
+          "points": 0
+        },
+        "defender": {
+          "games": 2,
+          "wins": 0,
+          "draws": 2,
+          "losses": 0,
+          "points": 2
+        }
+      },
+      "rate": 0.25,
+      "repeat": 2,
+      "faults": 0,
+      "max_seconds": 37.295723800016276
+    },
+    "feature_without_w8": {
+      "standings": {
+        "overall": {
+          "games": 4,
+          "wins": 0,
+          "draws": 2,
+          "losses": 2,
+          "points": 2
+        },
+        "attacker": {
+          "games": 2,
+          "wins": 0,
+          "draws": 0,
+          "losses": 2,
+          "points": 0
+        },
+        "defender": {
+          "games": 2,
+          "wins": 0,
+          "draws": 2,
+          "losses": 0,
+          "points": 2
+        }
+      },
+      "rate": 0.25,
+      "repeat": 2,
+      "faults": 0,
+      "max_seconds": 19.174416900001233
+    }
+  },
+  "transition": {
+    "平→平": 2,
+    "平→胜": 1,
+    "平→负": 1,
+    "胜→胜": 2,
+    "负→负": 2
+  },
+  "paired_point_rate_change": 0.0,
+  "exploratory_ci95": [
+    -0.1875,
+    0.1875
+  ]
+}

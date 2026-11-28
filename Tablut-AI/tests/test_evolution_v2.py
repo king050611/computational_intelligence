@@ -137,9 +137,9 @@ class EvolutionV2Tests(unittest.TestCase):
     def test_exact_terminal_wins_override_hostile_but_valid_weights(self):
         board=[['.']*9 for _ in range(9)];board[4][4]='X';board[2][2]='K';board[2][1]='A';board[2][6]='A';board=tuple(map(tuple,board))
         for side in ('A','D'):
-            stats={};move=choose_enhanced(board,side,deadline=inf,evaluator=WeightedEvaluator((10000,)*6),stats=stats)
+            stats={};move=choose_enhanced(board,side,deadline=inf,evaluator=WeightedEvaluator((10000,)*8),stats=stats)
             self.assertEqual(check_winner(apply_move(board,move,side),'D' if side=='A' else 'A'),side)
-            self.assertEqual(stats['score'],WIN_SCORE)
+            self.assertGreaterEqual(stats['score'],WIN_SCORE-1)
 
     def test_tactical_budget_cap_and_zero_game_budget(self):
         board=initial_board();moves=get_legal_moves(board,'A')

@@ -100,7 +100,7 @@ def display_search_stats(stats, write=print):
 
 
 def run_game(human_side, strategy="enhanced_dynamic", seed=42, show_search=False, *,
-             input_fn=input, write=print, game=None, ai=None, evaluator=None):
+             input_fn=input, write=print, game=None, ai=None, evaluator=None, recording=None):
     """Run one local game. Return its outcome; do not save a replay in this phase."""
     if human_side not in ("A", "D"):
         raise ValueError("Human side must be A or D.")
@@ -123,8 +123,11 @@ def run_game(human_side, strategy="enhanced_dynamic", seed=42, show_search=False
             who = "Human" if winner == human_side else "AI"
             write(f"Result: {who} wins ({winner}); {reason}.")
         write(f"Referee move count: {game.rounds_played}; AI time: {ai_seconds:.3f}/{TIME_BUDGET:.0f}s")
-        return dict(status=status, winner=winner, reason=reason,
-                    plies=game.rounds_played, ai_seconds=ai_seconds)
+        result = dict(status=status, winner=winner, reason=reason,
+                      plies=game.rounds_played, ai_seconds=ai_seconds)
+        if recording is not None:
+            recording.update(result=result, final_board=copy.deepcopy(game.board))
+        return result
 
     write("Tablut - Human vs AI")
     write(f"Human: {human_side}; AI: {'D' if human_side == 'A' else 'A'} ({strategy}).")
@@ -135,6 +138,8 @@ def run_game(human_side, strategy="enhanced_dynamic", seed=42, show_search=False
     game.past_positions = []
     if game.check_if_game_over(True):
         return finish("finished", game.winner or "DRAW", "game_over")
+    if recording is not None:
+        recording.update(initial_board=copy.deepcopy(game.board), moves=[])
     current_side = "A"
     try:
         while True:
@@ -174,9 +179,15 @@ def run_game(human_side, strategy="enhanced_dynamic", seed=42, show_search=False
                 if show_search:
                     display_search_stats(getattr(ai, "last_search_stats", None), write)
             # Invalid human input never reaches the official make_move counter.
+            before = copy.deepcopy(game.board) if recording is not None else None
             if not game.make_move(current_side == "A", move):
                 write("Referee rejected a prevalidated move; game stopped for inspection.")
                 return finish("error", None, "referee_rejected_move")
+            if recording is not None:
+                recording["moves"].append(dict(player=current_side, move=move, accepted=True,
+                    board_before=before, board_after=copy.deepcopy(game.board),
+                    elapsed_seconds=0 if is_human else elapsed,
+                    search=None if is_human else getattr(ai,"last_search_stats",None)))
             if is_human:
                 write(f"Human {current_side}: {format_move(move)}")
             display_board(game.board, write)
@@ -189,13 +200,15 @@ def run_game(human_side, strategy="enhanced_dynamic", seed=42, show_search=False
         return finish("aborted", None, "interrupted")
 
 
-def main(argv=None):
+def main(argv=None, *, independent=False):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--side", type=str.upper, choices=("A", "D"), help="Your side; prompts if omitted.")
     parser.add_argument("--strategy", choices=STRATEGIES, default="enhanced_dynamic")
     parser.add_argument("--seed", type=int, default=42, help="Seed for the random strategy.")
     parser.add_argument("--show-search", action="store_true", help="Show recorded AI search statistics.")
     parser.add_argument("--model", type=Path, help="Required only with evolutionary_dynamic")
+    if independent:
+        parser.add_argument("--output", type=Path, help="Save a JSON game record")
     args = parser.parse_args(argv)
     if (args.strategy == "evolutionary_dynamic") != (args.model is not None):
         parser.error("--model is required only for evolutionary_dynamic")
@@ -217,7 +230,22 @@ def main(argv=None):
     except (EOFError, KeyboardInterrupt):
         print("Game aborted before side selection; no winner.")
         return 0
-    result = run_game(side, args.strategy, args.seed, args.show_search, input_fn=input, evaluator=evaluator)
+    if independent:
+        from src.role_player import RolePlayer
+        import json
+        recording = dict(human_side=side) if args.output else None
+        if args.output and args.output.exists():
+            parser.error("Replay output already exists")
+        with RolePlayer(record_search=args.show_search) as player:
+            ai = player if args.strategy == "enhanced_dynamic" and not args.model else None
+            result = run_game(side, args.strategy, args.seed, args.show_search, input_fn=input,
+                              evaluator=evaluator, ai=ai, recording=recording)
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            with args.output.open("x",encoding="utf-8") as file:
+                json.dump(recording,file,indent=2)
+    else:
+        result = run_game(side, args.strategy, args.seed, args.show_search, input_fn=input, evaluator=evaluator)
     return int(result["status"] == "error" or result["reason"].startswith("ai_"))
 
 

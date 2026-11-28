@@ -1,4 +1,14 @@
-"""Full-width iterative Alpha-Beta. Hints never cache scores."""
+"""Full-width iterative Alpha-Beta with a bounds-checked transposition table.
+
+V4 removes the duplicated move generations that dominated node cost:
+
+* legality is checked in O(path) instead of comparing against a freshly generated
+  move list;
+* the terminal test uses ``has_any_move`` instead of building every move;
+* score reuse requires matching repetition history.
+
+Nothing here changes which moves are legal or how a game is won.
+"""
 from functools import lru_cache
 from math import inf
 from time import perf_counter
@@ -8,13 +18,13 @@ from config.settings import DIRECTIONS
 from config.evolution import BASE_WEIGHTS
 from src.evaluation import WeightedEvaluator
 from src.game import apply_move, check_winner, get_legal_moves, get_state_key
-WIN_SCORE = 1_000_000_000.0
+from src.transposition import EXACT, LOWER, UPPER, MATE_BOUND, MATE_SCORE, TranspositionTable
+WIN_SCORE = MATE_SCORE
 
 
 class SearchTimeout(Exception):
     """Discard an incomplete search iteration."""
 from src.tactics import opponent, is_urgent, prioritize
-from src.transposition import MoveHints
 
 
 DEFAULT_EVALUATOR = WeightedEvaluator(BASE_WEIGHTS)
@@ -25,17 +35,23 @@ def evaluate(board, side):
 
 
 class EnhancedSearch:
-    """One decision's state, including bounded move ordering hints."""
+    """One decision's state, including a bounded transposition table."""
 
-    def __init__(self, side, deadline, evaluator, options, stats):
+    def __init__(self, side, deadline, evaluator, options, stats, node_budget=0):
         self.side = side
         self.deadline = deadline
         self.evaluator = evaluator
         self.options = options
         self.stats = stats
-        self.hints = MoveHints(options.tt_capacity)
+        self.table = TranspositionTable(options.tt_capacity)
+        self.hints = self.table
+        self.node_budget = node_budget or options.node_budget
+        self.repetition_hits = 0
         self.children = lru_cache(maxsize=4096)(apply_move)
         self.root_preferred = set()
+        self.root_draw_moves = set()
+        self.root_reply_draw_moves = set()
+        self.root_advantage = 0
         self.killers = {}
         self.history_scores = {}
 
@@ -43,45 +59,81 @@ class EnhancedSearch:
         if perf_counter() >= self.deadline:
             raise SearchTimeout()
 
+    def _adjacent_enemy(self, board, row, col, side):
+        enemies = "DK" if side == "A" else "A"
+        size = len(board)
+        return any(0 <= row + dr < size and 0 <= col + dc < size
+                   and board[row + dr][col + dc] in enemies for dr, dc in DIRECTIONS)
+
     def order(self, board, side, moves, ply):
         if not self.options.order_moves:
             return moves
-        hint = self.hints.get(get_state_key(board, side))
+        key = get_state_key(board, side)
+        hint = self.table.get(key)
         if hint in moves:
             self.stats["tt_hint_hits"] += 1
         killer = self.killers.get(ply)
-        enemies = "DK" if side == "A" else "A"
         size = len(board)
+        root_preferred = self.root_preferred
+        draw_moves = self.root_draw_moves if ply == 0 else ()
+        history_scores = self.history_scores
+        target = ply == 0
+        reply_draws = self.root_reply_draw_moves if target else ()
 
         def priority(move):
             (row, col), (r, c) = move
-            escape = board[row][col] == "K" and (r in (0, size - 1) or c in (0, size - 1))
-            # Cheap capture potential. The rule engine still decides captures.
-            contact = any(0 <= r + dr < size and 0 <= c + dc < size
-                          and board[r + dr][c + dc] in enemies for dr, dc in DIRECTIONS)
-            return ply == 0 and move in self.root_preferred, escape, move == hint, contact, move == killer, self.history_scores.get((side, move), 0)
+            # Tie-break, never a score rule: among equally scored root moves the ones
+            # that would repeat a position immediately are searched last.
+            if target and self.root_advantage > 0:
+                draw_priority = 0 if move in draw_moves else 1 if move in reply_draws else 2
+            elif target and self.root_advantage < 0:
+                draw_priority = int(move in draw_moves)
+            else:
+                draw_priority = int(move not in draw_moves)
+            return (draw_priority if target and self.root_advantage else 0,
+                    target and move in root_preferred, draw_priority,
+                    board[row][col] == "K" and (r in (0, size - 1) or c in (0, size - 1)),
+                    move == hint,
+                    move == killer,
+                    history_scores.get((side, move), 0))
 
         return sorted(moves, key=priority, reverse=True)
 
     def visit(self, board, side, depth, alpha, beta, history, ply=0, moves=None):
         self.check_time()
         self.stats["nodes"] += 1
-        terminal = check_winner(board, side, history)
+        if self.node_budget and self.stats["nodes"] > self.node_budget:
+            raise SearchTimeout()
+        key = get_state_key(board, side)
+        terminal = check_winner(board, side)
+        if terminal is None and key in history:
+            self.repetition_hits += 1
+            return 0.0, ()
         self.check_time()
         if terminal is not None:
-            score = 0.0 if terminal == "DRAW" else WIN_SCORE if terminal == self.side else -WIN_SCORE
-            return score, ()
+            if terminal == "DRAW":
+                return 0.0, ()
+            # Mate distance: prefer the shorter win and the longer loss.
+            distance = WIN_SCORE - ply
+            return (distance if terminal == self.side else -distance), ()
         if depth == 0:
             score = self.evaluator(board, self.side)
             self.check_time()
             return score, ()
 
-        key = get_state_key(board, side)
+        context = frozenset(history) if self.options.tt_capacity else None
+        cached = self.table.probe(key, depth, alpha, beta, ply, context=context)
+        if cached is not None:
+            move = self.table.get(key)
+            return cached, ((move,) if move else ())
+
         ancestors = history + (key,)
         maximizing = side == self.side
         best, pv = (-inf if maximizing else inf), ()
         if moves is None:
             moves = get_legal_moves(board, side)
+        alpha_start, beta_start = alpha, beta
+        repetitions_before = self.repetition_hits
         for move in self.order(board, side, moves, ply):
             self.check_time()
             child = self.children(board, move, side)
@@ -96,15 +148,58 @@ class EnhancedSearch:
             if alpha >= beta:
                 self.stats["cutoffs"] += 1
                 if self.options.order_moves:
-                    if sum(row.count("A") + row.count("D") + row.count("K") for row in board) == sum(
-                            row.count("A") + row.count("D") + row.count("K") for row in child):
+                    _, (r, c) = move
+                    if not self._adjacent_enemy(board, r, c, side):
                         self.killers[ply] = move
-                    self.history_scores[side, move] = self.history_scores.get((side, move), 0) + depth ** 2
+                    self.history_scores[(side, move)] = self.history_scores.get((side, move), 0) + depth ** 2
                 break
         self.check_time()
-        if pv and self.options.order_moves:
-            self.hints.put(key, depth, pv[0])
+        if pv and self.repetition_hits == repetitions_before:
+            # Bounds must be compared with the window this node was entered with.
+            flag = LOWER if best >= beta_start else UPPER if best <= alpha_start else EXACT
+            self.table.store(key, depth, best, flag, pv[0], ply, context=context)
         return best, pv
+
+
+def reply_repetitions(children, other, history, deadline, apply, immediate_draws):
+    """Find verified opponent replies that would repeat, within a bounded scan."""
+    returning_side = opponent(other)
+    targets = [board for board, side in history if side == returning_side]
+    # Ordering must be stable for node-budget experiments, including a partial scan.
+    targets.sort()
+    risks = set()
+    examined = 0
+    for move, child in children.items():
+        if move in immediate_draws:
+            continue
+        for target in targets:
+            if perf_counter() >= deadline or examined >= 512:
+                return risks, False
+            examined += 1
+            # An opponent piece must disappear from one origin and appear at one
+            # destination. Verify the inferred reply with the real rule engine.
+            symbols = "A" if other == "A" else "DK"
+            origins, destinations = [], []
+            for r, (before, after) in enumerate(zip(child, target)):
+                if before == after:
+                    continue
+                for c, (old, new) in enumerate(zip(before, after)):
+                    if old == new:
+                        continue
+                    if old in symbols:
+                        origins.append((r, c))
+                    if new in symbols:
+                        destinations.append((r, c))
+            if len(origins) != 1 or len(destinations) != 1:
+                continue
+            try:
+                result = apply(child, (origins[0], destinations[0]), other)
+            except ValueError:
+                continue
+            if result == target and check_winner(result, returning_side) is None:
+                risks.add(move)
+                break
+    return risks, True
 
 
 def choose_enhanced(board, side, *, deadline, soft_deadline=None, history=(),
@@ -119,21 +214,50 @@ def choose_enhanced(board, side, *, deadline, soft_deadline=None, history=(),
                  fallback_used=False, score=None, pv=[], finish_reason="no_legal_moves", tactical_status="not_checked")
     if not moves:
         return None
-    preferred=()
-    now=perf_counter()
-    if now<deadline and is_urgent(board):
-        # Bound diagnostic work to 10ms or 5% of the remaining step budget.
-        moves,info=prioritize(board,side,moves,min(deadline,now+min(.010,(deadline-now)*.05)),history)
-        stats["tactical_status"]="complete" if info.status_complete else "unknown"
+    preferred = ()
+    now = perf_counter()
+    if now < deadline and is_urgent(board):
+        if options.node_budget:
+            # Deterministic diagnostic: bounded by generated children, not by wall clock.
+            moves, info = prioritize(board, side, moves, inf, history, max_nodes=200)
+        else:
+            # Bound diagnostic work to 10ms or 5% of the remaining step budget.
+            moves, info = prioritize(board, side, moves, min(deadline, now + min(.010, (deadline - now) * .05)), history)
+        stats["tactical_status"] = "complete" if info.status_complete else "unknown"
         if info.status_complete and info.opponent_threat_now:
-            preferred=info.safe_replies
+            preferred = info.safe_replies
         if info.immediate_wins:
-            move=info.immediate_wins[0]
-            stats.update(score=WIN_SCORE,pv=(move,),finish_reason="tactical_win")
+            move = info.immediate_wins[0]
+            stats.update(score=WIN_SCORE - 1, pv=(move,), finish_reason="tactical_win")
             return move
     best = moves[0]
     search = EnhancedSearch(side, deadline, evaluator or evaluate, options, stats)
-    search.root_preferred=set(preferred)
+    search.root_preferred = set(preferred)
+    if history and perf_counter() < deadline:
+        other = opponent(side)
+        history_keys = set(history)
+        children = {}
+        for move in moves:
+            if perf_counter() >= deadline:
+                break
+            child = search.children(board, move, side)
+            children[move] = child
+            if get_state_key(child, other) in history_keys and check_winner(child, other) is None:
+                search.root_draw_moves.add(move)
+        stats["root_draw_moves"] = len(search.root_draw_moves)
+        if options.draw_policy and perf_counter() < deadline:
+            # A static advantage changes ordering only. The complete search must
+            # still establish that a non-draw alternative is at least as good.
+            static = search.evaluator(board, side)
+            search.root_advantage = 1 if static >= 25 else -1 if static <= -25 else 0
+            stats["draw_position_score"] = static
+            if search.root_advantage > 0:
+                now = perf_counter()
+                scan_deadline = deadline if options.node_budget else min(deadline, now + min(.010, max(0, deadline-now)*.05))
+                search.root_reply_draw_moves, complete = reply_repetitions(
+                    children, other, history_keys | {get_state_key(board, side)},
+                    scan_deadline, search.children, search.root_draw_moves)
+                stats.update(reply_draw_moves=len(search.root_reply_draw_moves), reply_draw_scan_complete=complete)
     stats["finish_reason"] = "depth_completed"
     for depth in range(1, options.max_depth + 1):
         if perf_counter() >= deadline:
@@ -152,7 +276,7 @@ def choose_enhanced(board, side, *, deadline, soft_deadline=None, history=(),
             return None
         best = pv[0]
         stats.update(completed_depth=depth, score=score, pv=pv)
-        if abs(score) == WIN_SCORE:
+        if abs(score) >= MATE_BOUND:
             stats["finish_reason"] = "proven_terminal"
             break
     return best

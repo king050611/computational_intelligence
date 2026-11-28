@@ -1,0 +1,1730 @@
+{
+  "version": "3.0",
+  "strategy": "evolutionary_dynamic",
+  "opponent": "enhanced",
+  "seed": 43,
+  "games": 2,
+  "standings": {
+    "overall": {
+      "games": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "points": 2
+    },
+    "attacker": {
+      "games": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "points": 0
+    },
+    "defender": {
+      "games": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "points": 2
+    }
+  },
+  "our_win_rate": 0.5,
+  "results": [
+    {
+      "game": 1,
+      "our_side": "A",
+      "winner": "D",
+      "plies": 16,
+      "elapsed_seconds": 1.3670147999982873,
+      "attacker_seconds": 0.7233397999989393,
+      "defender_seconds": 0.641858000002685,
+      "our_mean_move_seconds": 0.09041747499986741,
+      "our_max_move_seconds": 0.1596626999998989,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Defenders won!\nRounds played: 8\n",
+      "opponent_log": "",
+      "opening_id": 4,
+      "seed": 43,
+      "points": 0,
+      "invalid_returns": 0,
+      "search_stats": {
+        "A": [
+          {
+            "strategy": "evolutionary_dynamic",
+            "budget_seconds": 1.8333333333321207,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 7619,
+            "cutoffs": 205,
+            "tt_hint_hits": 76,
+            "root_moves": 74,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 114.86898751120165,
+            "pv": [
+              [
+                [
+                  3,
+                  0
+                ],
+                [
+                  3,
+                  4
+                ]
+              ],
+              [
+                [
+                  4,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ]
+              ],
+              [
+                [
+                  3,
+                  4
+                ],
+                [
+                  3,
+                  3
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.15963579999879585
+          },
+          {
+            "strategy": "evolutionary_dynamic",
+            "budget_seconds": 1.8280121399984637,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 6555,
+            "cutoffs": 237,
+            "tt_hint_hits": 73,
+            "root_moves": 71,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 26.702084251674208,
+            "pv": [
+              [
+                [
+                  8,
+                  0
+                ],
+                [
+                  8,
+                  2
+                ]
+              ],
+              [
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  3
+                ]
+              ],
+              [
+                [
+                  0,
+                  3
+                ],
+                [
+                  2,
+                  3
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.1471296000017901
+          },
+          {
+            "strategy": "evolutionary_dynamic",
+            "budget_seconds": 3.0175577710360812,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 882,
+            "cutoffs": 185,
+            "tt_hint_hits": 68,
+            "root_moves": 66,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 97.00546063984262,
+            "pv": [
+              [
+                [
+                  4,
+                  1
+                ],
+                [
+                  3,
+                  1
+                ]
+              ],
+              [
+                [
+                  4,
+                  5
+                ],
+                [
+                  3,
+                  5
+                ]
+              ],
+              [
+                [
+                  3,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "complete",
+            "elapsed_seconds": 0.029103299999405863
+          },
+          {
+            "strategy": "evolutionary_dynamic",
+            "budget_seconds": 3.015952071724314,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 1186,
+            "cutoffs": 200,
+            "tt_hint_hits": 74,
+            "root_moves": 72,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 102.06043468004984,
+            "pv": [
+              [
+                [
+                  3,
+                  1
+                ],
+                [
+                  5,
+                  1
+                ]
+              ],
+              [
+                [
+                  4,
+                  5
+                ],
+                [
+                  7,
+                  5
+                ]
+              ],
+              [
+                [
+                  5,
+                  1
+                ],
+                [
+                  5,
+                  2
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "unknown",
+            "elapsed_seconds": 0.040672600000107195
+          },
+          {
+            "strategy": "evolutionary_dynamic",
+            "budget_seconds": 1.950837810712983,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 5909,
+            "cutoffs": 183,
+            "tt_hint_hits": 73,
+            "root_moves": 71,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 118.27862543239577,
+            "pv": [
+              [
+                [
+                  8,
+                  2
+                ],
+                [
+                  7,
+                  2
+                ]
+              ],
+              [
+                [
+                  4,
+                  2
+                ],
+                [
+                  4,
+                  1
+                ]
+              ],
+              [
+                [
+                  7,
+                  2
+                ],
+                [
+                  5,
+                  2
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.14548499999727937
+          },
+          {
+            "strategy": "evolutionary_dynamic",
+            "budget_seconds": 3.1130270685716823,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 1379,
+            "cutoffs": 221,
+            "tt_hint_hits": 77,
+            "root_moves": 75,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 109.81401347099442,
+            "pv": [
+              [
+                [
+                  7,
+                  2
+                ],
+                [
+                  5,
+                  2
+                ]
+              ],
+              [
+                [
+                  6,
+                  1
+                ],
+                [
+                  5,
+                  1
+                ]
+              ],
+              [
+                [
+                  8,
+                  3
+                ],
+                [
+                  6,
+                  3
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "unknown",
+            "elapsed_seconds": 0.04452710000259685
+          },
+          {
+            "strategy": "evolutionary_dynamic",
+            "budget_seconds": 2.0160535777795303,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 5386,
+            "cutoffs": 210,
+            "tt_hint_hits": 69,
+            "root_moves": 67,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": -70.98177762490872,
+            "pv": [
+              [
+                [
+                  0,
+                  3
+                ],
+                [
+                  0,
+                  2
+                ]
+              ],
+              [
+                [
+                  5,
+                  3
+                ],
+                [
+                  6,
+                  3
+                ]
+              ],
+              [
+                [
+                  7,
+                  4
+                ],
+                [
+                  6,
+                  4
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.1398741000011796
+          },
+          {
+            "strategy": "evolutionary_dynamic",
+            "budget_seconds": 3.2173968888891977,
+            "target_depth": 3,
+            "completed_depth": 2,
+            "nodes": 269,
+            "cutoffs": 73,
+            "tt_hint_hits": 1,
+            "root_moves": 74,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": -1000000000.0,
+            "pv": [
+              [
+                [
+                  7,
+                  4
+                ],
+                [
+                  6,
+                  4
+                ]
+              ],
+              [
+                [
+                  6,
+                  3
+                ],
+                [
+                  6,
+                  0
+                ]
+              ]
+            ],
+            "finish_reason": "proven_terminal",
+            "tactical_status": "unknown",
+            "elapsed_seconds": 0.016787100001238286
+          }
+        ],
+        "D": [
+          {
+            "strategy": "enhanced",
+            "budget_seconds": 1.8333333333321207,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 3863,
+            "cutoffs": 173,
+            "tt_hint_hits": 55,
+            "root_moves": 53,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 130.0,
+            "pv": [
+              [
+                [
+                  4,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ]
+              ],
+              [
+                [
+                  0,
+                  4
+                ],
+                [
+                  1,
+                  4
+                ]
+              ],
+              [
+                [
+                  4,
+                  3
+                ],
+                [
+                  5,
+                  3
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.07734830000117654
+          },
+          {
+            "strategy": "enhanced",
+            "budget_seconds": 1.83075505666784,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 4134,
+            "cutoffs": 286,
+            "tt_hint_hits": 50,
+            "root_moves": 48,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 150.0,
+            "pv": [
+              [
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  3
+                ]
+              ],
+              [
+                [
+                  4,
+                  0
+                ],
+                [
+                  3,
+                  0
+                ]
+              ],
+              [
+                [
+                  3,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.09033920000001672
+          },
+          {
+            "strategy": "enhanced",
+            "budget_seconds": 1.8277437500000815,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 3945,
+            "cutoffs": 255,
+            "tt_hint_hits": 53,
+            "root_moves": 52,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 150.0,
+            "pv": [
+              [
+                [
+                  3,
+                  3
+                ],
+                [
+                  5,
+                  3
+                ]
+              ],
+              [
+                [
+                  3,
+                  1
+                ],
+                [
+                  5,
+                  1
+                ]
+              ],
+              [
+                [
+                  5,
+                  3
+                ],
+                [
+                  6,
+                  3
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.09312469999713358
+          },
+          {
+            "strategy": "enhanced",
+            "budget_seconds": 1.824639593334723,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 6817,
+            "cutoffs": 444,
+            "tt_hint_hits": 50,
+            "root_moves": 48,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 140.0,
+            "pv": [
+              [
+                [
+                  6,
+                  4
+                ],
+                [
+                  6,
+                  1
+                ]
+              ],
+              [
+                [
+                  0,
+                  4
+                ],
+                [
+                  1,
+                  4
+                ]
+              ],
+              [
+                [
+                  4,
+                  2
+                ],
+                [
+                  4,
+                  1
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.16295479999826057
+          },
+          {
+            "strategy": "enhanced",
+            "budget_seconds": 1.8192077666681143,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 3531,
+            "cutoffs": 174,
+            "tt_hint_hits": 49,
+            "root_moves": 47,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 140.0,
+            "pv": [
+              [
+                [
+                  4,
+                  2
+                ],
+                [
+                  4,
+                  1
+                ]
+              ],
+              [
+                [
+                  7,
+                  2
+                ],
+                [
+                  5,
+                  2
+                ]
+              ],
+              [
+                [
+                  5,
+                  3
+                ],
+                [
+                  6,
+                  3
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.08102320000034524
+          },
+          {
+            "strategy": "enhanced",
+            "budget_seconds": 1.8165069933347695,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 3498,
+            "cutoffs": 260,
+            "tt_hint_hits": 49,
+            "root_moves": 47,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 280.0,
+            "pv": [
+              [
+                [
+                  6,
+                  1
+                ],
+                [
+                  5,
+                  1
+                ]
+              ],
+              [
+                [
+                  0,
+                  4
+                ],
+                [
+                  1,
+                  4
+                ]
+              ],
+              [
+                [
+                  5,
+                  3
+                ],
+                [
+                  5,
+                  2
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.08158700000058161
+          },
+          {
+            "strategy": "enhanced",
+            "budget_seconds": 1.8137874266685685,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 2308,
+            "cutoffs": 155,
+            "tt_hint_hits": 44,
+            "root_moves": 42,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 1000000000.0,
+            "pv": [
+              [
+                [
+                  5,
+                  3
+                ],
+                [
+                  6,
+                  3
+                ]
+              ],
+              [
+                [
+                  7,
+                  4
+                ],
+                [
+                  6,
+                  4
+                ]
+              ],
+              [
+                [
+                  6,
+                  3
+                ],
+                [
+                  6,
+                  0
+                ]
+              ]
+            ],
+            "finish_reason": "proven_terminal",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.05490930000087246
+          },
+          {
+            "strategy": "enhanced",
+            "budget_seconds": 1.8119571166680544,
+            "target_depth": 3,
+            "completed_depth": 0,
+            "nodes": 0,
+            "cutoffs": 0,
+            "tt_hint_hits": 0,
+            "root_moves": 46,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 1000000000.0,
+            "pv": [
+              [
+                [
+                  6,
+                  3
+                ],
+                [
+                  6,
+                  0
+                ]
+              ]
+            ],
+            "finish_reason": "tactical_win",
+            "tactical_status": "complete",
+            "elapsed_seconds": 0.0004748999999719672
+          }
+        ]
+      }
+    },
+    {
+      "game": 2,
+      "our_side": "D",
+      "winner": "D",
+      "plies": 18,
+      "elapsed_seconds": 1.8295934000016132,
+      "attacker_seconds": 1.0082931999968423,
+      "defender_seconds": 0.8190325000032317,
+      "our_mean_move_seconds": 0.09100361111147019,
+      "our_max_move_seconds": 0.15646819999892614,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Defenders won!\nRounds played: 9\n",
+      "opponent_log": "",
+      "opening_id": 4,
+      "seed": 43,
+      "points": 2,
+      "invalid_returns": 0,
+      "search_stats": {
+        "A": [
+          {
+            "strategy": "enhanced",
+            "budget_seconds": 1.8333333333321207,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 8287,
+            "cutoffs": 202,
+            "tt_hint_hits": 76,
+            "root_moves": 74,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 100.0,
+            "pv": [
+              [
+                [
+                  3,
+                  0
+                ],
+                [
+                  3,
+                  4
+                ]
+              ],
+              [
+                [
+                  4,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ]
+              ],
+              [
+                [
+                  3,
+                  4
+                ],
+                [
+                  3,
+                  3
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.17408330000034766
+          },
+          {
+            "strategy": "enhanced",
+            "budget_seconds": 1.8275305566676252,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 6400,
+            "cutoffs": 193,
+            "tt_hint_hits": 73,
+            "root_moves": 71,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 20.0,
+            "pv": [
+              [
+                [
+                  0,
+                  4
+                ],
+                [
+                  1,
+                  4
+                ]
+              ],
+              [
+                [
+                  4,
+                  3
+                ],
+                [
+                  5,
+                  3
+                ]
+              ],
+              [
+                [
+                  4,
+                  0
+                ],
+                [
+                  5,
+                  0
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.14894289999938337
+          },
+          {
+            "strategy": "enhanced",
+            "budget_seconds": 1.8225657933326147,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 856,
+            "cutoffs": 208,
+            "tt_hint_hits": 81,
+            "root_moves": 79,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 20.0,
+            "pv": [
+              [
+                [
+                  4,
+                  0
+                ],
+                [
+                  3,
+                  0
+                ]
+              ],
+              [
+                [
+                  3,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ]
+              ],
+              [
+                [
+                  0,
+                  3
+                ],
+                [
+                  0,
+                  2
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "complete",
+            "elapsed_seconds": 0.029068600000755396
+          },
+          {
+            "strategy": "enhanced",
+            "budget_seconds": 1.8215968399999838,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 7009,
+            "cutoffs": 256,
+            "tt_hint_hits": 82,
+            "root_moves": 80,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 50.0,
+            "pv": [
+              [
+                [
+                  8,
+                  5
+                ],
+                [
+                  4,
+                  5
+                ]
+              ],
+              [
+                [
+                  3,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ]
+              ],
+              [
+                [
+                  0,
+                  3
+                ],
+                [
+                  0,
+                  2
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.1554755000033765
+          },
+          {
+            "strategy": "enhanced",
+            "budget_seconds": 1.816414323333447,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 1171,
+            "cutoffs": 218,
+            "tt_hint_hits": 90,
+            "root_moves": 88,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 150.0,
+            "pv": [
+              [
+                [
+                  0,
+                  3
+                ],
+                [
+                  0,
+                  2
+                ]
+              ],
+              [
+                [
+                  2,
+                  3
+                ],
+                [
+                  1,
+                  3
+                ]
+              ],
+              [
+                [
+                  0,
+                  2
+                ],
+                [
+                  2,
+                  2
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "unknown",
+            "elapsed_seconds": 0.03775109999696724
+          },
+          {
+            "strategy": "enhanced",
+            "budget_seconds": 1.815155953332578,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 1849,
+            "cutoffs": 260,
+            "tt_hint_hits": 91,
+            "root_moves": 89,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 150.0,
+            "pv": [
+              [
+                [
+                  8,
+                  0
+                ],
+                [
+                  8,
+                  2
+                ]
+              ],
+              [
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  2
+                ]
+              ],
+              [
+                [
+                  4,
+                  1
+                ],
+                [
+                  2,
+                  1
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "unknown",
+            "elapsed_seconds": 0.06916759999876376
+          },
+          {
+            "strategy": "enhanced",
+            "budget_seconds": 1.8128503666666802,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 12230,
+            "cutoffs": 308,
+            "tt_hint_hits": 88,
+            "root_moves": 86,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 170.0,
+            "pv": [
+              [
+                [
+                  7,
+                  4
+                ],
+                [
+                  6,
+                  4
+                ]
+              ],
+              [
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  2
+                ]
+              ],
+              [
+                [
+                  4,
+                  1
+                ],
+                [
+                  2,
+                  1
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.3345642999993288
+          },
+          {
+            "strategy": "enhanced",
+            "budget_seconds": 1.8016982233348244,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 891,
+            "cutoffs": 244,
+            "tt_hint_hits": 105,
+            "root_moves": 103,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 20.0,
+            "pv": [
+              [
+                [
+                  4,
+                  1
+                ],
+                [
+                  5,
+                  1
+                ]
+              ],
+              [
+                [
+                  5,
+                  2
+                ],
+                [
+                  5,
+                  6
+                ]
+              ],
+              [
+                [
+                  4,
+                  5
+                ],
+                [
+                  4,
+                  6
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "unknown",
+            "elapsed_seconds": 0.036438499999349006
+          },
+          {
+            "strategy": "enhanced",
+            "budget_seconds": 1.800483606668422,
+            "target_depth": 3,
+            "completed_depth": 2,
+            "nodes": 370,
+            "cutoffs": 109,
+            "tt_hint_hits": 1,
+            "root_moves": 110,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": -1000000000.0,
+            "pv": [
+              [
+                [
+                  4,
+                  5
+                ],
+                [
+                  4,
+                  6
+                ]
+              ],
+              [
+                [
+                  5,
+                  6
+                ],
+                [
+                  8,
+                  6
+                ]
+              ]
+            ],
+            "finish_reason": "proven_terminal",
+            "tactical_status": "unknown",
+            "elapsed_seconds": 0.022613199998886557
+          }
+        ],
+        "D": [
+          {
+            "strategy": "evolutionary_dynamic",
+            "budget_seconds": 1.8333333333321207,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 3652,
+            "cutoffs": 173,
+            "tt_hint_hits": 55,
+            "root_moves": 53,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 178.24987524211406,
+            "pv": [
+              [
+                [
+                  4,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ]
+              ],
+              [
+                [
+                  0,
+                  4
+                ],
+                [
+                  1,
+                  4
+                ]
+              ],
+              [
+                [
+                  4,
+                  3
+                ],
+                [
+                  6,
+                  3
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.08016560000032769
+          },
+          {
+            "strategy": "evolutionary_dynamic",
+            "budget_seconds": 1.8306611466650793,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 4979,
+            "cutoffs": 364,
+            "tt_hint_hits": 51,
+            "root_moves": 49,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 178.24987524211406,
+            "pv": [
+              [
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  3
+                ]
+              ],
+              [
+                [
+                  4,
+                  0
+                ],
+                [
+                  3,
+                  0
+                ]
+              ],
+              [
+                [
+                  3,
+                  3
+                ],
+                [
+                  6,
+                  3
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.11148469999898225
+          },
+          {
+            "strategy": "evolutionary_dynamic",
+            "budget_seconds": 1.889943093105103,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 5323,
+            "cutoffs": 442,
+            "tt_hint_hits": 55,
+            "root_moves": 53,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 178.90182911632553,
+            "pv": [
+              [
+                [
+                  4,
+                  5
+                ],
+                [
+                  3,
+                  5
+                ]
+              ],
+              [
+                [
+                  4,
+                  1
+                ],
+                [
+                  6,
+                  1
+                ]
+              ],
+              [
+                [
+                  3,
+                  3
+                ],
+                [
+                  5,
+                  3
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.11955640000087442
+          },
+          {
+            "strategy": "evolutionary_dynamic",
+            "budget_seconds": 1.8858204586213105,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 4595,
+            "cutoffs": 456,
+            "tt_hint_hits": 47,
+            "root_moves": 45,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 261.44733112020845,
+            "pv": [
+              [
+                [
+                  3,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ]
+              ],
+              [
+                [
+                  1,
+                  4
+                ],
+                [
+                  1,
+                  2
+                ]
+              ],
+              [
+                [
+                  3,
+                  2
+                ],
+                [
+                  3,
+                  6
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.10492990000057034
+          },
+          {
+            "strategy": "evolutionary_dynamic",
+            "budget_seconds": 1.949423692858545,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 4902,
+            "cutoffs": 795,
+            "tt_hint_hits": 47,
+            "root_moves": 46,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 253.0417984550524,
+            "pv": [
+              [
+                [
+                  4,
+                  2
+                ],
+                [
+                  4,
+                  3
+                ]
+              ],
+              [
+                [
+                  4,
+                  1
+                ],
+                [
+                  4,
+                  2
+                ]
+              ],
+              [
+                [
+                  3,
+                  2
+                ],
+                [
+                  3,
+                  1
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.12293169999975362
+          },
+          {
+            "strategy": "evolutionary_dynamic",
+            "budget_seconds": 1.9450332749984227,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 6036,
+            "cutoffs": 687,
+            "tt_hint_hits": 46,
+            "root_moves": 44,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 178.84194272940286,
+            "pv": [
+              [
+                [
+                  6,
+                  4
+                ],
+                [
+                  6,
+                  0
+                ]
+              ],
+              [
+                [
+                  1,
+                  4
+                ],
+                [
+                  1,
+                  6
+                ]
+              ],
+              [
+                [
+                  3,
+                  2
+                ],
+                [
+                  6,
+                  2
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.15645149999909336
+          },
+          {
+            "strategy": "evolutionary_dynamic",
+            "budget_seconds": 2.011277044442977,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 2302,
+            "cutoffs": 175,
+            "tt_hint_hits": 41,
+            "root_moves": 39,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 340.38862284267356,
+            "pv": [
+              [
+                [
+                  3,
+                  2
+                ],
+                [
+                  5,
+                  2
+                ]
+              ],
+              [
+                [
+                  4,
+                  1
+                ],
+                [
+                  5,
+                  1
+                ]
+              ],
+              [
+                [
+                  5,
+                  2
+                ],
+                [
+                  5,
+                  6
+                ]
+              ]
+            ],
+            "finish_reason": "depth_completed",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.0608064000007289
+          },
+          {
+            "strategy": "evolutionary_dynamic",
+            "budget_seconds": 2.009024955554196,
+            "target_depth": 3,
+            "completed_depth": 3,
+            "nodes": 2129,
+            "cutoffs": 189,
+            "tt_hint_hits": 43,
+            "root_moves": 41,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 1000000000.0,
+            "pv": [
+              [
+                [
+                  5,
+                  2
+                ],
+                [
+                  5,
+                  6
+                ]
+              ],
+              [
+                [
+                  4,
+                  5
+                ],
+                [
+                  4,
+                  6
+                ]
+              ],
+              [
+                [
+                  5,
+                  6
+                ],
+                [
+                  8,
+                  6
+                ]
+              ]
+            ],
+            "finish_reason": "proven_terminal",
+            "tactical_status": "not_checked",
+            "elapsed_seconds": 0.06172510000033071
+          },
+          {
+            "strategy": "evolutionary_dynamic",
+            "budget_seconds": 3.3342737661550927,
+            "target_depth": 3,
+            "completed_depth": 0,
+            "nodes": 0,
+            "cutoffs": 0,
+            "tt_hint_hits": 0,
+            "root_moves": 39,
+            "timed_out": false,
+            "fallback_used": false,
+            "score": 1000000000.0,
+            "pv": [
+              [
+                [
+                  5,
+                  6
+                ],
+                [
+                  8,
+                  6
+                ]
+              ]
+            ],
+            "finish_reason": "tactical_win",
+            "tactical_status": "complete",
+            "elapsed_seconds": 0.0008532000028935727
+          }
+        ]
+      }
+    }
+  ],
+  "model": "D:\\workstudy\\\u5927\u56db\\\u5927\u56db\u4e0a\\computational_intelligence\\Tablut-AI\\reports\\training\\evolution_v5_run\\g0001_jv67p9d0\\quick_i006_model.json",
+  "manifest": {
+    "commit_sha": "4b445ade8c82c7ae061638734d1a7390b2141d11",
+    "worktree_changes": "M Tablut-AI/docs/TRAINING_GUIDE.md\n?? Tablut-AI/reports/EVOLUTIONARY_V5_REVIEW.md\n?? Tablut-AI/reports/experiments/evolution_v5_formal_validation_20261129/\n?? Tablut-AI/reports/experiments/evolution_v5_validation_20261201/\n?? Tablut-AI/reports/experiments/v5_depth_study_20261130/\n?? Tablut-AI/tests/test_transposition_v5.py",
+    "python": "3.13.7",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cpu": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+    "openings_sha256": "29445d88e3cbe62c575114f8c664cb9f9ba110a6f3d5da501cb9d969de8028eb",
+    "history_rule": "restarted_opening",
+    "options": {
+      "max_depth": 3,
+      "tt_capacity": 20000,
+      "order_moves": true,
+      "node_budget": 0
+    },
+    "evaluator": "evolutionary_six_features",
+    "arguments": [
+      "--strategy",
+      "evolutionary_dynamic",
+      "--model",
+      "D:\\workstudy\\\u5927\u56db\\\u5927\u56db\u4e0a\\computational_intelligence\\Tablut-AI\\reports\\training\\evolution_v5_run\\g0001_jv67p9d0\\quick_i006_model.json",
+      "--opponent",
+      "enhanced",
+      "--openings",
+      "D:\\workstudy\\\u5927\u56db\\\u5927\u56db\u4e0a\\computational_intelligence\\Tablut-AI\\reports\\training\\evolution_v5_run\\g0001_jv67p9d0\\quick_enhanced_openings.json",
+      "--seed",
+      "43",
+      "--max-depth",
+      "3",
+      "--tt-capacity",
+      "20000",
+      "--output",
+      "D:\\workstudy\\\u5927\u56db\\\u5927\u56db\u4e0a\\computational_intelligence\\Tablut-AI\\reports\\training\\evolution_v5_run\\g0001_jv67p9d0\\quick_i006_enhanced_r0.json",
+      "--record-search"
+    ],
+    "created_at": "2026-11-27T03:59:54.229757+00:00",
+    "opponent_evaluator": "hand_tuned",
+    "model_sha256": {
+      "model": "bd200f5f6631339ab5fe5a935415b0be4776d583f77c8170620bf130cc73b3c4"
+    }
+  }
+}

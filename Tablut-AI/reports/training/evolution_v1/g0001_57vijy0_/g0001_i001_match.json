@@ -1,0 +1,648 @@
+{
+  "version": "3.0",
+  "strategy": "evolutionary_dynamic",
+  "opponent": "enhanced_dynamic",
+  "seed": 42,
+  "games": 16,
+  "standings": {
+    "overall": {
+      "games": 16,
+      "wins": 6,
+      "draws": 5,
+      "losses": 5,
+      "points": 17
+    },
+    "attacker": {
+      "games": 8,
+      "wins": 1,
+      "draws": 3,
+      "losses": 4,
+      "points": 5
+    },
+    "defender": {
+      "games": 8,
+      "wins": 5,
+      "draws": 2,
+      "losses": 1,
+      "points": 12
+    }
+  },
+  "our_win_rate": 0.375,
+  "results": [
+    {
+      "game": 1,
+      "our_side": "A",
+      "winner": "DRAW",
+      "plies": 35,
+      "elapsed_seconds": 39.62186980000115,
+      "attacker_seconds": 19.762235200010764,
+      "defender_seconds": 19.8549131999971,
+      "our_mean_move_seconds": 1.0979019555561536,
+      "our_max_move_seconds": 1.8381105000007665,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Repeated position found\nGame over, it is draw, no winner!\nRounds played: 18\n",
+      "opponent_log": "",
+      "opening_id": 1,
+      "seed": 42,
+      "points": 1,
+      "invalid_returns": 0
+    },
+    {
+      "game": 2,
+      "our_side": "D",
+      "winner": "D",
+      "plies": 18,
+      "elapsed_seconds": 20.923904400002357,
+      "attacker_seconds": 9.872109399999317,
+      "defender_seconds": 11.049375500006136,
+      "our_mean_move_seconds": 1.2277083888895706,
+      "our_max_move_seconds": 1.8381574000013643,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Defenders won!\nRounds played: 9\n",
+      "opponent_log": "",
+      "opening_id": 1,
+      "seed": 42,
+      "points": 2,
+      "invalid_returns": 0
+    },
+    {
+      "game": 3,
+      "our_side": "A",
+      "winner": "A",
+      "plies": 23,
+      "elapsed_seconds": 26.050028300000122,
+      "attacker_seconds": 13.3213420999964,
+      "defender_seconds": 12.725562199997512,
+      "our_mean_move_seconds": 1.1101118416663667,
+      "our_max_move_seconds": 2.7092179999999644,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Attackers won!\nRounds played: 12\n",
+      "opponent_log": "",
+      "opening_id": 2,
+      "seed": 43,
+      "points": 2,
+      "invalid_returns": 0
+    },
+    {
+      "game": 4,
+      "our_side": "D",
+      "winner": "D",
+      "plies": 50,
+      "elapsed_seconds": 63.17598150000049,
+      "attacker_seconds": 30.434782699980133,
+      "defender_seconds": 32.734256200001255,
+      "our_mean_move_seconds": 1.3093702480000502,
+      "our_max_move_seconds": 2.843917899997905,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Defenders won!\nRounds played: 25\n",
+      "opponent_log": "",
+      "opening_id": 2,
+      "seed": 43,
+      "points": 2,
+      "invalid_returns": 0
+    },
+    {
+      "game": 5,
+      "our_side": "A",
+      "winner": "D",
+      "plies": 18,
+      "elapsed_seconds": 19.154041500001767,
+      "attacker_seconds": 9.943389000003663,
+      "defender_seconds": 9.208129299997381,
+      "our_mean_move_seconds": 1.104821000000407,
+      "our_max_move_seconds": 1.8373463999996602,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Defenders won!\nRounds played: 9\n",
+      "opponent_log": "",
+      "opening_id": 3,
+      "seed": 44,
+      "points": 0,
+      "invalid_returns": 0
+    },
+    {
+      "game": 6,
+      "our_side": "D",
+      "winner": "D",
+      "plies": 18,
+      "elapsed_seconds": 24.63204399999813,
+      "attacker_seconds": 12.108496000008017,
+      "defender_seconds": 12.520858999996562,
+      "our_mean_move_seconds": 1.3912065555551736,
+      "our_max_move_seconds": 2.743220600001223,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Defenders won!\nRounds played: 9\n",
+      "opponent_log": "",
+      "opening_id": 3,
+      "seed": 44,
+      "points": 2,
+      "invalid_returns": 0
+    },
+    {
+      "game": 7,
+      "our_side": "A",
+      "winner": "D",
+      "plies": 42,
+      "elapsed_seconds": 58.3132329,
+      "attacker_seconds": 28.90789109999605,
+      "defender_seconds": 29.399072799995338,
+      "our_mean_move_seconds": 1.3765662428569547,
+      "our_max_move_seconds": 2.178648900000553,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Defenders won!\nRounds played: 21\n",
+      "opponent_log": "",
+      "opening_id": 4,
+      "seed": 45,
+      "points": 0,
+      "invalid_returns": 0
+    },
+    {
+      "game": 8,
+      "our_side": "D",
+      "winner": "D",
+      "plies": 20,
+      "elapsed_seconds": 26.317090000000462,
+      "attacker_seconds": 12.224091000014596,
+      "defender_seconds": 14.090082400001847,
+      "our_mean_move_seconds": 1.4090082400001847,
+      "our_max_move_seconds": 1.8377388999979303,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Defenders won!\nRounds played: 10\n",
+      "opponent_log": "",
+      "opening_id": 4,
+      "seed": 45,
+      "points": 2,
+      "invalid_returns": 0
+    },
+    {
+      "game": 9,
+      "our_side": "A",
+      "winner": "DRAW",
+      "plies": 21,
+      "elapsed_seconds": 26.363501100000576,
+      "attacker_seconds": 12.827244099997188,
+      "defender_seconds": 13.533264600006078,
+      "our_mean_move_seconds": 1.1661130999997444,
+      "our_max_move_seconds": 1.82305240000278,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Repeated position found\nGame over, it is draw, no winner!\nRounds played: 11\n",
+      "opponent_log": "",
+      "opening_id": 5,
+      "seed": 46,
+      "points": 1,
+      "invalid_returns": 0
+    },
+    {
+      "game": 10,
+      "our_side": "D",
+      "winner": "A",
+      "plies": 41,
+      "elapsed_seconds": 54.82993610000267,
+      "attacker_seconds": 26.35382220000247,
+      "defender_seconds": 28.470603200010373,
+      "our_mean_move_seconds": 1.4235301600005186,
+      "our_max_move_seconds": 2.766350900001271,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Attackers won!\nRounds played: 21\n",
+      "opponent_log": "",
+      "opening_id": 5,
+      "seed": 46,
+      "points": 0,
+      "invalid_returns": 0
+    },
+    {
+      "game": 11,
+      "our_side": "A",
+      "winner": "D",
+      "plies": 8,
+      "elapsed_seconds": 8.532622099999571,
+      "attacker_seconds": 5.096950399994967,
+      "defender_seconds": 3.4344647000034456,
+      "our_mean_move_seconds": 1.2742375999987416,
+      "our_max_move_seconds": 1.8395082999995793,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Defenders won!\nRounds played: 4\n",
+      "opponent_log": "",
+      "opening_id": 6,
+      "seed": 47,
+      "points": 0,
+      "invalid_returns": 0
+    },
+    {
+      "game": 12,
+      "our_side": "D",
+      "winner": "DRAW",
+      "plies": 18,
+      "elapsed_seconds": 27.08622280000054,
+      "attacker_seconds": 12.418641900003422,
+      "defender_seconds": 14.664960799997061,
+      "our_mean_move_seconds": 1.6294400888885623,
+      "our_max_move_seconds": 1.838654499999393,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Repeated position found\nGame over, it is draw, no winner!\nRounds played: 9\n",
+      "opponent_log": "",
+      "opening_id": 6,
+      "seed": 47,
+      "points": 1,
+      "invalid_returns": 0
+    },
+    {
+      "game": 13,
+      "our_side": "A",
+      "winner": "DRAW",
+      "plies": 23,
+      "elapsed_seconds": 29.530479699998978,
+      "attacker_seconds": 14.203600000004371,
+      "defender_seconds": 15.323575200003688,
+      "our_mean_move_seconds": 1.1836333333336977,
+      "our_max_move_seconds": 2.1915762000026007,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Repeated position found\nGame over, it is draw, no winner!\nRounds played: 12\n",
+      "opponent_log": "",
+      "opening_id": 7,
+      "seed": 48,
+      "points": 1,
+      "invalid_returns": 0
+    },
+    {
+      "game": 14,
+      "our_side": "D",
+      "winner": "D",
+      "plies": 10,
+      "elapsed_seconds": 9.714553499998146,
+      "attacker_seconds": 5.60859039999923,
+      "defender_seconds": 4.104568700000527,
+      "our_mean_move_seconds": 0.8209137400001054,
+      "our_max_move_seconds": 1.8377565000009781,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Defenders won!\nRounds played: 5\n",
+      "opponent_log": "",
+      "opening_id": 7,
+      "seed": 48,
+      "points": 2,
+      "invalid_returns": 0
+    },
+    {
+      "game": 15,
+      "our_side": "A",
+      "winner": "D",
+      "plies": 22,
+      "elapsed_seconds": 27.782992500000546,
+      "attacker_seconds": 14.154760800000076,
+      "defender_seconds": 13.62492690000363,
+      "our_mean_move_seconds": 1.2867964363636433,
+      "our_max_move_seconds": 1.9356287000009615,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Game over, Defenders won!\nRounds played: 11\n",
+      "opponent_log": "",
+      "opening_id": 8,
+      "seed": 49,
+      "points": 0,
+      "invalid_returns": 0
+    },
+    {
+      "game": 16,
+      "our_side": "D",
+      "winner": "DRAW",
+      "plies": 25,
+      "elapsed_seconds": 32.28654069999902,
+      "attacker_seconds": 15.171186299998226,
+      "defender_seconds": 17.11194859999523,
+      "our_mean_move_seconds": 1.4259957166662691,
+      "our_max_move_seconds": 1.8379822999995667,
+      "illegal_moves": 0,
+      "timeouts": 0,
+      "exceptions": 0,
+      "issues": {
+        "A": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        },
+        "D": {
+          "illegal_moves": 0,
+          "timeouts": 0,
+          "exceptions": 0,
+          "details": [],
+          "invalid_returns": []
+        }
+      },
+      "log": "Repeated position found\nGame over, it is draw, no winner!\nRounds played: 13\n",
+      "opponent_log": "",
+      "opening_id": 8,
+      "seed": 49,
+      "points": 1,
+      "invalid_returns": 0
+    }
+  ],
+  "model": "D:\\workstudy\\\u5927\u56db\\\u5927\u56db\u4e0a\\computational_intelligence\\Tablut-AI\\reports\\training\\evolution_v1\\g0001_57vijy0_\\g0001_i001_model.json",
+  "manifest": {
+    "commit_sha": "aff46417b551f1ad3b8bb57539d34520e513628f",
+    "worktree_changes": "",
+    "python": "3.13.7",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cpu": "AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD",
+    "openings_sha256": "3584796d1e559fb42e47da2041b5c8a6038c5a1ecfd43652c59a9a2130db7640",
+    "history_rule": "restarted_opening",
+    "options": {
+      "max_depth": 4,
+      "tt_capacity": 20000,
+      "order_moves": true
+    },
+    "evaluator": "evolutionary_six_features",
+    "arguments": [
+      "--strategy",
+      "evolutionary_dynamic",
+      "--model",
+      "D:\\workstudy\\\u5927\u56db\\\u5927\u56db\u4e0a\\computational_intelligence\\Tablut-AI\\reports\\training\\evolution_v1\\g0001_57vijy0_\\g0001_i001_model.json",
+      "--seed",
+      "42",
+      "--opponent",
+      "enhanced_dynamic",
+      "--openings",
+      "D:\\workstudy\\\u5927\u56db\\\u5927\u56db\u4e0a\\computational_intelligence\\Tablut-AI\\reports\\training\\evolution_v1\\selection_openings.json",
+      "--max-depth",
+      "4",
+      "--tt-capacity",
+      "20000",
+      "--output",
+      "D:\\workstudy\\\u5927\u56db\\\u5927\u56db\u4e0a\\computational_intelligence\\Tablut-AI\\reports\\training\\evolution_v1\\g0001_57vijy0_\\g0001_i001_match.json"
+    ],
+    "created_at": "2026-11-25T10:42:26.323800+00:00",
+    "opponent_evaluator": "hand_tuned",
+    "model_sha256": {
+      "model": "8e61127a6f1074cd9f0068a7cbfedfb5d107381b183f150a378b120898e9cfa9"
+    }
+  }
+}

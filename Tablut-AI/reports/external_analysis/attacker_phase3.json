@@ -1,0 +1,4759 @@
+{
+  "corpus": "reports\\phase3\\exact_games_snapshot.jsonl",
+  "games": 70,
+  "stride": 4,
+  "summary": [
+    {
+      "side": "A",
+      "winner": "A",
+      "games": 12,
+      "mean_plies": 37.7,
+      "first_reach_2_mean": 11.8,
+      "first_immediate_escape_mean": 22.4,
+      "games_with_missed_mate": 0,
+      "missed_mate_decisions": 0
+    },
+    {
+      "side": "A",
+      "winner": "D",
+      "games": 14,
+      "mean_plies": 39.3,
+      "first_reach_2_mean": 6.7,
+      "first_immediate_escape_mean": 22.9,
+      "games_with_missed_mate": 0,
+      "missed_mate_decisions": 0
+    },
+    {
+      "side": "A",
+      "winner": "DRAW",
+      "games": 9,
+      "mean_plies": 41.9,
+      "first_reach_2_mean": 5.7,
+      "first_immediate_escape_mean": 24.0,
+      "games_with_missed_mate": 0,
+      "missed_mate_decisions": 0
+    },
+    {
+      "side": "D",
+      "winner": "A",
+      "games": 4,
+      "mean_plies": 55.5,
+      "first_reach_2_mean": null,
+      "first_immediate_escape_mean": null,
+      "games_with_missed_mate": 0,
+      "missed_mate_decisions": 0
+    },
+    {
+      "side": "D",
+      "winner": "D",
+      "games": 15,
+      "mean_plies": 43.2,
+      "first_reach_2_mean": null,
+      "first_immediate_escape_mean": null,
+      "games_with_missed_mate": 0,
+      "missed_mate_decisions": 0
+    },
+    {
+      "side": "D",
+      "winner": "DRAW",
+      "games": 16,
+      "mean_plies": 32.7,
+      "first_reach_2_mean": null,
+      "first_immediate_escape_mean": null,
+      "games_with_missed_mate": 0,
+      "missed_mate_decisions": 0
+    }
+  ],
+  "records": [
+    {
+      "game_id": "dbc1a0d567ff3030cdd72bb3:1",
+      "our_side": "A",
+      "winner": "A",
+      "termination": "king_captured",
+      "plies": 41,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 7
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 1,
+          "escape_reach_2": 3,
+          "attackercaptures": 0,
+          "defenders": 6
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 3,
+          "defenders": 6
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 5
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 1,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 3
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 3,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 3
+        },
+        {
+          "ply": 40,
+          "king_adjacent_attackers": 3,
+          "supported_attackers": 1,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 2,
+          "defenders": 2
+        }
+      ],
+      "first_immediate_escape": 16,
+      "first_reach_2": 6,
+      "missed_mates": [],
+      "final": {
+        "ply": 41,
+        "terminal": "A",
+        "defenders": 2,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "dbc1a0d567ff3030cdd72bb3:2",
+      "our_side": "D",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 38,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 38,
+        "terminal": "D",
+        "defenders": 8,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "ffbf19195ee90f99950fab4c:1",
+      "our_side": "A",
+      "winner": "A",
+      "termination": "king_captured",
+      "plies": 41,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 7
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 1,
+          "escape_reach_2": 3,
+          "attackercaptures": 0,
+          "defenders": 6
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 3,
+          "defenders": 6
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 5
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 1,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 3
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 3,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 3
+        },
+        {
+          "ply": 40,
+          "king_adjacent_attackers": 3,
+          "supported_attackers": 1,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 2,
+          "defenders": 2
+        }
+      ],
+      "first_immediate_escape": 16,
+      "first_reach_2": 6,
+      "missed_mates": [],
+      "final": {
+        "ply": 41,
+        "terminal": "A",
+        "defenders": 2,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "ffbf19195ee90f99950fab4c:2",
+      "our_side": "D",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 38,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 38,
+        "terminal": "D",
+        "defenders": 8,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "870d15ff34236b9a0fdbf1c0:1",
+      "our_side": "A",
+      "winner": "A",
+      "termination": "king_captured",
+      "plies": 43,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 6
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 6
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 6
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 1,
+          "defenders": 5
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 3,
+          "defenders": 4
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 2,
+          "defenders": 4
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 3
+        },
+        {
+          "ply": 40,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 3,
+          "defenders": 2
+        }
+      ],
+      "first_immediate_escape": 34,
+      "first_reach_2": 24,
+      "missed_mates": [],
+      "final": {
+        "ply": 43,
+        "terminal": "A",
+        "defenders": 1,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "870d15ff34236b9a0fdbf1c0:2",
+      "our_side": "D",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 24,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "32c4de00598b9f9d8ad8f6e5:1",
+      "our_side": "A",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 27,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        }
+      ],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "32c4de00598b9f9d8ad8f6e5:2",
+      "our_side": "D",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 27,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "e8e715ca62a31ce30ff2e7cd:1",
+      "our_side": "A",
+      "winner": "A",
+      "termination": "king_captured",
+      "plies": 41,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 7
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 1,
+          "escape_reach_2": 3,
+          "attackercaptures": 0,
+          "defenders": 6
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 3,
+          "defenders": 6
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 5
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 1,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 3
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 3,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 3
+        },
+        {
+          "ply": 40,
+          "king_adjacent_attackers": 3,
+          "supported_attackers": 1,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 2,
+          "defenders": 2
+        }
+      ],
+      "first_immediate_escape": 16,
+      "first_reach_2": 6,
+      "missed_mates": [],
+      "final": {
+        "ply": 41,
+        "terminal": "A",
+        "defenders": 2,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "e8e715ca62a31ce30ff2e7cd:2",
+      "our_side": "D",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 38,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 38,
+        "terminal": "D",
+        "defenders": 8,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "d6feba789d3b1b9154d9aff0:1",
+      "our_side": "A",
+      "winner": "A",
+      "termination": "king_captured",
+      "plies": 13,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 3,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 5
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 3,
+          "supported_attackers": 1,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 4,
+          "defenders": 5
+        }
+      ],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 13,
+        "terminal": "A",
+        "defenders": 4,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "d6feba789d3b1b9154d9aff0:2",
+      "our_side": "D",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 24,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 24,
+        "terminal": "D",
+        "defenders": 8,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "60c6ed9d342f8e49903d9eb7:1",
+      "our_side": "A",
+      "winner": "A",
+      "termination": "king_captured",
+      "plies": 41,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 7
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 1,
+          "escape_reach_2": 3,
+          "attackercaptures": 0,
+          "defenders": 6
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 3,
+          "defenders": 6
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 5
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 1,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 3
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 3,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 3
+        },
+        {
+          "ply": 40,
+          "king_adjacent_attackers": 3,
+          "supported_attackers": 1,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 2,
+          "defenders": 2
+        }
+      ],
+      "first_immediate_escape": 16,
+      "first_reach_2": 6,
+      "missed_mates": [],
+      "final": {
+        "ply": 41,
+        "terminal": "A",
+        "defenders": 2,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "60c6ed9d342f8e49903d9eb7:2",
+      "our_side": "D",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 38,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 38,
+        "terminal": "D",
+        "defenders": 8,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "a17d2d5e9af98ccb4bf34173:1",
+      "our_side": "A",
+      "winner": "A",
+      "termination": "king_captured",
+      "plies": 43,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 6
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 6
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 6
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 1,
+          "defenders": 5
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 3,
+          "defenders": 4
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 2,
+          "defenders": 4
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 3
+        },
+        {
+          "ply": 40,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 3,
+          "defenders": 2
+        }
+      ],
+      "first_immediate_escape": 34,
+      "first_reach_2": 24,
+      "missed_mates": [],
+      "final": {
+        "ply": 43,
+        "terminal": "A",
+        "defenders": 1,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "a17d2d5e9af98ccb4bf34173:2",
+      "our_side": "D",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 24,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "14aa11931e32ab94868fde00:1",
+      "our_side": "A",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 27,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        }
+      ],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "14aa11931e32ab94868fde00:2",
+      "our_side": "D",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 27,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "50651a0beb2e1696856979ae:1",
+      "our_side": "A",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 33,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 8
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 8
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 8
+        }
+      ],
+      "first_immediate_escape": null,
+      "first_reach_2": 24,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "50651a0beb2e1696856979ae:2",
+      "our_side": "D",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 33,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "b35e7b4fd18b8cc85180356b:1",
+      "our_side": "A",
+      "winner": "A",
+      "termination": "king_captured",
+      "plies": 41,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 7
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 1,
+          "escape_reach_2": 3,
+          "attackercaptures": 0,
+          "defenders": 6
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 3,
+          "defenders": 6
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 5
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 1,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 3
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 3,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 3
+        },
+        {
+          "ply": 40,
+          "king_adjacent_attackers": 3,
+          "supported_attackers": 1,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 2,
+          "defenders": 2
+        }
+      ],
+      "first_immediate_escape": 16,
+      "first_reach_2": 6,
+      "missed_mates": [],
+      "final": {
+        "ply": 41,
+        "terminal": "A",
+        "defenders": 2,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "b35e7b4fd18b8cc85180356b:2",
+      "our_side": "D",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 38,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 38,
+        "terminal": "D",
+        "defenders": 8,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "0063e55beccc3e3070abb7c3:1",
+      "our_side": "A",
+      "winner": "A",
+      "termination": "king_captured",
+      "plies": 15,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 1,
+          "escape_reach_2": 6,
+          "attackercaptures": 0,
+          "defenders": 5
+        }
+      ],
+      "first_immediate_escape": 12,
+      "first_reach_2": 6,
+      "missed_mates": [],
+      "final": {
+        "ply": 15,
+        "terminal": "A",
+        "defenders": 5,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "0063e55beccc3e3070abb7c3:2",
+      "our_side": "D",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 8,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 8,
+        "terminal": "D",
+        "defenders": 8,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "69984d08df9b29cc2bde4ab4:1",
+      "our_side": "A",
+      "winner": "A",
+      "termination": "king_captured",
+      "plies": 15,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 1,
+          "escape_reach_2": 6,
+          "attackercaptures": 0,
+          "defenders": 5
+        }
+      ],
+      "first_immediate_escape": 12,
+      "first_reach_2": 6,
+      "missed_mates": [],
+      "final": {
+        "ply": 15,
+        "terminal": "A",
+        "defenders": 5,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "69984d08df9b29cc2bde4ab4:2",
+      "our_side": "D",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 8,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 8,
+        "terminal": "D",
+        "defenders": 8,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "data/internal/high_budget_games/phase2_pilot/games.json:1",
+      "our_side": "A",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 24,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 8,
+          "immediate_escape": 1,
+          "escape_reach_2": 7,
+          "attackercaptures": 3,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 6,
+          "immediate_escape": 1,
+          "escape_reach_2": 5,
+          "attackercaptures": 4,
+          "defenders": 7
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 8,
+          "immediate_escape": 1,
+          "escape_reach_2": 8,
+          "attackercaptures": 4,
+          "defenders": 6
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 5,
+          "defenders": 6
+        }
+      ],
+      "first_immediate_escape": 8,
+      "first_reach_2": 4,
+      "missed_mates": [],
+      "final": {
+        "ply": 24,
+        "terminal": "D",
+        "defenders": 5,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "data/internal/high_budget_games/phase2_pilot/games.json:2",
+      "our_side": "D",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 19,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "data/internal/high_budget_games/phase2_pilot/games.json:3",
+      "our_side": "A",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 14,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 3,
+          "defenders": 7
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 8,
+          "immediate_escape": 1,
+          "escape_reach_2": 8,
+          "attackercaptures": 0,
+          "defenders": 5
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 12,
+          "immediate_escape": 2,
+          "escape_reach_2": 13,
+          "attackercaptures": 0,
+          "defenders": 5
+        }
+      ],
+      "first_immediate_escape": 2,
+      "first_reach_2": 2,
+      "missed_mates": [],
+      "final": {
+        "ply": 14,
+        "terminal": "D",
+        "defenders": 5,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "data/internal/high_budget_games/phase2_pilot/games.json:4",
+      "our_side": "D",
+      "winner": "A",
+      "termination": "king_captured",
+      "plies": 49,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 49,
+        "terminal": "A",
+        "defenders": 2,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "data/internal/standard_games/phase2_pilot/games.json:1",
+      "our_side": "A",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 74,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 40,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 44,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 48,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 4,
+          "defenders": 7
+        },
+        {
+          "ply": 52,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 0,
+          "defenders": 6
+        },
+        {
+          "ply": 56,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 6
+        },
+        {
+          "ply": 60,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 0,
+          "defenders": 5
+        },
+        {
+          "ply": 64,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 2,
+          "defenders": 5
+        },
+        {
+          "ply": 68,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 6,
+          "immediate_escape": 1,
+          "escape_reach_2": 6,
+          "attackercaptures": 1,
+          "defenders": 4
+        },
+        {
+          "ply": 72,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 11,
+          "immediate_escape": 2,
+          "escape_reach_2": 18,
+          "attackercaptures": 2,
+          "defenders": 3
+        }
+      ],
+      "first_immediate_escape": 46,
+      "first_reach_2": 44,
+      "missed_mates": [],
+      "final": {
+        "ply": 74,
+        "terminal": "D",
+        "defenders": 3,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "data/internal/standard_games/phase2_pilot/games.json:2",
+      "our_side": "D",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 43,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "data/internal/standard_games/phase2_pilot/games.json:3",
+      "our_side": "A",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 105,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 6
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 2,
+          "defenders": 6
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 2,
+          "defenders": 6
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 6
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 6
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 3,
+          "defenders": 5
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 2,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 40,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 2,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 44,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 2,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 48,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 2,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 52,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 2,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 56,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 2,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 60,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 2,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 64,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 2,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 68,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 2,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 72,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 2,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 76,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 2,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 80,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 2,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 84,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 2,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 88,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 2,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 92,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 2,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 96,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 6,
+          "immediate_escape": 1,
+          "escape_reach_2": 8,
+          "attackercaptures": 2,
+          "defenders": 4
+        },
+        {
+          "ply": 100,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 8,
+          "immediate_escape": 1,
+          "escape_reach_2": 8,
+          "attackercaptures": 3,
+          "defenders": 4
+        },
+        {
+          "ply": 104,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 8,
+          "immediate_escape": 1,
+          "escape_reach_2": 7,
+          "attackercaptures": 1,
+          "defenders": 4
+        }
+      ],
+      "first_immediate_escape": 2,
+      "first_reach_2": 2,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "data/internal/standard_games/phase2_pilot/games.json:4",
+      "our_side": "D",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 18,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 18,
+        "terminal": "D",
+        "defenders": 7,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/draw_v5_order/games.json:1",
+      "our_side": "A",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 31,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 6,
+          "defenders": 7
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 8,
+          "immediate_escape": 1,
+          "escape_reach_2": 11,
+          "attackercaptures": 6,
+          "defenders": 6
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 7,
+          "immediate_escape": 1,
+          "escape_reach_2": 11,
+          "attackercaptures": 6,
+          "defenders": 6
+        }
+      ],
+      "first_immediate_escape": 24,
+      "first_reach_2": 4,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/draw_v5_order/games.json:2",
+      "our_side": "D",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 31,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/draw_v5_order/games.json:3",
+      "our_side": "A",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 53,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 3,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 2,
+          "defenders": 8
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 7
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 40,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 9,
+          "immediate_escape": 1,
+          "escape_reach_2": 14,
+          "attackercaptures": 2,
+          "defenders": 6
+        },
+        {
+          "ply": 44,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 1,
+          "defenders": 6
+        },
+        {
+          "ply": 48,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 52,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 4
+        }
+      ],
+      "first_immediate_escape": 40,
+      "first_reach_2": 2,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/draw_v5_order/games.json:4",
+      "our_side": "D",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 53,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/draw_v5_order/games.json:5",
+      "our_side": "A",
+      "winner": "A",
+      "termination": "king_captured",
+      "plies": 47,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 4,
+          "defenders": 7
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 5,
+          "defenders": 6
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 2,
+          "defenders": 4
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 3
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 3
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 3
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 2,
+          "defenders": 2
+        },
+        {
+          "ply": 40,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 1,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 2,
+          "defenders": 2
+        },
+        {
+          "ply": 44,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 1
+        }
+      ],
+      "first_immediate_escape": null,
+      "first_reach_2": 20,
+      "missed_mates": [],
+      "final": {
+        "ply": 47,
+        "terminal": "A",
+        "defenders": 1,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/draw_v5_order/games.json:6",
+      "our_side": "D",
+      "winner": "A",
+      "termination": "king_captured",
+      "plies": 47,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 47,
+        "terminal": "A",
+        "defenders": 1,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/draw_v5_order/games.json:7",
+      "our_side": "A",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 90,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 2,
+          "defenders": 7
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 5
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 5
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 5
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 5
+        },
+        {
+          "ply": 40,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 5
+        },
+        {
+          "ply": 44,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 5
+        },
+        {
+          "ply": 48,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 5
+        },
+        {
+          "ply": 52,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 56,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 2,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 60,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 64,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 68,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 72,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 76,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 80,
+          "king_adjacent_attackers": 2,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 4
+        },
+        {
+          "ply": 84,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 88,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 4,
+          "immediate_escape": 1,
+          "escape_reach_2": 10,
+          "attackercaptures": 0,
+          "defenders": 4
+        }
+      ],
+      "first_immediate_escape": 86,
+      "first_reach_2": 0,
+      "missed_mates": [],
+      "final": {
+        "ply": 90,
+        "terminal": "D",
+        "defenders": 4,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/draw_v5_order/games.json:8",
+      "our_side": "D",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 90,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 90,
+        "terminal": "D",
+        "defenders": 4,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/draw_v6_order/games.json:1",
+      "our_side": "A",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 31,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 6,
+          "defenders": 7
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 8,
+          "immediate_escape": 1,
+          "escape_reach_2": 11,
+          "attackercaptures": 6,
+          "defenders": 6
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 7,
+          "immediate_escape": 1,
+          "escape_reach_2": 11,
+          "attackercaptures": 6,
+          "defenders": 6
+        }
+      ],
+      "first_immediate_escape": 24,
+      "first_reach_2": 4,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/draw_v6_order/games.json:2",
+      "our_side": "D",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 126,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 126,
+        "terminal": "D",
+        "defenders": 4,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/draw_v6_order/games.json:3",
+      "our_side": "A",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 53,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 3,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 2,
+          "defenders": 8
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 7
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 40,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 9,
+          "immediate_escape": 1,
+          "escape_reach_2": 14,
+          "attackercaptures": 2,
+          "defenders": 6
+        },
+        {
+          "ply": 44,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 1,
+          "defenders": 6
+        },
+        {
+          "ply": 48,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 52,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 4
+        }
+      ],
+      "first_immediate_escape": 40,
+      "first_reach_2": 2,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/draw_v6_order/games.json:4",
+      "our_side": "D",
+      "winner": "A",
+      "termination": "king_captured",
+      "plies": 79,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 79,
+        "terminal": "A",
+        "defenders": 0,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/draw_v6_order/games.json:5",
+      "our_side": "A",
+      "winner": "A",
+      "termination": "king_captured",
+      "plies": 71,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 4,
+          "defenders": 7
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 5,
+          "defenders": 6
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 2,
+          "defenders": 4
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 6,
+          "immediate_escape": 0,
+          "escape_reach_2": 6,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 40,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 0,
+          "defenders": 4
+        },
+        {
+          "ply": 44,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 4
+        },
+        {
+          "ply": 48,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 3,
+          "defenders": 4
+        },
+        {
+          "ply": 52,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 11,
+          "immediate_escape": 1,
+          "escape_reach_2": 14,
+          "attackercaptures": 1,
+          "defenders": 3
+        },
+        {
+          "ply": 56,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 8,
+          "immediate_escape": 1,
+          "escape_reach_2": 9,
+          "attackercaptures": 1,
+          "defenders": 3
+        },
+        {
+          "ply": 60,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 9,
+          "immediate_escape": 1,
+          "escape_reach_2": 13,
+          "attackercaptures": 1,
+          "defenders": 2
+        },
+        {
+          "ply": 64,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 1,
+          "defenders": 1
+        },
+        {
+          "ply": 68,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 1
+        }
+      ],
+      "first_immediate_escape": 52,
+      "first_reach_2": 20,
+      "missed_mates": [],
+      "final": {
+        "ply": 71,
+        "terminal": "A",
+        "defenders": 1,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/draw_v6_order/games.json:6",
+      "our_side": "D",
+      "winner": "A",
+      "termination": "king_captured",
+      "plies": 47,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 47,
+        "terminal": "A",
+        "defenders": 1,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/draw_v6_order/games.json:7",
+      "our_side": "A",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 48,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 2,
+          "defenders": 7
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 6
+        },
+        {
+          "ply": 40,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 3,
+          "defenders": 6
+        },
+        {
+          "ply": 44,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 6,
+          "immediate_escape": 1,
+          "escape_reach_2": 13,
+          "attackercaptures": 0,
+          "defenders": 5
+        }
+      ],
+      "first_immediate_escape": 42,
+      "first_reach_2": 0,
+      "missed_mates": [],
+      "final": {
+        "ply": 48,
+        "terminal": "D",
+        "defenders": 5,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/draw_v6_order/games.json:8",
+      "our_side": "D",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 90,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 90,
+        "terminal": "D",
+        "defenders": 4,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/feature_full/games.json:1",
+      "our_side": "A",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 22,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 3,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 7,
+          "defenders": 7
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 9,
+          "immediate_escape": 1,
+          "escape_reach_2": 10,
+          "attackercaptures": 7,
+          "defenders": 6
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 9,
+          "immediate_escape": 1,
+          "escape_reach_2": 6,
+          "attackercaptures": 6,
+          "defenders": 6
+        }
+      ],
+      "first_immediate_escape": 14,
+      "first_reach_2": 2,
+      "missed_mates": [],
+      "final": {
+        "ply": 22,
+        "terminal": "D",
+        "defenders": 6,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/feature_full/games.json:2",
+      "our_side": "D",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 27,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/feature_full/games.json:3",
+      "our_side": "A",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 38,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 1,
+          "escape_reach_2": 12,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 12,
+          "immediate_escape": 1,
+          "escape_reach_2": 15,
+          "attackercaptures": 1,
+          "defenders": 8
+        }
+      ],
+      "first_immediate_escape": 24,
+      "first_reach_2": 10,
+      "missed_mates": [],
+      "final": {
+        "ply": 38,
+        "terminal": "D",
+        "defenders": 8,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/feature_full/games.json:4",
+      "our_side": "D",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 35,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/feature_without_w7/games.json:1",
+      "our_side": "A",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 40,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 3,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 0,
+          "defenders": 6
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 1,
+          "defenders": 6
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 6,
+          "immediate_escape": 0,
+          "escape_reach_2": 5,
+          "attackercaptures": 0,
+          "defenders": 5
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 1,
+          "defenders": 5
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 8,
+          "immediate_escape": 0,
+          "escape_reach_2": 5,
+          "attackercaptures": 1,
+          "defenders": 5
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 9,
+          "immediate_escape": 0,
+          "escape_reach_2": 6,
+          "attackercaptures": 1,
+          "defenders": 5
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 10,
+          "immediate_escape": 1,
+          "escape_reach_2": 10,
+          "attackercaptures": 1,
+          "defenders": 5
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 12,
+          "immediate_escape": 1,
+          "escape_reach_2": 14,
+          "attackercaptures": 0,
+          "defenders": 5
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 11,
+          "immediate_escape": 0,
+          "escape_reach_2": 14,
+          "attackercaptures": 0,
+          "defenders": 5
+        }
+      ],
+      "first_immediate_escape": 10,
+      "first_reach_2": 2,
+      "missed_mates": [],
+      "final": {
+        "ply": 40,
+        "terminal": "D",
+        "defenders": 5,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/feature_without_w7/games.json:2",
+      "our_side": "D",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 43,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/feature_without_w7/games.json:3",
+      "our_side": "A",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 72,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 7,
+          "immediate_escape": 1,
+          "escape_reach_2": 7,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 7,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 2,
+          "defenders": 8
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 6,
+          "immediate_escape": 1,
+          "escape_reach_2": 4,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 40,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 12,
+          "immediate_escape": 1,
+          "escape_reach_2": 10,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 44,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 7,
+          "immediate_escape": 0,
+          "escape_reach_2": 6,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 48,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 11,
+          "immediate_escape": 1,
+          "escape_reach_2": 8,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 52,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 10,
+          "immediate_escape": 1,
+          "escape_reach_2": 8,
+          "attackercaptures": 2,
+          "defenders": 7
+        },
+        {
+          "ply": 56,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 10,
+          "immediate_escape": 0,
+          "escape_reach_2": 8,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 60,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 9,
+          "immediate_escape": 1,
+          "escape_reach_2": 9,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 64,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 7,
+          "immediate_escape": 1,
+          "escape_reach_2": 4,
+          "attackercaptures": 1,
+          "defenders": 7
+        },
+        {
+          "ply": 68,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 7,
+          "immediate_escape": 1,
+          "escape_reach_2": 2,
+          "attackercaptures": 0,
+          "defenders": 7
+        }
+      ],
+      "first_immediate_escape": 26,
+      "first_reach_2": 10,
+      "missed_mates": [],
+      "final": {
+        "ply": 72,
+        "terminal": "D",
+        "defenders": 7,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/feature_without_w7/games.json:4",
+      "our_side": "D",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 41,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/feature_without_w8/games.json:1",
+      "our_side": "A",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 44,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 3,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 7,
+          "defenders": 7
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 2,
+          "defenders": 7
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 8,
+          "immediate_escape": 0,
+          "escape_reach_2": 6,
+          "attackercaptures": 2,
+          "defenders": 6
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 0,
+          "escape_reach_2": 4,
+          "attackercaptures": 1,
+          "defenders": 5
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 7,
+          "immediate_escape": 1,
+          "escape_reach_2": 7,
+          "attackercaptures": 4,
+          "defenders": 5
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 8,
+          "immediate_escape": 1,
+          "escape_reach_2": 7,
+          "attackercaptures": 3,
+          "defenders": 5
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 2,
+          "defenders": 5
+        },
+        {
+          "ply": 40,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 8,
+          "immediate_escape": 1,
+          "escape_reach_2": 12,
+          "attackercaptures": 0,
+          "defenders": 4
+        }
+      ],
+      "first_immediate_escape": 18,
+      "first_reach_2": 2,
+      "missed_mates": [],
+      "final": {
+        "ply": 44,
+        "terminal": "D",
+        "defenders": 4,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/feature_without_w8/games.json:2",
+      "our_side": "D",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 27,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/feature_without_w8/games.json:3",
+      "our_side": "A",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 38,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 0,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 1,
+          "escape_reach_2": 12,
+          "attackercaptures": 1,
+          "defenders": 8
+        },
+        {
+          "ply": 28,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 32,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 0,
+          "defenders": 8
+        },
+        {
+          "ply": 36,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 12,
+          "immediate_escape": 1,
+          "escape_reach_2": 15,
+          "attackercaptures": 1,
+          "defenders": 8
+        }
+      ],
+      "first_immediate_escape": 24,
+      "first_reach_2": 10,
+      "missed_mates": [],
+      "final": {
+        "ply": 38,
+        "terminal": "D",
+        "defenders": 8,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "reports/historical_analysis/paired_validation/feature_without_w8/games.json:4",
+      "our_side": "D",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 35,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "phase3/v3_v4/1",
+      "our_side": "A",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 12,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 7,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 5,
+          "defenders": 6
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 8,
+          "immediate_escape": 1,
+          "escape_reach_2": 9,
+          "attackercaptures": 2,
+          "defenders": 5
+        }
+      ],
+      "first_immediate_escape": 8,
+      "first_reach_2": 2,
+      "missed_mates": [],
+      "final": {
+        "ply": 12,
+        "terminal": "D",
+        "defenders": 5,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "phase3/v3_v4/2",
+      "our_side": "D",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 42,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 42,
+        "terminal": "D",
+        "defenders": 4,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "phase3/v3_v4/3",
+      "our_side": "A",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 6,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 9,
+          "immediate_escape": 2,
+          "escape_reach_2": 11,
+          "attackercaptures": 2,
+          "defenders": 7
+        }
+      ],
+      "first_immediate_escape": 4,
+      "first_reach_2": 2,
+      "missed_mates": [],
+      "final": {
+        "ply": 6,
+        "terminal": "D",
+        "defenders": 6,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "phase3/v3_v4/4",
+      "our_side": "D",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 34,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "phase3/v3_v4/5",
+      "our_side": "A",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 28,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 3,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 1,
+          "immediate_escape": 0,
+          "escape_reach_2": 1,
+          "attackercaptures": 0,
+          "defenders": 6
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 5,
+          "immediate_escape": 1,
+          "escape_reach_2": 6,
+          "attackercaptures": 1,
+          "defenders": 6
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 3,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 1,
+          "defenders": 6
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 1,
+          "defenders": 6
+        },
+        {
+          "ply": 20,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 1,
+          "escape_reach_2": 3,
+          "attackercaptures": 0,
+          "defenders": 5
+        },
+        {
+          "ply": 24,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 8,
+          "immediate_escape": 1,
+          "escape_reach_2": 12,
+          "attackercaptures": 2,
+          "defenders": 5
+        }
+      ],
+      "first_immediate_escape": 8,
+      "first_reach_2": 4,
+      "missed_mates": [],
+      "final": {
+        "ply": 28,
+        "terminal": "D",
+        "defenders": 5,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "phase3/v3_v4/6",
+      "our_side": "D",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 36,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 36,
+        "terminal": "D",
+        "defenders": 2,
+        "attackercaptures": null
+      }
+    },
+    {
+      "game_id": "phase3/v3_v4/7",
+      "our_side": "A",
+      "winner": "DRAW",
+      "termination": "repetition",
+      "plies": 17,
+      "events": [
+        {
+          "ply": 0,
+          "king_adjacent_attackers": 0,
+          "supported_attackers": 0,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 0,
+          "attackercaptures": 2,
+          "defenders": 8
+        },
+        {
+          "ply": 4,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 0,
+          "king_moves": 4,
+          "immediate_escape": 0,
+          "escape_reach_2": 3,
+          "attackercaptures": 0,
+          "defenders": 7
+        },
+        {
+          "ply": 8,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 2,
+          "immediate_escape": 0,
+          "escape_reach_2": 2,
+          "attackercaptures": 2,
+          "defenders": 7
+        },
+        {
+          "ply": 12,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 5,
+          "immediate_escape": 0,
+          "escape_reach_2": 5,
+          "attackercaptures": 1,
+          "defenders": 6
+        },
+        {
+          "ply": 16,
+          "king_adjacent_attackers": 1,
+          "supported_attackers": 1,
+          "king_moves": 6,
+          "immediate_escape": 1,
+          "escape_reach_2": 13,
+          "attackercaptures": 0,
+          "defenders": 5
+        }
+      ],
+      "first_immediate_escape": 14,
+      "first_reach_2": 2,
+      "missed_mates": [],
+      "final": {}
+    },
+    {
+      "game_id": "phase3/v3_v4/8",
+      "our_side": "D",
+      "winner": "D",
+      "termination": "king_escaped",
+      "plies": 16,
+      "events": [],
+      "first_immediate_escape": null,
+      "first_reach_2": null,
+      "missed_mates": [],
+      "final": {
+        "ply": 16,
+        "terminal": "D",
+        "defenders": 6,
+        "attackercaptures": null
+      }
+    }
+  ]
+}

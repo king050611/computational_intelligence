@@ -36,7 +36,8 @@ class EnhancedSearchTests(unittest.TestCase):
                     score, pv = session(side).visit(board, side, 2, -inf, inf, ())
                     other = "D" if side == "A" else "A"
                     path = (get_state_key(board, side),)
-                    exact = {move: exact_score(apply_move(board, move, side), other, side, 1, path)
+                    # Children sit at ply 1, so the oracle must use the same mate distance.
+                    exact = {move: exact_score(apply_move(board, move, side), other, side, 1, path, 1)
                              for move in get_legal_moves(board, side)}
                     self.assertEqual(score, max(exact.values()))
                     self.assertEqual(exact[pv[0]], score)
@@ -82,7 +83,7 @@ class EnhancedSearchTests(unittest.TestCase):
             stats = {}
             move = choose_enhanced(board, side, deadline=inf, stats=stats)
             self.assertEqual(check_winner(apply_move(board, move, side), other), side)
-            self.assertEqual(stats["score"], WIN_SCORE)
+            self.assertGreaterEqual(stats["score"], WIN_SCORE - 1)
 
     def test_hints_are_bounded_and_keep_deeper_entries(self):
         hints = MoveHints(1)

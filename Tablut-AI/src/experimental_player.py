@@ -3,7 +3,9 @@ from time import perf_counter
 
 from random import Random
 from config.experimental import SearchOptions, AVAILABLE_STRATEGIES
+from config.settings import GAME_TIME_LIMIT, TIME_SAFETY_MARGIN
 from src.enhanced_search import choose_enhanced
+from src.evaluation import for_root
 from src.game import apply_move, get_legal_moves, get_state_key, parse_board
 from src.time_control import TimeManager
 from src.tactics import is_urgent
@@ -36,7 +38,11 @@ class ExperimentalPlayer:
                 self.history.append(get_state_key(self.opening, "A"))
             moves = get_legal_moves(board, side)
             soft = None
-            if isinstance(self.clock, AdaptiveTimeManager):
+            if self.options.node_budget:
+                # Fixed-node experiment mode: reproducible decisions, wall clock only as a guard.
+                remaining = max(1.0, GAME_TIME_LIMIT - TIME_SAFETY_MARGIN - getattr(self.clock, "spent", 0.0))
+                hard = start + remaining
+            elif isinstance(self.clock, AdaptiveTimeManager):
                 _, maximum = self.clock.deadlines(start, 1.6)
                 complexity = 1.0
                 if len(moves) == 1:
@@ -49,7 +55,7 @@ class ExperimentalPlayer:
             if stats is not None:
                 stats.update(strategy=self.strategy, budget_seconds=hard - start)
             move = self.rng.choice(moves) if self.strategy == "random" else choose_enhanced(
-                board, side, evaluator=self.evaluator, deadline=hard, soft_deadline=soft,
+                board, side, evaluator=for_root(self.evaluator, side), deadline=hard, soft_deadline=soft,
                 history=self.history, stats=stats, options=self.options, moves=moves,
             )
             if stats is not None and self.strategy == "random":

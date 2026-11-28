@@ -1,0 +1,31 @@
+{
+  "sources": [
+    "reports\\external_analysis\\corpus_phase3_matches.jsonl",
+    "reports\\external_analysis\\corpus_v6_attacker112.jsonl"
+  ],
+  "totals": {
+    "input": 166,
+    "accepted": 153,
+    "rejected": 0,
+    "duplicate": 13
+  },
+  "by_source": {
+    "corpus_phase3_matches:input": 54,
+    "corpus_phase3_matches:accepted": 47,
+    "corpus_phase3_matches:duplicate": 7,
+    "corpus_v6_attacker112:input": 112,
+    "corpus_v6_attacker112:accepted": 106,
+    "corpus_v6_attacker112:duplicate": 6
+  },
+  "winners": {
+    "D": 69,
+    "DRAW": 57,
+    "A": 27
+  },
+  "terminations": {
+    "king_escaped": 69,
+    "repetition": 57,
+    "king_captured": 27
+  },
+  "rejected": []
+}

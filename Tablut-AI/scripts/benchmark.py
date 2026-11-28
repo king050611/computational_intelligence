@@ -11,7 +11,7 @@ import platform
 import random
 import sys
 import subprocess
-from dataclasses import asdict
+from dataclasses import asdict, replace
 from datetime import datetime, timezone
 from pathlib import Path
 from time import perf_counter
@@ -201,13 +201,15 @@ def main():
     parser.add_argument("--output",type=Path)
     parser.add_argument("--openings", type=Path, help="Use each opening twice, swapping roles")
     parser.add_argument("--max-depth", type=int, default=4, help="Maximum iterative-deepening depth")
-    parser.add_argument("--tt-capacity", type=int, default=20_000, help="Zero disables move hints")
+    parser.add_argument("--tt-capacity", type=int, default=20_000, help="Zero disables the transposition table")
+    parser.add_argument("--node-budget", type=int, default=0, help="Fixed node budget per move; zero uses the wall clock")
     parser.add_argument("--no-ordering", action="store_true", help="Disable experimental move ordering")
+    parser.add_argument("--draw-policy", action="store_true", help="Enable the experimental V6 draw ordering for our side")
     parser.add_argument("--record-search", action="store_true", help="Record decision statistics")
     args=parser.parse_args()
     openings, opening_sha = None, None
     try:
-        options = SearchOptions(args.max_depth, args.tt_capacity, not args.no_ordering)
+        options = SearchOptions(args.max_depth, args.tt_capacity, not args.no_ordering, args.node_budget)
         if args.openings:
             openings, opening_sha = read_openings(args.openings)
             if args.games is not None and args.games != 2 * len(openings):
@@ -238,9 +240,11 @@ def main():
     if output.exists():
         parser.error(f"Output already exists: {output}")
     manifest = experiment_manifest(options, opening_sha)
+    manifest["candidate_draw_policy"] = args.draw_policy
 
-    def make_bot(strategy, seed, board, evaluator=None):
-        return ExperimentalPlayer(strategy, opening=board, options=options,
+    def make_bot(strategy, seed, board, evaluator=None, *, candidate=False):
+        active_options = replace(options, draw_policy=True) if candidate and args.draw_policy else options
+        return ExperimentalPlayer(strategy, opening=board, options=active_options,
                                   record_search=args.record_search, evaluator=evaluator, seed=seed)
 
     manifest["evaluator"] = "evolutionary_six_features" if args.model else "hand_tuned"
@@ -258,7 +262,7 @@ def main():
                 opening_id, board = openings[i//2]
                 game.board = [list(row) for row in board]
             seed = args.seed + (i//2 if openings else i)
-            ours = Timed(make_bot(args.strategy, seed, game.board, evaluator))
+            ours = Timed(make_bot(args.strategy, seed, game.board, evaluator, candidate=True))
             other = Timed(external or make_bot(args.opponent, seed, game.board, opponent_evaluator))
             a,d=(ours,other) if side=="A" else (other,ours)
             start=perf_counter()
@@ -308,4 +312,12 @@ def main():
 
 if __name__=="__main__":
     multiprocessing.freeze_support()
-    main()
+    if "--research" in sys.argv[1:] or ("--output" in sys.argv[1:] and "--pairs" in sys.argv[1:]):
+        from scripts.generate_research_games import main as research
+        from src.role_player import role_spec
+        argv = [value for value in sys.argv[1:] if value != "--research"]
+        # Without a fixed side the same two engine/model bundles swap roles.
+        side = argv[argv.index("--candidate-side")+1] if "--candidate-side" in argv else "A"
+        research(argv, candidate=role_spec(side), control=role_spec("D" if side == "A" else "A"))
+    else:
+        main()
