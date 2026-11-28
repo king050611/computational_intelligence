@@ -68,6 +68,26 @@ def for_root(evaluator, side):
     return evaluator.for_side(side) if isinstance(evaluator, RoleEvaluator) else evaluator
 
 
+@dataclass(frozen=True)
+class AttackerStrategyEvaluator:
+    """An opt-in attack-root bonus on the existing zero-sum evaluator."""
+    base: WeightedEvaluator
+    strategy: str
+
+    def __post_init__(self):
+        if self.strategy not in ("A1", "A2", "A3"):
+            raise ValueError("Attacker strategy must be A1, A2 or A3")
+
+    def __call__(self, board, side):
+        from src.blockade import capture_score, control_score
+        bonus = 0.0
+        if self.strategy in ("A1", "A3"):
+            bonus += (120 if self.strategy == "A1" else 60) * control_score(board)
+        if self.strategy in ("A2", "A3"):
+            bonus += (120 if self.strategy == "A2" else 60) * capture_score(board, detailed=False)
+        return self.base(board, side) + (bonus if side == "A" else -bonus)
+
+
 def load_evaluator(path):
     data=json.loads(Path(path).read_text(encoding="utf-8"))
     if isinstance(data, dict) and data.get("schema_version") == 3:

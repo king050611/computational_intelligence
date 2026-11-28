@@ -1,31 +1,8 @@
-"""V7 Phase 2 analysis-only metrics: escape levels, control, region-aware capture.
+"""V7 escape, attacker-attributed control and rule-aware capture metrics."""
+from functools import lru_cache
 
-Design notes (fixes from the Phase 1 review):
-
-* ``immediate_escape``   - one king move reaches an edge; a win for the defender.
-* ``geometric_escape``   - edge squares reachable in <=N king moves, simulating the
-  board **after each king step** (the vacated square becomes empty, or X when the king
-  leaves the castle). Guards do not move and attackers do not reply: this is explicitly
-  a geometric bound, not a threat assessment.
-* ``tactical_escape``    - the same two-step bound, but a route is discarded when the
-  attacker could capture the king on the intermediate square. This still ignores the
-  attacker's *blocking* replies, so it is a lower bound on real safety; anything that
-  needs full replies belongs to search, not to a leaf evaluator.
-
-* ``control_score`` and ``capture_score`` are separate on purpose: a position can be
-  fully controlled without a single attacker touching the king, and it can have a
-  capture formation without controlling an escape. The Phase 1 single label conflated
-  the two, which the review correctly flagged.
-
-* ``capture_formation`` follows the three referee regions (castle / beside-castle /
-  open board) and reports what is missing, what is reachable next move, and whether the
-  defender could break the formation. Actual capture is always confirmed by the rule
-  engine (``check_winner``), never inferred.
-
-Nothing in this module is imported by the search or the evaluator.
-"""
 from config.settings import CASTLE, DIRECTIONS
-from src.game import apply_move, check_winner, get_legal_moves, get_piece_moves
+from src.game import apply_move, check_winner, get_legal_moves, get_piece_moves, get_state_key, king_capture_supported
 
 EDGE = {0, 8}
 NEAR_CASTLE = {(4, 3), (4, 4), (4, 5), (3, 4), (5, 4)}
@@ -117,26 +94,36 @@ def king_capturable(board):
     return _king_capture_move(board) is not None
 
 
-def tactical_escape(board, depth=2):
-    """Two-step escapes whose intermediate square is not already a capture for the attacker."""
-    king = king_square(board)
-    if king is None:
+def tactical_escape(board, depth=2, history=()):
+    """Count defender first moves that force an escape within two defender turns.
+
+    Every legal attacker reply is considered, including captures, interceptions
+    and repetition. A guard may make the first move. The input is defender to move.
+    """
+    if depth not in (1, 2):
+        raise ValueError("Expected one or two defender turns")
+    if check_winner(board, "D", history) is not None:
         return 0
-    first_moves = king_moves(board)
-    edges = set()
-    for first in first_moves:
-        if first[0] in EDGE or first[1] in EDGE:
-            edges.add(first)
-            continue
-        if depth < 2:
-            continue
-        after_first = board_with_king_at(board, king, first)
-        if king_capturable(after_first):
-            continue
-        for second in king_moves(after_first):
-            if second[0] in EDGE or second[1] in EDGE:
-                edges.add(second)
-    return len(edges)
+    history = set(history) | {get_state_key(board, "D")}
+    count = 0
+    for move in get_legal_moves(board, "D"):
+        child = apply_move(board, move, "D")
+        outcome = check_winner(child, "A", history)
+        if outcome == "D" and any(coord in EDGE for coord in king_square(child)):
+            count += 1
+        elif depth == 2 and outcome is None:
+            following = history | {get_state_key(child, "A")}
+            if all(_escape_after_reply(apply_move(child, reply, "A"), following)
+                   for reply in get_legal_moves(child, "A")):
+                count += 1
+    return count
+
+
+def _escape_after_reply(board, history):
+    outcome = check_winner(board, "D", history)
+    return (outcome == "D" and any(coord in EDGE for coord in king_square(board))) or (
+        outcome is None and immediate_escape(board) > 0
+    )
 
 
 def adjacent_attackers(board):
@@ -193,107 +180,161 @@ def region_of(king):
     return "field"
 
 
-def capture_formation(board):
-    """Region-aware capture requirement, progress, reachability and defender counter-play."""
+def _capture_paths(king):
+    r, c = king
+    neighbours = [(r + dr, c + dc) for dr, dc in DIRECTIONS]
+    if region_of(king) != "field":
+        return [("castle", [p for p in neighbours if p != CASTLE])]
+    return [("horizontal", [(r, c-1), (r, c+1)]),
+            ("vertical", [(r-1, c), (r+1, c)])]
+
+
+def capture_formation(board, detailed=True):
+    """Select one capture structure, giving priority to verified legal finishes."""
     king = king_square(board)
-    empty = dict(region="none", required=0, occupied=0, completion=0.0, missing=[],
-                 reachable=[], immediate_capture=False, defender_can_break=False)
+    empty = dict(region=region_of(king), required=0, occupied=0, completion=0.0,
+                 missing=[], reachable=[], immediate_capture=False, defender_can_break=False,
+                 formation_complete=False, axis=None, paths=[])
     if king is None:
         return empty
-    r, c = king
-    region = region_of(king)
-    neighbours = [(r + dr, c + dc) for dr, dc in DIRECTIONS]
-    in_board = [square for square in neighbours if 0 <= square[0] < 9 and 0 <= square[1] < 9]
-    enemy_pieces = "AX" if region in ("castle", "beside_castle") else "AX"
-    occupied = [square for square in in_board if board[square[0]][square[1]] in enemy_pieces]
-    missing = [square for square in in_board if square not in occupied]
-
-    if region in ("castle", "beside_castle"):
-        required = len(in_board)
-        completion = len(occupied) / required if required else 0.0
-        complete = len(missing) == 0
-    else:
-        # Open board: a capture needs an opposing pair with at least one attacker.
-        pairs = [((dr, dc), (-dr, -dc)) for dr, dc in DIRECTIONS]
-        best = 0
-        for (dr, dc), (dr2, dc2) in pairs:
-            first, second = (r + dr, c + dc), (r + dr2, c + dc2)
-            if not all(0 <= y < 9 and 0 <= x < 9 for y, x in (first, second)):
+    paths = []
+    for axis, squares in _capture_paths(king):
+        if not all(0 <= r < 9 and 0 <= c < 9 for r, c in squares):
+            continue
+        support = {p for p in squares if board[p[0]][p[1]] == "A"}
+        missing = [p for p in squares if p not in support]
+        reachable = set()
+        winning = False
+        for dest in missing:
+            if board[dest[0]][dest[1]] != ".":
                 continue
-            values = (board[first[0]][first[1]], board[second[0]][second[1]])
-            score = sum(1 for value in values if value in "AX")
-            if "A" in values:
-                best = max(best, score)
-        required = 2
-        completion = best / required
-        complete = best == 2
+            for origin, piece in _first_blockers(board, dest, "ADK"):
+                if piece != "A" or origin in support:
+                    continue
+                reachable.add(dest)
+                if king_capture_supported(board, king, dest, origin):
+                    winning = True
+        fragile = False
+        if detailed and support:
+            for move in get_legal_moves(board, "D"):
+                if move[0] == king:
+                    continue
+                child = apply_move(board, move, "D")
+                if any(child[r][c] != "A" for r, c in support):
+                    fragile = True
+                    break
+        paths.append(dict(axis=axis, required=len(squares), occupied=len(support),
+                          completion=len(support)/len(squares), missing=missing,
+                          reachable=sorted(reachable), immediate_capture=winning,
+                          formation_complete=not missing, defender_can_break=fragile))
+    if not paths:
+        return empty
+    best = max(paths, key=lambda path: (path["immediate_capture"], _formation_score(path)))
+    return {**empty, **best} if not detailed else {**empty, **best, "paths": paths}
 
-    attackers = [position for position in in_board if board[position[0]][position[1]] == "A"]
-    reachable = []
-    for square in missing:
-        for move in get_legal_moves(board, "A"):
-            if move[1] == square:
-                reachable.append(square)
-                break
-    capture_move = _king_capture_move(board)
-    empty.update(region=region, required=required, occupied=len(occupied),
-                 completion=round(completion, 3), missing=missing, reachable=reachable,
-                 immediate_capture=capture_move is not None,
-                 defender_can_break=capturable_adjacent_attackers(board) > 0,
-                 formation_complete=complete)
-    return empty
+
+def _formation_score(path):
+    ratio = len(path["reachable"])/max(1, len(path["missing"]))
+    return max(0.0, (0.5*path["completion"] + 0.3*path["immediate_capture"]
+                     + 0.2*ratio - 0.25*path["defender_can_break"]))
 
 
-def control_score(board):
-    """[0,1] containment of the king, independent of whether a capture is available."""
-    king = king_square(board)
-    if king is None:
-        return 0.0
-    immediate = 1.0 if immediate_escape(board) == 0 else 0.0
-    geometric = 1.0 if geometric_escape(board, 2) == 0 else 0.0
-    mobility = max(0.0, 1.0 - len(king_moves(board)) / 4)
+def _first_blockers(board, king, pieces):
     r, c = king
-    rays = 0
     for dr, dc in DIRECTIONS:
         row, col = r + dr, c + dc
         while 0 <= row < 9 and 0 <= col < 9:
-            if board[row][col] in "ADK":
-                if board[row][col] == "A":
-                    rays += 1
+            cell = board[row][col]
+            if cell in pieces:
+                yield (row, col), cell
                 break
-            row += dr
-            col += dc
-    return round(0.4 * immediate + 0.3 * geometric + 0.15 * mobility + 0.15 * (rays / 4), 3)
+            row, col = row + dr, col + dc
 
 
-def capture_score(board):
-    """[0,1] how close the attacker is to a legal capture, penalised when it is fragile."""
-    formation = capture_formation(board)
-    if formation["region"] == "none":
-        return 0.0
-    progress = 0.5 * formation["completion"]
-    progress += 0.3 if formation["immediate_capture"] else 0.0
-    progress += 0.2 * (len(formation["reachable"]) / max(1, len(formation["missing"]))) if formation["missing"] else 0.2
-    if formation["defender_can_break"]:
-        progress -= 0.25
-    return round(max(0.0, min(1.0, progress)), 3)
+def _remove(board, squares):
+    grid = [list(row) for row in board]
+    for r, c in squares:
+        grid[r][c] = "."
+    return tuple(map(tuple, grid))
 
 
-def classify(board):
+def _control_components(board):
+    king = king_square(board)
+    if king is None or any(coord in EDGE for coord in king):
+        return 0, 0, 0, (), ()
+    blockers = list(_first_blockers(board, king, "AD"))
+    direct = tuple(p for p, piece in blockers if piece == "A")
+    defenders = tuple(p for p, piece in blockers if piece == "D")
+    attackers = tuple((r,c) for r, row in enumerate(board) for c, cell in enumerate(row) if cell == "A")
+    actual = geometric_escape(board)
+    without = geometric_escape(_remove(board, attackers)) if attackers else actual
+    denied = (without-actual)/max(1, without)
+    return len(defenders), len(direct), denied, attackers, direct
+
+
+@lru_cache(maxsize=8192)
+def _fast_control_score(board):
+    """Cheap attacker-attributed geometry for leaf evaluation."""
+    _, direct, denied, _, _ = _control_components(board)
+    return round(0.30*direct/4 + 0.70*denied, 3)
+
+
+
+def control_score(board):
+    return _fast_control_score(tuple(tuple(row) for row in board))
+
+
+def control_details(board):
+    """Find exterior blockers and verify whether a defender capture breaks their control."""
+    own, direct, denied, attackers, direct_squares = _control_components(board)
+    if not attackers:
+        return dict(self_blockade=own, attacker_blockade=direct, controlled_corridor=0,
+                    open_corridors=0, key_blockers=[], unstable_blockers=[], stable_blockade=False)
+    actual = geometric_escape(board)
+    key = set(direct_squares)
+    key.update(p for p in attackers if p not in key and geometric_escape(_remove(board, [p])) > actual)
+    vulnerable = set()
+    interceptable = total = 0
+    for move in get_legal_moves(board, "D"):
+        child = apply_move(board, move, "D")
+        captured = {p for p in key if child[p[0]][p[1]] != "A"}
+        if captured:
+            restored = [list(row) for row in child]
+            for r, c in captured:
+                restored[r][c] = "A"
+            if geometric_escape(child) > geometric_escape(restored):
+                vulnerable.update(captured)
+        if check_winner(child, "A") is None and immediate_escape(child):
+            total += 1
+            if any(not _escape_after_reply(apply_move(child, reply, "A"), ())
+                   for reply in get_legal_moves(child, "A")):
+                interceptable += 1
+    return dict(self_blockade=own, attacker_blockade=direct, controlled_corridor=interceptable,
+                open_corridors=total, key_blockers=sorted(key), unstable_blockers=sorted(vulnerable),
+                stable_blockade=bool(key) and not vulnerable and not immediate_escape(board) and total == interceptable)
+
+
+def capture_score(board, detailed=True):
+    return round(_formation_score(capture_formation(board, detailed)), 3)
+
+
+def classify(board, history=()):
     """Two-dimensional label: control and capture are judged separately."""
     control = control_score(board)
-    capture = capture_score(board)
+    formation = capture_formation(board)
+    capture = round(_formation_score(formation), 3)
     control_label = "controlled" if control >= 0.75 else "leaky"
     capture_label = "capture_ready" if capture >= 0.5 else "no_capture"
     return dict(control=control, capture=capture,
                 control_label=control_label, capture_label=capture_label,
                 immediate_escape=immediate_escape(board),
                 geometric_escape=geometric_escape(board, 2),
-                tactical_escape=tactical_escape(board, 2),
+                tactical_escape=tactical_escape(board, 2, history),
+                **control_details(board),
                 king_moves=len(king_moves(board)),
                 adjacent_attackers=adjacent_attackers(board),
                 region=region_of(king_square(board)),
-                formation=capture_formation(board))
+                formation=formation)
 
 
 def snapshot(board):

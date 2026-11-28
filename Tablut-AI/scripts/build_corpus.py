@@ -13,7 +13,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src.game import apply_move, is_legal_move
+from src.game import apply_move, check_winner, get_state_key, has_any_move, is_legal_move, parse_board
 
 
 def normalise(game, source):
@@ -35,26 +35,52 @@ def game_key(record):
 
 def validate(record):
     """Replay the game; return (ok, reason) and the number of plies checked."""
-    board = tuple(map(tuple, record["initial_board"]))
-    side = "A"
-    for index, move in enumerate(record["moves"], start=1):
-        played = (tuple(move["from_square"]), tuple(move["to_square"]))
-        if not is_legal_move(board, played, side):
-            return False, f"ply {index}: illegal move {played}", index
-        child = apply_move(board, played, side)
-        if "board_after" in move:
-            recorded = tuple(map(tuple, move["board_after"]))
-            if recorded != child:
-                # Documented deviation: the referee writes '.' on the castle square
-                # when the king is captured there; our engine keeps 'X'.
-                normalised = tuple(tuple("X" if (r, c) == (4, 4) and piece == "." else piece
-                                         for c, piece in enumerate(row))
-                                   for r, row in enumerate(recorded))
-                if normalised != child:
-                    return False, f"ply {index}: board mismatch", index
-        board = child
-        side = "D" if side == "A" else "A"
-    return True, "", len(record["moves"])
+    index = 0
+    try:
+        board = parse_board(record["initial_board"])
+        side = "A"
+        history = set()
+        terminal = check_winner(board, side)
+        repeated = False
+        for index, event in enumerate(record["moves"], start=1):
+            if terminal is not None:
+                return False, f"ply {index}: move after terminal result", index
+            if event.get("player", side) != side or event.get("accepted", True) is not True:
+                return False, f"ply {index}: wrong side or rejected move", index
+            if "board_before" in event and parse_board(event["board_before"]) != board:
+                return False, f"ply {index}: board_before mismatch", index
+            played = (tuple(event["from_square"]), tuple(event["to_square"]))
+            if not is_legal_move(board, played, side):
+                return False, f"ply {index}: illegal move {played}", index
+            history.add(get_state_key(board, side))
+            child = apply_move(board, played, side)
+            if "board_after" in event:
+                after = [list(row) for row in event["board_after"]]
+                if after[4][4] == "." and board[4][4] == "K" and not any("K" in row for row in child):
+                    after[4][4] = "X"
+                if parse_board(after) != child:
+                    return False, f"ply {index}: board_after mismatch", index
+            board = child
+            side = "D" if side == "A" else "A"
+            repeated = get_state_key(board, side) in history
+            terminal = check_winner(board, side, history)
+        if terminal is None or terminal != record["winner"]:
+            return False, f"terminal winner mismatch: expected {terminal!r}", index
+        if index == 0:
+            return False, "empty game", index
+        if terminal == "DRAW":
+            reason = "repetition" if repeated and has_any_move(board, side) else "no_legal_moves"
+        elif terminal == "A":
+            reason = "king_captured"
+        elif any("K" in row for row in (board[0], board[-1])) or any(row[0] == "K" or row[-1] == "K" for row in board):
+            reason = "king_escaped"
+        else:
+            reason = "fewer_than_two_attackers"
+        if record["termination"] != reason:
+            return False, f"terminal reason mismatch: expected {reason}", index
+        return True, "", index
+    except (KeyError, IndexError, ValueError, TypeError) as exc:
+        return False, f"ply {index}: {exc}", index
 
 
 def main(argv=None):
@@ -78,14 +104,14 @@ def main(argv=None):
                 continue
             record = normalise(json.loads(line), source)
             stats[f"{source}:input"] += 1
-            key = game_key(record)
-            if key in seen:
-                stats[f"{source}:duplicate"] += 1
-                continue
             ok, reason, plies = validate(record)
             if not ok:
                 rejected.append(dict(game_id=record["game_id"], source=source, reason=reason))
                 stats[f"{source}:invalid"] += 1
+                continue
+            key = game_key(record)
+            if key in seen:
+                stats[f"{source}:duplicate"] += 1
                 continue
             seen.add(key)
             record["plies"] = plies

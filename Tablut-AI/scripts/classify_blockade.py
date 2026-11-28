@@ -16,9 +16,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src.blockade import (adjacent_attackers, classify, immediate_escape, king_square,
-                          ray_dests)
-from src.game import apply_move, check_winner, get_legal_moves
+from src.blockade import classify, immediate_escape, king_square
+from src.game import apply_move, check_winner, get_legal_moves, get_state_key
 
 EDGE = {0, 8}
 
@@ -29,10 +28,7 @@ def board_states(game):
     yield 0, "A", board
     side = "A"
     for index, move in enumerate(game.get("moves") or [], start=1):
-        if "board_after" in move:
-            board = tuple(map(tuple, move["board_after"]))
-        else:
-            board = apply_move(board, (tuple(move["from_square"]), tuple(move["to_square"])), side)
+        board = apply_move(board, (tuple(move["from_square"]), tuple(move["to_square"])), side)
         side = "D" if side == "A" else "A"
         yield index, side, board
 
@@ -57,7 +53,9 @@ def analyse_game(game):
     record = dict(game_id=game.get("game_id"), source=game.get("source"), match=game.get("match"),
                   winner=game.get("winner"), plies=len(states) - 1,
                   decisions=[], missed_mates=[], broke_blockade=[])
-    for index, (ply, side, board) in enumerate(states):
+    history = set()
+    for ply, side, board in states:
+        history.add(get_state_key(board, side))
         if side != "A" or ply + 1 >= len(states):
             continue
         move_entry = game["moves"][ply]
@@ -73,12 +71,15 @@ def analyse_game(game):
         distance_after = king_distance(king_square(child), tuple(move_entry["to_square"]))
         if distance_before is not None and distance_after is not None:
             approach = distance_before >= 3 and distance_after <= 2
-        label = classify(board)
+        label = classify(board, history)
         record["decisions"].append(dict(
             ply=ply, control=label["control"], capture=label["capture"],
             control_label=label["control_label"], capture_label=label["capture_label"],
             region=label["region"], immediate_escape_before=before, immediate_escape_after=after,
             geometric_escape=label["geometric_escape"], tactical_escape=label["tactical_escape"],
+            self_blockade=label["self_blockade"], attacker_blockade=label["attacker_blockade"],
+            controlled_corridor=label["controlled_corridor"], key_blockers=label["key_blockers"],
+            unstable_blockers=label["unstable_blockers"], stable_blockade=label["stable_blockade"],
             adjacent_attackers=label["adjacent_attackers"], approach=approach,
             mates_available=len(mates), missed_mate=missed,
             formation_completion=label["formation"]["completion"],

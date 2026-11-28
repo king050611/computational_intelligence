@@ -28,6 +28,13 @@ def worker(spec):
     if spec["nodes"]:
         settings["node_budget"]=spec["nodes"]
     model=load_evaluator(spec["model"]) if spec["model"] else None
+    if spec.get("attacker_strategy"):
+        from src.evaluation import AttackerStrategyEvaluator, RoleEvaluator
+        if model is None:
+            raise ValueError("An attacker strategy needs a base model")
+        attack = model.attacker if isinstance(model, RoleEvaluator) else model
+        defense = model.defender if isinstance(model, RoleEvaluator) else model
+        model = RoleEvaluator(AttackerStrategyEvaluator(attack, spec["attacker_strategy"]), defense)
     bot=ExperimentalPlayer("evolutionary_dynamic" if model else "enhanced_dynamic",
                            opening=spec["board"],evaluator=model,options=SearchOptions(**settings),record_search=True)
     print("ready",flush=True)
@@ -170,7 +177,10 @@ def main():
         parser.add_argument(f"--{prefix}-model",type=Path)
         parser.add_argument(f"--{prefix}-depth",type=int,default=4)
         parser.add_argument(f"--{prefix}-nodes",type=int,default=0)
+    parser.add_argument("--attacker-strategy", choices=("A1", "A2", "A3"))
     args=parser.parse_args()
+    if args.attacker_strategy and (args.candidate_side != "A" or not args.candidate_model):
+        parser.error("--attacker-strategy requires a fixed attacker and a candidate model")
     if min(args.pairs,args.workers)<1 or args.seconds<=5:
         parser.error("Positive pairs/workers and a budget above five seconds required")
     if args.workers>1 and (not(args.candidate_nodes and args.control_nodes)
@@ -193,6 +203,8 @@ def main():
         specs.append(dict(engine=str(engine),model=str(model.resolve()) if model else None,
                           model_sha256=sha256(model.read_bytes()).hexdigest() if model else None,
                           files=files,depth=depth,nodes=nodes,seconds=cap))
+    if args.attacker_strategy:
+        specs[0]["attacker_strategy"] = args.attacker_strategy
     excluded=set()
     for path in Path("data/positions").rglob("*holdout*_positions.jsonl"):
         for line in path.read_bytes().splitlines():
