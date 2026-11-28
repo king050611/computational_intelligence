@@ -13,7 +13,8 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "reference"))
 from Tablut import Tablut
 
-from src.game import apply_move, check_winner, get_legal_moves, has_any_move, initial_board
+from src.game import (apply_move, check_winner, get_legal_moves, get_state_key,
+                      has_any_move, initial_board)
 
 
 def board_with(pieces):
@@ -165,6 +166,52 @@ class TerminalVerdictTests(unittest.TestCase):
         self.assertTrue(over)
         self.assertEqual(winner, "A")
         self.assertEqual(check_winner(board, "D"), "A")
+
+
+class BlockadeAndRepetitionTests(unittest.TestCase):
+    """Reachable-position tests for the blockade/draw rules (review item 3.5)."""
+
+    def test_blocked_king_with_other_defender_moves_is_not_a_draw(self):
+        # The king is boxed in, but a guard still has a legal move: the game goes on.
+        board = board_with({(4, 4): "K", (3, 4): "A", (5, 4): "A", (4, 3): "A", (4, 5): "A",
+                            (1, 1): "D", (2, 6): "A"})
+        over, winner = referee_verdict(board, False)
+        self.assertFalse(over)
+        self.assertIsNone(winner)
+        self.assertIsNone(check_winner(board, "D"))
+
+    def test_blocked_king_and_no_defender_move_is_a_draw(self):
+        board = board_with({(4, 4): "K", (3, 4): "A", (5, 4): "A", (4, 3): "A", (4, 5): "A",
+                            (2, 6): "A"})
+        over, winner = referee_verdict(board, False)
+        self.assertTrue(over)
+        self.assertIsNone(winner)
+        self.assertEqual(check_winner(board, "D"), "DRAW")
+
+    def test_repetition_needs_the_same_position_and_side_to_move(self):
+        board = initial_board()
+        key = get_state_key(board, "A")
+        self.assertEqual(check_winner(board, "A", (key,)), "DRAW")
+        self.assertIsNone(check_winner(board, "A", (get_state_key(board, "D"),)))
+
+    def test_defender_can_open_its_own_corridor(self):
+        # A guard steps aside and immediately gives the king a ray to the edge.
+        board = board_with({(4, 4): "K", (4, 2): "D", (2, 2): "A", (2, 6): "A"})
+        after = apply_move(board, ((4, 2), (4, 1)), "D")
+        ok, expected = referee_after(board, ((4, 2), (4, 1)), False)
+        self.assertTrue(ok)
+        self.assertEqual(after, expected)
+        self.assertIn(((4, 4), (4, 8)), get_legal_moves(after, "D"))
+
+    def test_attacker_can_close_the_corridor_again(self):
+        board = board_with({(4, 4): "K", (4, 2): "D", (2, 2): "A", (2, 6): "A"})
+        after = apply_move(board, ((4, 2), (4, 1)), "D")
+        self.assertIn(((4, 4), (4, 8)), get_legal_moves(after, "D"))
+        blocked = apply_move(after, ((2, 6), (4, 6)), "A")
+        ok, expected = referee_after(after, ((2, 6), (4, 6)), True)
+        self.assertTrue(ok)
+        self.assertEqual(blocked, expected)
+        self.assertNotIn(((4, 4), (4, 8)), get_legal_moves(blocked, "D"))
 
 
 if __name__ == "__main__":

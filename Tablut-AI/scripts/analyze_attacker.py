@@ -81,11 +81,11 @@ def analyse_game(game, stride=4, perspective="attacker"):
         if heavy:
             data = snapshot(board)
         else:
-            from src.blockade import adjacent_attackers, escape_reachability, immediate_escape, king_moves
+            from src.blockade import adjacent_attackers, geometric_escape, immediate_escape, king_moves
             data = dict(king_adjacent_attackers=adjacent_attackers(board),
                         king_moves=len(king_moves(board)),
                         immediate_escape=immediate_escape(board),
-                        escape_reach_2=escape_reachability(board, 2))
+                        escape_reach_2=geometric_escape(board, 2))
         if data.get("immediate_escape", 0) > 0 and record["first_immediate_escape"] is None:
             record["first_immediate_escape"] = ply
         if data.get("escape_reach_2", 0) > 0 and record["first_reach_2"] is None:
