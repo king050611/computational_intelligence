@@ -5,8 +5,8 @@ V4 removes the duplicated move generations that dominated node cost:
 * legality is checked in O(path) instead of comparing against a freshly generated
   move list;
 * the terminal test uses ``has_any_move`` instead of building every move;
-* the repetition test is a key lookup instead of a full ``check_winner`` call;
-* scores are cached only when the subtree contained no repetition hit.
+* terminal wins precede repetition draws;
+* cached scores require the same repetition context and no repetition hit.
 
 Nothing here changes which moves are legal or how a game is won.
 """
@@ -26,7 +26,7 @@ WIN_SCORE = MATE_SCORE
 class SearchTimeout(Exception):
     """Discard an incomplete search iteration."""
 from src.tactics import (attacker_move_priority, immediate_escape_count, is_urgent,
-                         opponent, prioritize, structure_state)
+                         opponent, prioritize, prove_capture, structure_state)
 
 
 DEFAULT_EVALUATOR = WeightedEvaluator(BASE_WEIGHTS)
@@ -53,6 +53,7 @@ class EnhancedSearch:
         self.root_preferred = set()
         self.root_draw_moves = set()
         self.root_strategy_ranks = None
+        self.root_scores = {}
         self.killers = {}
         self.history_scores = {}
 
@@ -126,10 +127,10 @@ class EnhancedSearch:
         if self.node_budget and self.stats["nodes"] > self.node_budget:
             raise SearchTimeout()
         key = get_state_key(board, side)
-        if key in history:
+        terminal = check_winner(board, side)
+        if terminal is None and key in history:
             self.repetition_hits += 1
             return 0.0, ()
-        terminal = check_winner(board, side)
         self.check_time()
         if terminal is not None:
             if terminal == "DRAW":
@@ -142,7 +143,8 @@ class EnhancedSearch:
             self.check_time()
             return score, ()
 
-        cached = self.table.probe(key, depth, alpha, beta, ply)
+        context = frozenset(history) if self.options.tt_capacity else None
+        cached = self.table.probe(key, depth, alpha, beta, ply, context=context)
         if cached is not None:
             move = self.table.get(key)
             return cached, ((move,) if move else ())
@@ -159,6 +161,8 @@ class EnhancedSearch:
             child = self.children(board, move, side)
             score, tail = self.visit(child, opponent(side), depth - 1,
                                      alpha, beta, ancestors, ply + 1)
+            if ply == 0 and self.options.deepen_ties and self.side == "A":
+                self.root_scores[move] = score  # Fail-low scores can be upper bounds.
             if (maximizing and score > best) or (not maximizing and score < best):
                 best, pv = score, (move,) + tail
             if maximizing:
@@ -177,7 +181,7 @@ class EnhancedSearch:
         if pv and self.repetition_hits == repetitions_before:
             # Bounds must be compared with the window this node was entered with.
             flag = LOWER if best >= beta_start else UPPER if best <= alpha_start else EXACT
-            self.table.store(key, depth, best, flag, pv[0], ply)
+            self.table.store(key, depth, best, flag, pv[0], ply, context=context)
         return best, pv
 
 
@@ -209,6 +213,15 @@ def choose_enhanced(board, side, *, deadline, soft_deadline=None, history=(),
             move = info.immediate_wins[0]
             stats.update(score=WIN_SCORE - 1, pv=(move,), finish_reason="tactical_win")
             return move
+    if side == "A" and options.capture_proof:
+        now = perf_counter()
+        budget = min(1000, options.node_budget//10) if options.node_budget else 1000
+        proof = prove_capture(board, history, deadline=min(deadline,now+min(.1,max(0,deadline-now)*.1)),
+                              max_nodes=budget,moves=moves)
+        stats.update(capture_proof=proof.status,capture_proof_nodes=proof.nodes,nodes=proof.nodes)
+        if proof.status == "WIN":
+            stats.update(score=WIN_SCORE-len(proof.line),pv=proof.line,finish_reason="capture_proof")
+            return proof.line[0]
     best = moves[0]
     search = EnhancedSearch(side, deadline, evaluator or evaluate, options, stats)
     search.root_preferred = set(preferred)
@@ -220,6 +233,7 @@ def choose_enhanced(board, side, *, deadline, soft_deadline=None, history=(),
                                   if get_state_key(apply_move(board, move, side), other) in history}
         stats["root_draw_moves"] = len(search.root_draw_moves)
     stats["finish_reason"] = "depth_completed"
+    completed_root_scores = {}
     for depth in range(1, options.max_depth + 1):
         if perf_counter() >= deadline:
             stats.update(timed_out=True, fallback_used=True, finish_reason="search_deadline")
@@ -228,6 +242,7 @@ def choose_enhanced(board, side, *, deadline, soft_deadline=None, history=(),
             stats.update(fallback_used=True, finish_reason="soft_deadline")
             break
         try:
+            search.root_scores.clear()
             score, pv = search.visit(board, side, depth, -inf, inf, history, moves=moves)
         except SearchTimeout:
             stats.update(timed_out=True, fallback_used=True, finish_reason="search_deadline")
@@ -236,8 +251,36 @@ def choose_enhanced(board, side, *, deadline, soft_deadline=None, history=(),
             stats["finish_reason"] = "terminal_position"
             return None
         best = pv[0]
+        completed_root_scores = search.root_scores.copy()
         stats.update(completed_depth=depth, score=score, pv=pv)
         if abs(score) >= MATE_BOUND:
             stats["finish_reason"] = "proven_terminal"
             break
+    if (side == "A" and options.deepen_ties and stats["completed_depth"] >= 4
+            and abs(stats["score"]) < MATE_BOUND and len(completed_root_scores)>1):
+        ranked = sorted((move for move in completed_root_scores if move != best
+                         and completed_root_scores[move] >= stats["score"]-.5),
+                        key=completed_root_scores.get,reverse=True)
+        candidates = [best,*ranked[:3]]
+        if len(candidates)>1:
+            ancestors = (*history,get_state_key(board,side))
+            # Use full windows at one common depth. A partial round cannot change the move.
+            depths = (5,6) if len(moves)<=12 else (5,)
+            for depth in (d for d in depths if d > stats["completed_depth"]):
+                results = []
+                try:
+                    for move in candidates:
+                        search.check_time()
+                        if soft_deadline is not None and perf_counter() >= soft_deadline:
+                            raise SearchTimeout
+                        child = search.children(board,move,side)
+                        score, tail = search.visit(child,"D",depth-1,-inf,inf,ancestors,ply=1)
+                        results.append((score,(move,*tail)))
+                except SearchTimeout:
+                    stats["tie_research"] = "incomplete"
+                    break
+                score,pv = max(results,key=lambda item:item[0])
+                best = pv[0]
+                candidates = [best,*[move for move in candidates if move != best]]
+                stats.update(completed_depth=depth,score=score,pv=pv,tie_research="completed")
     return best

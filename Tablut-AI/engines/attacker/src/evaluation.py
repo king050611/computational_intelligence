@@ -47,7 +47,7 @@ class WeightedEvaluator:
     def __call__(self,board,side):
         if side not in ("A","D"):
             raise ValueError("Side must be A or D")
-        score=fsum(w*f for w,f in zip(self.weights,extract_features(board)))
+        score=fsum(w*f for w,f in zip(self.weights,extract_features(board, escape_distance=bool(self.weights[6]), king_threat=bool(self.weights[7]))))
         return score if side=="D" else -score
 
 def load_evaluator(path):

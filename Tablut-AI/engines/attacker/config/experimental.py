@@ -9,6 +9,8 @@ class SearchOptions:
     order_moves: bool = True
     node_budget: int = 0
     attacker_ordering: bool = False
+    capture_proof: bool = False
+    deepen_ties: bool = False
 
     def __post_init__(self):
         if self.max_depth < 1 or self.tt_capacity < 0:

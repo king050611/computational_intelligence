@@ -27,6 +27,7 @@ def worker(spec):
     settings={"max_depth":spec["depth"]}
     if spec["nodes"]:
         settings["node_budget"]=spec["nodes"]
+    settings.update(spec.get("search_options", {}))
     model=load_evaluator(spec["model"]) if spec["model"] else None
     bot=ExperimentalPlayer("evolutionary_dynamic" if model else "enhanced_dynamic",
                            opening=spec["board"],evaluator=model,options=SearchOptions(**settings),record_search=True)
@@ -187,6 +188,8 @@ def main(argv=None, *, candidate=None, control=None):
     parser.add_argument("--workers",type=int,default=1)
     parser.add_argument("--candidate-side",choices=("A","D"))
     parser.add_argument("--resume",action="store_true")
+    parser.add_argument("--capture-proof",action="store_true")
+    parser.add_argument("--deepen-ties",action="store_true")
     for prefix in ("candidate","control"):
         parser.add_argument(f"--{prefix}-engine",type=Path,default=ROOT)
         parser.add_argument(f"--{prefix}-model",type=Path)
@@ -197,6 +200,8 @@ def main(argv=None, *, candidate=None, control=None):
             parser.set_defaults(**{f"{label}_{k}": Path(v) if k in ("engine","model") else v
                                    for k,v in spec.items()})
     args=parser.parse_args(argv)
+    if (args.capture_proof or args.deepen_ties) and args.candidate_side != "A":
+        parser.error("Experimental options require --candidate-side A")
     if min(args.pairs,args.workers)<1 or args.seconds<=5:
         parser.error("Positive pairs/workers and a budget above five seconds required")
     if args.workers>1 and (not(args.candidate_nodes and args.control_nodes)
@@ -219,6 +224,8 @@ def main(argv=None, *, candidate=None, control=None):
         specs.append(dict(engine=str(engine),model=str(model.resolve()) if model else None,
                           model_sha256=sha256(model.read_bytes()).hexdigest() if model else None,
                           files=files,depth=depth,nodes=nodes,seconds=cap))
+    if args.capture_proof or args.deepen_ties:
+        specs[0]["search_options"] = dict(capture_proof=args.capture_proof,deepen_ties=args.deepen_ties)
     opening_sha=None
     if args.openings:
         from scripts.benchmark import read_openings

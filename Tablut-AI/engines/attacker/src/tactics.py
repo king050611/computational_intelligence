@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from time import perf_counter
 
-from src.game import apply_move, check_winner, get_legal_moves, get_state_key
+from src.game import apply_move, check_winner, get_legal_moves, get_state_key, is_legal_move, king_capture_supported
 
 
 def opponent(side):
@@ -112,78 +112,76 @@ def king_region(board):
 
 
 def _gap_reachable(board, square):
-    """True when some attacker can slide into an empty square (first piece on a ray is A)."""
+    """All legal attacker origins for a destination, scanning backwards."""
     r, c = square
+    if board[r][c] != ".":
+        return ()
+    origins = []
     for dr, dc in DIRECTIONS:
         row, col = r + dr, c + dc
         while 0 <= row < 9 and 0 <= col < 9:
             piece = board[row][col]
-            if piece == "X":
-                row += dr
-                col += dc
-                continue
-            if piece == "A":
-                return True
-            break
-    return False
+            if piece not in ".X":
+                if piece == "A" and is_legal_move(board, ((row, col), square), "A"):
+                    origins.append((row, col))
+                break
+            row, col = row + dr, col + dc
+    return tuple(origins)
 
 
-def _neighbour_squares(king):
+def _capture_axes(king):
     r, c = king
-    return [(r + dr, c + dc) for dr, dc in DIRECTIONS if 0 <= r + dr < 9 and 0 <= c + dc < 9]
+    if king in NEAR_CASTLE:
+        return (("castle", tuple((r+dr,c+dc) for dr,dc in DIRECTIONS
+                                 if (r+dr,c+dc) != CASTLE)),)
+    return (("horizontal", ((r,c-1),(r,c+1))), ("vertical", ((r-1,c),(r+1,c))))
 
 
 def structure_state(board):
-    """Region-aware capture requirement: completion, gaps and whether each gap is reachable."""
+    """Keep legal origins and necessary support separate for each capture axis."""
     king = king_square(board)
-    state = dict(region="none", required=0, occupied=0, completion=0.0, gaps=[], reachable=[])
-    if king is None:
-        return state
     region = king_region(board)
-    neighbours = _neighbour_squares(king)
-    if region in ("castle", "beside_castle"):
-        occupied = [sq for sq in neighbours if board[sq[0]][sq[1]] in "AX"]
-        required = len(neighbours)
-        gaps = [sq for sq in neighbours if sq not in occupied]
-        completion = len(occupied) / required if required else 0.0
-    else:
-        occupied, gaps, completion = [], [], 0.0
-        r, c = king
-        for dr, dc in DIRECTIONS:
-            first, second = (r + dr, c + dc), (r - dr, c - dc)
-            if not (0 <= first[0] < 9 and 0 <= first[1] < 9 and 0 <= second[0] < 9 and 0 <= second[1] < 9):
+    paths = []
+    if king is not None:
+        for axis, squares in _capture_axes(king):
+            if any(not (0 <= r < 9 and 0 <= c < 9) for r,c in squares):
                 continue
-            values = (board[first[0]][first[1]], board[second[0]][second[1]])
-            filled = sum(1 for value in values if value in "AX")
-            if "A" in values:
-                completion = max(completion, filled / 2)
-                if filled == 2:
-                    occupied = [first, second]
-                    gaps = []
-        if completion < 1.0:
-            gaps = [sq for sq in neighbours if board[sq[0]][sq[1]] not in "AX"]
-        required = 2
-    reachable = [sq for sq in gaps if _gap_reachable(board, sq)]
-    state.update(region=region, required=required, occupied=len(occupied),
-                 completion=completion, gaps=gaps, reachable=reachable)
-    return state
+            support = tuple(p for p in squares if board[p[0]][p[1]] == "A")
+            gaps = tuple(p for p in squares if p not in support)
+            origins = {gap: tuple(p for p in _gap_reachable(board, gap) if p not in support)
+                       for gap in gaps}
+            paths.append(dict(axis=axis, required=len(squares), support=support, occupied=len(support),
+                              completion=len(support)/len(squares), gaps=gaps, origins=origins,
+                              reachable=tuple(gap for gap in gaps if origins[gap])))
+    best = max(paths,key=lambda path: (path["completion"],len(path["reachable"])),
+               default=dict(required=0,occupied=0,completion=0.0,gaps=(),reachable=()))
+    return dict(region=region,structures=paths,**best)
 
 
-def capture_threat_available(board):
-    """True when the attacker has a legal way to complete a capture on its next move."""
-    state = structure_state(board)
-    if state["region"] == "none":
-        return False
-    return bool(state["reachable"])
+def capture_candidates(board, king):
+    for dr, dc in DIRECTIONS:
+        dest = (king[0]+dr, king[1]+dc)
+        if not all(0 <= x < 9 for x in dest) or board[dest[0]][dest[1]] != ".":
+            continue
+        if king_capture_supported(board,king,dest):
+            for origin in _gap_reachable(board,dest):
+                if king_capture_supported(board,king,dest,origin):
+                    yield origin,dest
 
 
-def find_capture_moves(board, history=()):
-    """Every legal attacker move that captures the king, confirmed by the rule engine."""
-    moves = []
-    for move in get_legal_moves(board, "A"):
-        if check_winner(apply_move(board, move, "A"), "D") == "A":
-            moves.append(move)
-    return moves
+def capture_threat_available(board, king=None):
+    king = king_square(board) if king is None else king
+    return king is not None and next(capture_candidates(board,king),None) is not None
+
+
+def find_capture_moves(board, history=(), *, apply=apply_move):
+    """Return legal king captures in a live attacker-to-move position."""
+    king = king_square(board)
+    if king is None or check_winner(board,"A",history) is not None:
+        return []
+    ancestors = tuple(history)+(get_state_key(board,"A"),)
+    return [move for move in capture_candidates(board,king)
+            if check_winner(apply(board,move,"A"),"D",ancestors)=="A"]
 
 
 def _escape_moves(board):
@@ -205,7 +203,7 @@ def attacker_move_priority(board, move, child, history=(), *, escapes_before=Non
     blockade, closing a capture gap, and finally generic escape/space reduction.
     """
     other = "D"
-    win = check_winner(child, other) == "A"
+    win = check_winner(child, other, tuple(history)+(get_state_key(board,"A"),)) == "A"
     escapes_after = immediate_escape_count(child)
     if escapes_before is None:
         escapes_before = immediate_escape_count(board)
@@ -216,10 +214,74 @@ def attacker_move_priority(board, move, child, history=(), *, escapes_before=Non
     blocks = escapes_before > 0 and escapes_after == 0
     keeps_blockade = guard_captured and escapes_after <= escapes_before
     return (1 if win else 0,
-            1 if state_after["reachable"] else 0,
+            1 if capture_threat_available(child) else 0,
             1 if blocks else 0,
             1 if keeps_blockade else 0,
             1 if state_after["completion"] > completion_before else 0,
             escapes_before - escapes_after,
             state_after["completion"] - completion_before,
             -len(state_after["gaps"]))
+
+@dataclass(frozen=True)
+class CaptureProof:
+    status: str
+    line: tuple
+    nodes: int
+
+
+def prove_capture(board, history=(), *, deadline, max_nodes=1000, moves=None):
+    """Prove a 3- or 5-ply attacker win using all legal defender replies."""
+    work = 0
+
+    def tick():
+        if perf_counter() >= deadline or work >= max_nodes:
+            raise TimeoutError
+
+    def child(position, move, side):
+        nonlocal work
+        tick()
+        work += 1
+        return apply_move(position, move, side)
+
+    def attack(position, path, remaining, allowed=None):
+        tick()
+        if remaining == 1:
+            wins = find_capture_moves(position, path, apply=child)
+            return (wins[0],) if wins else ()
+        candidates = get_legal_moves(position, "A") if allowed is None else allowed
+        next_path = (*path, get_state_key(position, "A"))
+        for move in candidates:
+            after = child(position, move, "A")
+            outcome = check_winner(after, "D", next_path)
+            if outcome == "A":
+                return (move,)
+            if outcome is not None or not capture_threat_available(after):
+                continue
+            reply_path = (*next_path, get_state_key(after, "D"))
+            witness = ()
+            for reply in get_legal_moves(after, "D"):
+                response = child(after, reply, "D")
+                if check_winner(response, "A", reply_path) is not None:
+                    break
+                continuation = attack(response, reply_path, remaining-2)
+                if not continuation:
+                    break
+                line = (reply, *continuation)
+                if len(line) > len(witness):
+                    witness = line
+            else:
+                if witness:
+                    return (move, *witness)
+        return ()
+
+    path = tuple(history)
+    if check_winner(board,"A",path) is not None:
+        return CaptureProof("NOT_PROVEN",(),0)
+    try:
+        for depth in (3,5):
+            line = attack(board,path,depth,moves)
+            if line:
+                return CaptureProof("WIN",line,work)
+        return CaptureProof("NOT_PROVEN",(),work)
+    except TimeoutError:
+        return CaptureProof("UNKNOWN",(),work)
