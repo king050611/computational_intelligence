@@ -232,9 +232,10 @@ class CaptureProof:
 def prove_capture(board, history=(), *, deadline, max_nodes=1000, moves=None):
     """Prove a 3- or 5-ply attacker win using all legal defender replies."""
     work = 0
+    phase_limit = max_nodes
 
     def tick():
-        if perf_counter() >= deadline or work >= max_nodes:
+        if perf_counter() >= deadline or work >= phase_limit:
             raise TimeoutError
 
     def child(position, move, side):
@@ -255,7 +256,7 @@ def prove_capture(board, history=(), *, deadline, max_nodes=1000, moves=None):
             outcome = check_winner(after, "D", next_path)
             if outcome == "A":
                 return (move,)
-            if outcome is not None or not capture_threat_available(after):
+            if outcome is not None or (remaining == 3 and not capture_threat_available(after)):
                 continue
             reply_path = (*next_path, get_state_key(after, "D"))
             witness = ()
@@ -277,11 +278,15 @@ def prove_capture(board, history=(), *, deadline, max_nodes=1000, moves=None):
     path = tuple(history)
     if check_winner(board,"A",path) is not None:
         return CaptureProof("NOT_PROVEN",(),0)
-    try:
-        for depth in (3,5):
+    incomplete = False
+    for depth in (3,5):
+        phase_limit = min(max_nodes, max(1, max_nodes//3)) if depth == 3 else max_nodes
+        try:
             line = attack(board,path,depth,moves)
             if line:
                 return CaptureProof("WIN",line,work)
-        return CaptureProof("NOT_PROVEN",(),work)
-    except TimeoutError:
-        return CaptureProof("UNKNOWN",(),work)
+        except TimeoutError:
+            incomplete = True
+            if work >= max_nodes or perf_counter() >= deadline:
+                break
+    return CaptureProof("UNKNOWN" if incomplete else "NOT_PROVEN",(),work)

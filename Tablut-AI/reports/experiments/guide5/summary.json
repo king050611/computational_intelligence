@@ -1,0 +1,218 @@
+{
+  "V5": {
+    "games": 20,
+    "wins": 5,
+    "draws": 7,
+    "losses": 8,
+    "win_rate": 0.25,
+    "point_rate": 0.425,
+    "attacker_turns": 481,
+    "search_samples": 481,
+    "proofs": {
+      "not_started": 481
+    },
+    "proof_plies": {},
+    "tie_attempts": 0,
+    "tie_changes": 0,
+    "candidate_depths": {},
+    "full_width_depth": 3.7484407484407485,
+    "mean_attacker_turn_seconds": 0.9326675218294997,
+    "max_attacker_seconds": 52.56584520000433,
+    "max_defender_seconds": 41.759587899994585,
+    "illegal_moves": 0,
+    "referee_timeouts": 0,
+    "exceptions": 0
+  },
+  "R0": {
+    "games": 20,
+    "wins": 4,
+    "draws": 6,
+    "losses": 10,
+    "win_rate": 0.2,
+    "point_rate": 0.35,
+    "attacker_turns": 458,
+    "search_samples": 458,
+    "proofs": {
+      "not_started": 458
+    },
+    "proof_plies": {},
+    "tie_attempts": 0,
+    "tie_changes": 0,
+    "candidate_depths": {},
+    "full_width_depth": 3.5262008733624453,
+    "mean_attacker_turn_seconds": 0.9482061543666528,
+    "max_attacker_seconds": 54.9674217999891,
+    "max_defender_seconds": 46.704988699999376,
+    "illegal_moves": 0,
+    "referee_timeouts": 0,
+    "exceptions": 0
+  },
+  "R1": {
+    "games": 20,
+    "wins": 2,
+    "draws": 9,
+    "losses": 9,
+    "win_rate": 0.1,
+    "point_rate": 0.325,
+    "attacker_turns": 336,
+    "search_samples": 336,
+    "proofs": {
+      "UNKNOWN": 333,
+      "not_started": 2,
+      "WIN": 1
+    },
+    "proof_plies": {
+      "3": 1
+    },
+    "tie_attempts": 0,
+    "tie_changes": 0,
+    "candidate_depths": {},
+    "full_width_depth": 3.5267857142857144,
+    "mean_attacker_turn_seconds": 1.0344105241070316,
+    "max_attacker_seconds": 54.95501810000496,
+    "max_defender_seconds": 50.32714210001359,
+    "illegal_moves": 0,
+    "referee_timeouts": 0,
+    "exceptions": 0
+  },
+  "R2": {
+    "games": 20,
+    "wins": 3,
+    "draws": 5,
+    "losses": 12,
+    "win_rate": 0.15,
+    "point_rate": 0.275,
+    "attacker_turns": 373,
+    "search_samples": 373,
+    "proofs": {
+      "not_started": 373
+    },
+    "proof_plies": {},
+    "tie_attempts": 248,
+    "tie_changes": 21,
+    "candidate_depths": {
+      "5": 21,
+      "4": 47
+    },
+    "full_width_depth": 3.546916890080429,
+    "mean_attacker_turn_seconds": 1.263988619034796,
+    "max_attacker_seconds": 39.331442899998365,
+    "max_defender_seconds": 26.514639699995314,
+    "illegal_moves": 0,
+    "referee_timeouts": 0,
+    "exceptions": 0
+  },
+  "paired_vs_R0": {
+    "R1": {
+      "changes": {
+        "A->A": 1,
+        "DRAW->DRAW": 4,
+        "D->D": 6,
+        "D->DRAW": 3,
+        "A->D": 1,
+        "DRAW->D": 2,
+        "D->A": 1,
+        "A->DRAW": 2
+      },
+      "win_rate_difference": -0.1,
+      "point_rate_difference": -0.025,
+      "win_rate_ci95": [
+        -0.3,
+        0.1
+      ],
+      "point_rate_ci95": [
+        -0.225,
+        0.175
+      ]
+    },
+    "R2": {
+      "changes": {
+        "A->A": 1,
+        "DRAW->DRAW": 1,
+        "D->D": 9,
+        "D->DRAW": 1,
+        "DRAW->A": 2,
+        "DRAW->D": 3,
+        "A->DRAW": 3
+      },
+      "win_rate_difference": -0.05,
+      "point_rate_difference": -0.075,
+      "win_rate_ci95": [
+        -0.25,
+        0.15
+      ],
+      "point_rate_ci95": [
+        -0.225,
+        0.075
+      ]
+    }
+  },
+  "paired_vs_V5": {
+    "R0": {
+      "changes": {
+        "A->A": 2,
+        "DRAW->DRAW": 3,
+        "D->D": 7,
+        "DRAW->D": 2,
+        "D->DRAW": 1,
+        "A->DRAW": 2,
+        "A->D": 1,
+        "DRAW->A": 2
+      },
+      "win_rate_difference": -0.05,
+      "point_rate_difference": -0.075,
+      "win_rate_ci95": [
+        -0.25,
+        0.15
+      ],
+      "point_rate_ci95": [
+        -0.225,
+        0.075
+      ]
+    },
+    "R1": {
+      "changes": {
+        "A->A": 1,
+        "DRAW->DRAW": 4,
+        "D->D": 5,
+        "D->DRAW": 3,
+        "A->DRAW": 2,
+        "A->D": 2,
+        "DRAW->D": 2,
+        "DRAW->A": 1
+      },
+      "win_rate_difference": -0.15,
+      "point_rate_difference": -0.1,
+      "win_rate_ci95": [
+        -0.35,
+        0.05
+      ],
+      "point_rate_ci95": [
+        -0.3,
+        0.075
+      ]
+    },
+    "R2": {
+      "changes": {
+        "A->A": 1,
+        "DRAW->DRAW": 4,
+        "D->D": 7,
+        "D->A": 1,
+        "DRAW->A": 1,
+        "A->D": 3,
+        "DRAW->D": 2,
+        "A->DRAW": 1
+      },
+      "win_rate_difference": -0.1,
+      "point_rate_difference": -0.15,
+      "win_rate_ci95": [
+        -0.35,
+        0.15
+      ],
+      "point_rate_ci95": [
+        -0.375,
+        0.05
+      ]
+    }
+  }
+}

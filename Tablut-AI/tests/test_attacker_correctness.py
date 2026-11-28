@@ -87,6 +87,56 @@ assert replies and all(oracle(apply_move(after,reply,"D"),branch) for reply in r
 repeated=get_state_key(apply_move(after,replies[0],"D"),"A")
 blocked=prove_capture(trap,[repeated],deadline=float("inf"),moves=[strike])
 assert blocked.status=="NOT_PROVEN"
+from contextlib import redirect_stdout
+from io import StringIO
+from pathlib import Path
+sys.path.insert(0,str(Path(sys.argv[1]).parents[1]/"reference"))
+from Tablut import Tablut
+
+five=tuple(map(tuple,(".........","..D......","...A.....","..AKA....",
+                     ".AAAXA...",".D...A...",".........",".........",".........")))
+proof=prove_capture(five,deadline=float("inf"))
+assert proof.status=="WIN" and len(proof.line)==5
+
+def checked_child(position,move,side):
+    game=Tablut()
+    game.board=[list(row) for row in position]
+    assert game.make_move(side=="A",move)
+    child=apply_move(position,move,side)
+    assert tuple(map(tuple,game.board))==child
+    with redirect_stdout(StringIO()):
+        ended=game.check_if_game_over(side=="D")
+    expected=check_winner(child,"D" if side=="A" else "A")
+    assert ended==(expected is not None)
+    if ended:
+        assert (game.winner or "DRAW")==expected
+    return child
+
+# Independently prove the selected five-ply move and rule-check all defending replies.
+def forces_after(position, first, depth, path=()):
+    child=checked_child(position,first,"A")
+    path=(*path,get_state_key(position,"A"))
+    result=check_winner(child,"D",path)
+    if result is not None:
+        return result=="A"
+    if depth<3:
+        return False
+    path=(*path,get_state_key(child,"D"))
+    for reply in get_legal_moves(child,"D"):
+        state=checked_child(child,reply,"D")
+        if check_winner(state,"A",path) is not None:
+            return False
+        if depth==3:
+            wins=oracle(state,path)
+            if not wins:
+                return False
+            assert check_winner(checked_child(state,next(iter(wins)),"A"),"D",path)=="A"
+        elif not any(forces_after(state,move,depth-2,path) for move in get_legal_moves(state,"A")):
+            return False
+    return True
+
+assert not any(forces_after(five,move,3) for move in get_legal_moves(five,"A"))
+assert forces_after(five,proof.line[0],5)
 from unittest.mock import patch
 from src.enhanced_search import EnhancedSearch, SearchTimeout
 start=initial_board()
@@ -108,6 +158,22 @@ for visit,expected,status in ((fake_visit,alternative,"completed"),(incomplete,b
         selected=choose_enhanced(start,"A",deadline=perf_counter()+3,stats=stats,
             options=SearchOptions(deepen_ties=True),moves=[base,alternative,*get_legal_moves(start,"A")[2:13]])
         assert (selected,stats["tie_research"])==(expected,status)
+def depth3_visit(self, position, side, depth, alpha, beta, history, ply=0, moves=None):
+    if ply==0:
+        if depth==4:
+            raise SearchTimeout()
+        self.root_scores.update({base:0,alternative:0})
+        return 0,(base,)
+    if depth>3:
+        raise SearchTimeout()
+    assert depth==3 and alpha==float("-inf") and beta==float("inf")
+    return (1 if position==alt_board else 0),()
+with patch.object(EnhancedSearch,"visit",depth3_visit):
+    stats={}
+    selected=choose_enhanced(start,"A",deadline=perf_counter()+3,stats=stats,
+        options=SearchOptions(deepen_ties=True),moves=[base,alternative])
+    assert selected==alternative and stats["full_width_depth"]==stats["completed_depth"]==3
+    assert stats["candidate_depth"]==4 and stats["tie_changed_move"]
 t=TranspositionTable(8)
 t.store("key",4,1,EXACT,mate,context=frozenset({"history A"}))
 assert t.probe("key",4,-10,10,context=frozenset({"history B"})) is None

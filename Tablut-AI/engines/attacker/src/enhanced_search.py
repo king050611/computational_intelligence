@@ -194,7 +194,9 @@ def choose_enhanced(board, side, *, deadline, soft_deadline=None, history=(),
     stats = {} if stats is None else stats
     stats.update(target_depth=options.max_depth, completed_depth=0, nodes=0, cutoffs=0,
                  tt_hint_hits=0, root_moves=len(moves), timed_out=False,
-                 fallback_used=False, score=None, pv=[], finish_reason="no_legal_moves", tactical_status="not_checked")
+                 fallback_used=False, score=None, pv=[], finish_reason="no_legal_moves", tactical_status="not_checked",
+                 full_width_depth=0, candidate_depth=0, tie_research="not_started",
+                 tie_changed_move=False, capture_proof="not_started")
     if not moves:
         return None
     preferred = ()
@@ -234,6 +236,22 @@ def choose_enhanced(board, side, *, deadline, soft_deadline=None, history=(),
         stats["root_draw_moves"] = len(search.root_draw_moves)
     stats["finish_reason"] = "depth_completed"
     completed_root_scores = {}
+    tie_enabled = side == "A" and options.deepen_ties
+    primary_deadline, primary_nodes = search.deadline, search.node_budget
+    def reserve_for_candidates():
+        # Only reserve after a complete depth 3 and a viable near-score candidate.
+        if not tie_enabled or stats["full_width_depth"] != 3 or abs(stats["score"]) >= MATE_BOUND:
+            return
+        if not any(move != best and score >= stats["score"]-.5
+                   for move,score in completed_root_scores.items()):
+            return
+        now = perf_counter()
+        if primary_nodes:
+            search.node_budget = max(stats["nodes"], primary_nodes - primary_nodes//6)
+        else:
+            search.deadline = max(now,min(deadline,deadline-min(.15,max(0,deadline-now)/6)))
+
+
     for depth in range(1, options.max_depth + 1):
         if perf_counter() >= deadline:
             stats.update(timed_out=True, fallback_used=True, finish_reason="search_deadline")
@@ -252,11 +270,13 @@ def choose_enhanced(board, side, *, deadline, soft_deadline=None, history=(),
             return None
         best = pv[0]
         completed_root_scores = search.root_scores.copy()
-        stats.update(completed_depth=depth, score=score, pv=pv)
+        stats.update(completed_depth=depth, full_width_depth=depth, score=score, pv=pv)
+        reserve_for_candidates()
         if abs(score) >= MATE_BOUND:
             stats["finish_reason"] = "proven_terminal"
             break
-    if (side == "A" and options.deepen_ties and stats["completed_depth"] >= 4
+    search.deadline, search.node_budget = primary_deadline, primary_nodes
+    if (tie_enabled and stats["full_width_depth"] >= 3
             and abs(stats["score"]) < MATE_BOUND and len(completed_root_scores)>1):
         ranked = sorted((move for move in completed_root_scores if move != best
                          and completed_root_scores[move] >= stats["score"]-.5),
@@ -265,14 +285,15 @@ def choose_enhanced(board, side, *, deadline, soft_deadline=None, history=(),
         if len(candidates)>1:
             ancestors = (*history,get_state_key(board,side))
             # Use full windows at one common depth. A partial round cannot change the move.
-            depths = (5,6) if len(moves)<=12 else (5,)
-            for depth in (d for d in depths if d > stats["completed_depth"]):
+            stats["tie_research"] = "started"
+            original = best
+            first = stats["full_width_depth"] + 1
+            depths = range(first, 7 if len(moves)<=12 else 6)
+            for depth in depths:
                 results = []
                 try:
                     for move in candidates:
                         search.check_time()
-                        if soft_deadline is not None and perf_counter() >= soft_deadline:
-                            raise SearchTimeout
                         child = search.children(board,move,side)
                         score, tail = search.visit(child,"D",depth-1,-inf,inf,ancestors,ply=1)
                         results.append((score,(move,*tail)))
@@ -282,5 +303,6 @@ def choose_enhanced(board, side, *, deadline, soft_deadline=None, history=(),
                 score,pv = max(results,key=lambda item:item[0])
                 best = pv[0]
                 candidates = [best,*[move for move in candidates if move != best]]
-                stats.update(completed_depth=depth,score=score,pv=pv,tie_research="completed")
+                stats.update(candidate_depth=depth,score=score,pv=pv,tie_research="completed",
+                             tie_changed_move=best!=original)
     return best
