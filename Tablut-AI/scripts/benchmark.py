@@ -312,4 +312,12 @@ def main():
 
 if __name__=="__main__":
     multiprocessing.freeze_support()
-    main()
+    if "--research" in sys.argv[1:] or ("--output" in sys.argv[1:] and "--pairs" in sys.argv[1:]):
+        from scripts.generate_research_games import main as research
+        from src.role_player import role_spec
+        argv = [value for value in sys.argv[1:] if value != "--research"]
+        # Without a fixed side the same two engine/model bundles swap roles.
+        side = argv[argv.index("--candidate-side")+1] if "--candidate-side" in argv else "A"
+        research(argv, candidate=role_spec(side), control=role_spec("D" if side == "A" else "A"))
+    else:
+        main()

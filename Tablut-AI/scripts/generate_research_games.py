@@ -28,13 +28,6 @@ def worker(spec):
     if spec["nodes"]:
         settings["node_budget"]=spec["nodes"]
     model=load_evaluator(spec["model"]) if spec["model"] else None
-    if spec.get("attacker_strategy"):
-        from src.evaluation import AttackerStrategyEvaluator, RoleEvaluator
-        if model is None:
-            raise ValueError("An attacker strategy needs a base model")
-        attack = model.attacker if isinstance(model, RoleEvaluator) else model
-        defense = model.defender if isinstance(model, RoleEvaluator) else model
-        model = RoleEvaluator(AttackerStrategyEvaluator(attack, spec["attacker_strategy"]), defense)
     bot=ExperimentalPlayer("evolutionary_dynamic" if model else "enhanced_dynamic",
                            opening=spec["board"],evaluator=model,options=SearchOptions(**settings),record_search=True)
     print("ready",flush=True)
@@ -180,12 +173,13 @@ def select_openings(count, seed):
     return openings
 
 
-def main():
+def main(argv=None, *, candidate=None, control=None):
     from scripts.replay_demo import write_replay
     from scripts.analyze_history import normalize_replay
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output",type=Path,required=True)
     parser.add_argument("--pairs",type=int,default=10)
+    parser.add_argument("--openings",type=Path,help="Explicit frozen opening set (uses all entries)")
     parser.add_argument("--seed",type=int,default=88921)
     parser.add_argument("--seconds",type=int,default=60)
     parser.add_argument("--candidate-seconds",type=int)
@@ -198,10 +192,11 @@ def main():
         parser.add_argument(f"--{prefix}-model",type=Path)
         parser.add_argument(f"--{prefix}-depth",type=int,default=4)
         parser.add_argument(f"--{prefix}-nodes",type=int,default=0)
-    parser.add_argument("--attacker-strategy", choices=("A1", "A2", "A3"))
-    args=parser.parse_args()
-    if args.attacker_strategy and (args.candidate_side != "A" or not args.candidate_model):
-        parser.error("--attacker-strategy requires a fixed attacker and a candidate model")
+    for label,spec in (("candidate",candidate),("control",control)):
+        if spec:
+            parser.set_defaults(**{f"{label}_{k}": Path(v) if k in ("engine","model") else v
+                                   for k,v in spec.items()})
+    args=parser.parse_args(argv)
     if min(args.pairs,args.workers)<1 or args.seconds<=5:
         parser.error("Positive pairs/workers and a budget above five seconds required")
     if args.workers>1 and (not(args.candidate_nodes and args.control_nodes)
@@ -224,14 +219,23 @@ def main():
         specs.append(dict(engine=str(engine),model=str(model.resolve()) if model else None,
                           model_sha256=sha256(model.read_bytes()).hexdigest() if model else None,
                           files=files,depth=depth,nodes=nodes,seconds=cap))
-    if args.attacker_strategy:
-        specs[0]["attacker_strategy"] = args.attacker_strategy
-    openings=select_openings(args.pairs,args.seed)
+    opening_sha=None
+    if args.openings:
+        from scripts.benchmark import read_openings
+        from scripts.build_strategy_dataset import symmetry
+        records,opening_sha=read_openings(args.openings)
+        if len({symmetry(board,"A") for _,board in records})!=len(records):
+            parser.error("Opening set contains symmetric duplicates")
+        openings=[dict(id=identifier,board=board) for identifier,board in records]
+    else:
+        openings=select_openings(args.pairs,args.seed)
     mode="standard_games" if args.seconds==60 and not any(s["nodes"] for s in specs) else "high_budget_games"
     # Serialize the configuration before comparison to normalize tuple/list representation.
     manifest=json.loads(json.dumps(dict(seed=args.seed,specs=specs,openings=openings,mode=mode,
         referee_sha256=sha256((ROOT/"reference/Tablut.py").read_bytes()).hexdigest(),
         candidate_side=args.candidate_side,workers=args.workers)))
+    if opening_sha:
+        manifest["opening_sha256"]=opening_sha
     path=args.output/"manifest.json"
     if args.resume:
         if json.loads(path.read_bytes())!=manifest:

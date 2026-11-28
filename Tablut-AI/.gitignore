@@ -4,4 +4,11 @@ __pycache__/
 .pytest_cache/
 reports/experiments/*.json
 reports/experiments/aths/
-reports/training/
+
+# Generated match views and transient output. Keep JSON provenance, checkpoints
+# and curated summaries available for explicit archiving.
+/reports/**/replay.html
+/reports/**/.training.lock
+/reports/**/g[0-9][0-9][0-9][0-9]/
+/phase3_run.log
+*.tmp

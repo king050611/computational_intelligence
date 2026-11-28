@@ -44,7 +44,7 @@ class DrawDecisions(unittest.TestCase):
         self.assertEqual(reply_repetitions({move: child}, "D", targets, 0, apply_move, set()), (set(), False))
 
     def test_repeated_end_from_historical_greedy_replay_is_still_available(self):
-        source = Path(__file__).resolve().parents[1] / "reports/replays/depth_greedy/games.json"
+        source = Path(__file__).resolve().parents[1] / "tests/fixtures/depth_greedy.json"
         games = json.loads(source.read_bytes())["games"]
         game = next(item for item in games if item["result"]["reason"] == "repetition")
         latest = game["moves"][-1]

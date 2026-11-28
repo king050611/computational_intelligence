@@ -1,72 +1,41 @@
-"""V7 deployment pin: attacker = frozen V5 engine + champion weights, defenders frozen.
-
-The record must stay byte-consistent with the files it names; if any engine, model or
-pool file changes, this test fails and the pin has to be re-issued deliberately.
-"""
-import hashlib
+"""Deployment and opponent pool pins for independent role builds."""
 import json
-import unittest
 from pathlib import Path
+import unittest
 
-from scripts.train_role import fingerprint, model_spec
-
-ROOT = Path(__file__).resolve().parents[1]
-CONFIG = ROOT / "reports/phase4/ROLE_CONFIG_v7.json"
-
-
-def sha256(path):
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
-
-
-def load():
-    return json.loads(CONFIG.read_text(encoding="utf-8"))
+from src.game import apply_move, get_legal_moves, initial_board, is_legal_move
+from src.role_player import RolePlayer, ROOT, role_spec
+from scripts.train_role import model_spec
 
 
 class RoleConfigPinTests(unittest.TestCase):
-    def test_candidate_engine_matches_the_pin(self):
-        candidate = load()["candidate"]
-        engine = ROOT / candidate["engine"]
-        self.assertTrue(engine.is_dir())
-        self.assertEqual(fingerprint(engine), candidate["engine_files"])
+    def test_candidate_engine_and_model_match_source(self):
+        self.assertEqual(role_spec("A", verify_attacker=True)["depth"], 4)
 
-    def test_candidate_model_matches_the_pin(self):
-        candidate = load()["candidate"]
-        self.assertEqual(sha256(ROOT / candidate["model"]), candidate["model_sha256"])
+    def test_defender_engine_and_model_match_source(self):
+        self.assertEqual(role_spec("D")["seconds"], 60)
 
-    def test_defender_pool_matches_the_pin(self):
-        config = load()
-        pool_path = ROOT / config["opponent_pool"]["path"]
-        self.assertEqual(sha256(pool_path), config["opponent_pool"]["sha256"])
-        entries = json.loads(pool_path.read_text(encoding="utf-8"))
-        self.assertEqual(len(entries), config["opponent_pool"]["entries"])
+    def test_frozen_defender_pool(self):
+        path = ROOT / "config/defender_pool.json"
+        entries = json.loads(path.read_bytes())
+        self.assertEqual([entry["share"] for entry in entries], [30, 30, 25, 15])
         for entry in entries:
-            engine = (pool_path.parent / entry["engine"]).resolve()
-            model = pool_path.parent / entry["model"]
-            self.assertEqual(fingerprint(engine), entry["files"], entry["name"])
-            self.assertEqual(sha256(model), entry["model_sha256"], entry["name"])
-
-    def test_pinned_pool_is_accepted_by_the_trainer(self):
-        config = load()
-        pool_path = ROOT / config["opponent_pool"]["path"]
-        for entry in json.loads(pool_path.read_text(encoding="utf-8")):
-            engine = (pool_path.parent / entry["engine"]).resolve()
-            model = pool_path.parent / entry["model"]
-            spec = model_spec(engine, model, entry["depth"], entry["seconds"])
+            spec = model_spec(path.parent / entry["engine"], path.parent / entry["model"],
+                              entry["depth"], entry["seconds"])
             self.assertEqual(spec["files"], entry["files"])
             self.assertEqual(spec["model_sha256"], entry["model_sha256"])
-        candidate = config["candidate"]
-        spec = model_spec(ROOT / candidate["engine"], ROOT / candidate["model"],
-                          candidate["depth"], candidate["seconds"])
-        self.assertEqual(spec["files"], candidate["engine_files"])
-        self.assertEqual(spec["model_sha256"], candidate["model_sha256"])
 
-    def test_the_pin_states_its_own_caveat(self):
-        config = load()
-        self.assertEqual(config["role"], "attacker")
-        self.assertEqual(config["search"]["depth"], 4)
-        self.assertEqual(config["search"]["seconds"], 60)
-        self.assertIn("not a promoted model", config["evidence"]["caveat"])
+    def test_role_engines_keep_separate_process_state(self):
+        board = initial_board()
+        with RolePlayer() as player:
+            played = player.play_attacker(board)
+            self.assertTrue(is_legal_move(board, played, "A"))
+            board = apply_move(board, played, "A")
+            self.assertTrue(is_legal_move(board, player.play_defender(board), "D"))
+            self.assertNotEqual(player._engines["A"].process.pid, player._engines["D"].process.pid)
 
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_formal_rollback_still_available(self):
+        from TeamXX import Player, independent_player
+        self.assertEqual(Player().strategy, "enhanced_dynamic")
+        with independent_player() as player:
+            self.assertIsInstance(player, RolePlayer)

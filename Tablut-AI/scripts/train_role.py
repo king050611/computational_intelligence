@@ -101,28 +101,31 @@ def suite(out,weights,side,entries,depth,pool,seed,candidate_engine=None):
     return result
 
 
-def main(role,argv):
+def main(role,argv,*,settings=None):
+    defaults=settings or {}
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--opponent-pool",type=Path,required=True)
     parser.add_argument("--output-dir",type=Path,required=True)
-    parser.add_argument("--ranking-mode",choices=("fitness","win-first"),default="win-first")
-    parser.add_argument("--initial-model",type=Path,default=ROOT/"reports/historical_analysis/v4_champion_schema2.json")
+    parser.add_argument("--ranking-mode",choices=("fitness","win-first"),default=defaults.get("ranking_mode","win-first"))
+    parser.add_argument("--initial-model",type=Path,default=ROOT/"models/attacker/best.json")
     parser.add_argument("--candidate-engine",type=Path,default=ROOT,
                         help="Frozen engine directory for the candidate role (defaults to the workspace)")
     parser.add_argument("--style-model",type=Path,action="append",default=[])
-    parser.add_argument("--quick-games",type=int,default=4)
-    parser.add_argument("--final-games",type=int,default=12)
-    parser.add_argument("--quick-depth",type=int,default=3)
-    parser.add_argument("--max-depth",type=int,default=4)
-    parser.add_argument("--generations",type=int,default=1)
-    parser.add_argument("--seed",type=int,default=42)
+    parser.add_argument("--quick-games",type=int,default=defaults.get("quick_games",4))
+    parser.add_argument("--final-games",type=int,default=defaults.get("final_games",12))
+    parser.add_argument("--quick-depth",type=int,default=defaults.get("quick_depth",3))
+    parser.add_argument("--max-depth",type=int,default=defaults.get("max_depth",4))
+    parser.add_argument("--generations",type=int,default=defaults.get("generations",1))
+    parser.add_argument("--seed",type=int,default=defaults.get("seed",42))
     parser.add_argument("--resume",action="store_true")
     parser.add_argument("--tactics-dir",type=Path)
     args=parser.parse_args(argv)
     if min(args.quick_games,args.final_games,args.quick_depth,args.max_depth,args.generations)<1:
         parser.error("Counts and depths must be positive")
     side="A" if role=="attacker" else "D"
-    config=EvolutionConfig(population=8,elite=2,sigma=40,bound=1000,seed=args.seed,constrained=False)
+    genetics=dict(population=8,elite=2,crossover=.7,mutation=.2,sigma=40,bound=1000)
+    genetics.update({key:defaults[key] for key in genetics if key in defaults})
+    config=EvolutionConfig(**genetics,seed=args.seed,constrained=False)
     models=[load_evaluator(path) for path in [args.initial_model,*args.style_model]]
     if any(not isinstance(model,WeightedEvaluator) for model in models):
         parser.error("Initial and style models must each contain one weight vector")

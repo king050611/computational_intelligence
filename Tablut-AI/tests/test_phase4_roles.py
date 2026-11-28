@@ -59,7 +59,7 @@ class RoleTests(unittest.TestCase):
                     main(role,args)
                     main(role,args+["--resume"])
                 self.assertEqual(calls,([(side,4)]*8+[(side,12)]*4)*2)
-                expected=load_evaluator(ROOT/"reports/historical_analysis/v4_champion_schema2.json").weights
+                expected=load_evaluator(ROOT/"models/attacker/best.json").weights
                 self.assertEqual(load_evaluator(out/f"{role}_best.json").weights,expected)
                 ck=json.loads((out/"checkpoint-0002.json").read_bytes())
                 self.assertEqual(len({tuple(w) for w in ck["population"]}),8)

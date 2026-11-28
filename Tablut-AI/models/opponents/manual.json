@@ -1,0 +1,25 @@
+{
+  "schema_version": 2,
+  "model_type": "evolutionary_dynamic",
+  "features": [
+    "king_pressure",
+    "escape_routes",
+    "weighted_material",
+    "edge_distance",
+    "king_mobility",
+    "escape_blockade",
+    "king_escape_distance",
+    "immediate_king_threat"
+  ],
+  "weights": [
+    -400.0,
+    600.0,
+    -160.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "metadata": {}
+}

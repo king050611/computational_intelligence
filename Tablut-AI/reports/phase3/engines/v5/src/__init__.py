@@ -1,1 +1,0 @@
-"""Tablut project package."""

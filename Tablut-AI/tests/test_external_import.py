@@ -23,7 +23,7 @@ class ExternalImportTests(unittest.TestCase):
         self.assertNotEqual(symmetry(moved,"D"),symmetry(moved,"A"))
 
     def test_replay_checks_captures_and_terminal_labels(self):
-        source=Path("reports/replays/depth_greedy/games.json")
+        source=Path("tests/fixtures/depth_greedy.json")
         game=json.loads(source.read_bytes())["games"][0]
         game={**game,"game_id":"test","moves":[{**m,"captures":[[*c["square"],c["piece"]] for c in m["captures"]]} for m in game["moves"]]}
         with contextlib.redirect_stdout(io.StringIO()):
@@ -38,7 +38,7 @@ class ExternalImportTests(unittest.TestCase):
 
 
     def test_missing_source_snapshots_cannot_reach_exact_set(self):
-        game=json.loads(Path("reports/replays/depth_greedy/games.json").read_bytes())["games"][0]
+        game=json.loads(Path("tests/fixtures/depth_greedy.json").read_bytes())["games"][0]
         moves=[dict(player=m["player"],move=m["move"]) for m in game["moves"]]
         with contextlib.redirect_stdout(io.StringIO()):
             result=classify(dict(game,moves=moves),{"course_rules_equivalent":True})
