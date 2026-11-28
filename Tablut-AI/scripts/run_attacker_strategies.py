@@ -7,6 +7,43 @@ import subprocess
 import sys
 
 
+from scripts.build_strategy_dataset import symmetry
+from scripts.generate_research_games import select_openings
+
+
+def opening_keys(value):
+    if isinstance(value, list):
+        for row in value:
+            yield from opening_keys(row)
+    elif isinstance(value, dict):
+        if isinstance(value.get("board"), list) and len(value["board"]) == 9:
+            yield symmetry(value["board"], value.get("side", "A"))
+        for name in ("openings", "entries", "quick_openings", "final_openings"):
+            if name in value:
+                yield from opening_keys(value[name])
+
+
+def confirm_seed(root, quotas):
+    screen = root / "screen"
+    if not (screen / "summary.json").is_file():
+        raise ValueError("Complete the screening stage before confirmation")
+    excluded = set()
+    for manifest in (screen / "A0").glob("*/manifest.json"):
+        excluded.update(opening_keys(json.loads(manifest.read_bytes())))
+    if len(excluded) != 16:
+        raise ValueError("Expected sixteen distinct screening openings")
+    for folder in (Path("reports/training"), Path("reports/experiments")):
+        for path in folder.rglob("*.json"):
+            if path.name in ("config.json", "manifest.json") or "opening" in path.name:
+                excluded.update(opening_keys(json.loads(path.read_bytes())))
+    for seed in range(88421, 88521):
+        keys = {symmetry(row["board"], "A") for i, quota in enumerate(quotas)
+                for row in select_openings(quota, seed+i)}
+        if len(keys) == sum(quotas) and not keys & excluded:
+            return seed
+    raise ValueError("No independent confirmation schedule found")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--stage", choices=("screen", "confirm"), default="screen")
@@ -21,7 +58,7 @@ def main():
     strategies = ("A0", "A1", "A2", "A3") if screen else ("A0", args.finalist)
     opponents = ("champion", "escape", "protective")
     quotas = (6, 5, 5) if screen else (14, 13, 13)
-    seed = 78421 if screen else 88421
+    seed = 78421 if screen else confirm_seed(args.output, quotas)
     models = Path("reports/phase4/models")
     base = models / "champion.json"
     out = args.output / args.stage

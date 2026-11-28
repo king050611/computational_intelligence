@@ -157,11 +157,32 @@ def fingerprint(directory):
             for folder in ("src","config") for p in sorted((directory/folder).rglob("*.py"))}
 
 
-def main():
+def select_openings(count, seed):
     from scripts.generate_openings import generate_openings
+    from scripts.build_strategy_dataset import symmetry
+
+    excluded=set()
+    for path in (ROOT/"data/positions").rglob("*holdout*_positions.jsonl"):
+        for line in path.read_bytes().splitlines():
+            if line.strip():
+                item=json.loads(line)
+                excluded.add(symmetry(item["board"],item["side"]))
+    openings=[]
+    for entry in generate_openings(count*2,seed)["openings"]:
+        key=symmetry(entry["board"],"A")
+        if key not in excluded:
+            excluded.add(key)
+            openings.append(dict(entry,id=len(openings)+1))
+            if len(openings)==count:
+                break
+    if len(openings)!=count:
+        raise ValueError("Not enough disjoint openings")
+    return openings
+
+
+def main():
     from scripts.replay_demo import write_replay
     from scripts.analyze_history import normalize_replay
-    from scripts.build_strategy_dataset import symmetry
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output",type=Path,required=True)
     parser.add_argument("--pairs",type=int,default=10)
@@ -205,22 +226,7 @@ def main():
                           files=files,depth=depth,nodes=nodes,seconds=cap))
     if args.attacker_strategy:
         specs[0]["attacker_strategy"] = args.attacker_strategy
-    excluded=set()
-    for path in Path("data/positions").rglob("*holdout*_positions.jsonl"):
-        for line in path.read_bytes().splitlines():
-            if line.strip():
-                item=json.loads(line)
-                excluded.add(symmetry(item["board"],item["side"]))
-    openings=[]
-    for entry in generate_openings(args.pairs*2,args.seed)["openings"]:
-        key=symmetry(entry["board"],"A")
-        if key not in excluded:
-            excluded.add(key)
-            openings.append(dict(entry,id=len(openings)+1))
-            if len(openings)==args.pairs:
-                break
-    if len(openings)!=args.pairs:
-        raise ValueError("Not enough disjoint openings")
+    openings=select_openings(args.pairs,args.seed)
     mode="standard_games" if args.seconds==60 and not any(s["nodes"] for s in specs) else "high_budget_games"
     # Serialize the configuration before comparison to normalize tuple/list representation.
     manifest=json.loads(json.dumps(dict(seed=args.seed,specs=specs,openings=openings,mode=mode,
